@@ -1,5 +1,4 @@
 import { NavBar } from 'antd-mobile';
-import { CloseOutline, } from 'antd-mobile-icons';
 import { useMemo } from 'react';
 import { useLocation, useNavigate, matchPath } from 'react-router-dom'
 import { routeConfig } from '../../routes';

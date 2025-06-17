@@ -1,6 +1,11 @@
-import { CalendarOutline, DownFill, SearchOutline } from "antd-mobile-icons";
+import { FloatingBubble } from "antd-mobile";
+import { DownFill, EditSFill, SearchOutline } from "antd-mobile-icons";
+import { useSetAtom } from "jotai";
+import { detailsPopupInfo } from "../../store";
 
 export default function Home() {
+    const setInfo = useSetAtom(detailsPopupInfo)
+
     return <div id="details-page" className="px-4">
         {/* <!-- 搜索栏 --> */}
         <div className="mt-2 mb-4 relative">
@@ -211,5 +216,16 @@ export default function Home() {
                 </div>
             </div>
         </div>
+
+        <FloatingBubble
+            style={{
+                '--initial-position-bottom': '108px',
+                '--initial-position-right': '38px',
+                '--edge-distance': '38px',
+                "--z-index": "60",
+            }}
+        >
+            <EditSFill fontSize={32} onClick={() => setInfo({ visible: true })} />
+        </FloatingBubble>
     </div>
 }

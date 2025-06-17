@@ -1,6 +1,7 @@
 
+import Navbar from './components/navbar'
+import ModifyDetailsModal from './components/details-popup';
 import { BrowserRouter, useRoutes } from 'react-router-dom'
-import Navbar from './components/navbar/index.tsx'
 import { routeConfig } from './routes'
 
 function RoutePages() {
@@ -13,8 +14,12 @@ export default function App() {
     <BrowserRouter>
       {/* 导航栏 */}
       <Navbar />
+
       {/* 路由页面 */}
       <RoutePages />
+
+      {/* 一些全局的弹窗 */}
+      <ModifyDetailsModal />
     </BrowserRouter>
   )
 }

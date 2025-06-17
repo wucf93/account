@@ -25,12 +25,12 @@ export default function Home() {
                     className="px-3 py-1 bg-white rounded-full text-xs shadow-sm flex items-center cursor-pointer"
                 >
                     <span>本月</span>
-                    <DownFill className="ml-1" fontSize={8}/>
+                    <DownFill className="ml-1" fontSize={8} />
                 </div>
                 <div
                     className="w-7 h-7 flex items-center justify-center bg-white rounded-full shadow-sm cursor-pointer"
                 >
-                    <CalendarOutline fontSize={14} color="#000" />
+                    <i className="ri-calendar-line"></i>
                 </div>
             </div>
         </div>

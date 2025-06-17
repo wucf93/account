@@ -1,25 +1,20 @@
 
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Home from './pages/index.tsx'
-import HomeIndex from './pages/home'
-import HomeStatistics from "./pages/statistics"
-import HomeSetting from "./pages/setting"
+import { BrowserRouter, useRoutes } from 'react-router-dom'
+import Navbar from './components/navbar/index.tsx'
+import { routeConfig } from './routes'
 
+function RoutePages() {
+  const routes = useRoutes(routeConfig);
+  return routes;
+}
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* 首页 */}
-        <Route path="/" element={<Home />}>
-          <Route index element={<Navigate to="/home" replace />} />
-          <Route path="home" element={<HomeIndex />} />
-          <Route path="statistics" element={<HomeStatistics />} />
-          <Route path="setting" element={<HomeSetting />} />
-        </Route>
-      </Routes>
+      {/* 导航栏 */}
+      <Navbar />
+      {/* 路由页面 */}
+      <RoutePages />
     </BrowserRouter>
   )
 }
-
-export default App

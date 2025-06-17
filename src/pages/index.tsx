@@ -9,7 +9,7 @@ export default function Index() {
   return (
     <div>
       {/* 导航栏 */}
-      <div className="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
+      {/* <div className="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="text-xl font-['Pacifico'] text-primary">logo</div>
           <div className="flex items-center space-x-2">
@@ -21,7 +21,7 @@ export default function Index() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className='pt-[60px] pb-[70px]'>
         <Outlet />

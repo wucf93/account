@@ -14,9 +14,9 @@ export default defineConfig({
       injectRegister: false,
 
       manifest: {
-        name: 'my-vue-app',
-        short_name: 'my-vue-app',
-        description: 'my-vue-app',
+        name: '快记账',
+        short_name: '快记账',
+        description: '快记账，一款便捷高效的记账应用，助您轻松管理日常收支，清晰掌握财务状况。',
         theme_color: '#ffffff',
 
         icons: [{

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Statistics() {
     return <div className="px-4">
         {/* <!-- 用户信息 --> */}
@@ -17,11 +19,10 @@ export default function Statistics() {
                 </div>
             </div>
         </div>
-        {/* <!-- 功能列表 --> */}
+        {/* 功能列表 */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
-            <a
-                href="https://readdy.ai/home/461dc214-bcea-4905-bbdc-f1e6ed1c8ea6/44c46878-fa6c-428f-97eb-b773158baa5f"
-                data-readdy="true"
+            <Link
+                to="/category"
                 className="flex items-center p-4 border-b border-gray-100 cursor-pointer"
             >
                 <div
@@ -30,12 +31,12 @@ export default function Statistics() {
                     <i className="ri-wallet-3-line text-primary"></i>
                 </div>
                 <div className="flex-1">
-                    <div className="text-base">收支类型管理</div>
+                    <div className="text-base text-gray-700">收支类型管理</div>
                 </div>
                 <div className="w-8 h-8 flex items-center justify-center">
                     <i className="ri-arrow-right-s-line text-gray-400"></i>
                 </div>
-            </a>
+            </Link>
             <div
                 className="flex items-center p-4 border-b border-gray-100 cursor-pointer"
             >

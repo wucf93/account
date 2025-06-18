@@ -1,7 +1,7 @@
 import { FloatingBubble } from "antd-mobile";
 import { DownFill, EditSFill, SearchOutline } from "antd-mobile-icons";
 import { useSetAtom } from "jotai";
-import { detailsPopupInfo } from "../../store";
+import { detailsPopupInfo } from "../../components/details-popup/atom";
 
 export default function Home() {
     const setInfo = useSetAtom(detailsPopupInfo)
@@ -217,6 +217,7 @@ export default function Home() {
             </div>
         </div>
 
+        {/* 详情弹窗 */}
         <FloatingBubble
             style={{
                 '--initial-position-bottom': '108px',
@@ -225,7 +226,7 @@ export default function Home() {
                 "--z-index": "60",
             }}
         >
-            <EditSFill fontSize={32} onClick={() => setInfo({ visible: true })} />
+            <EditSFill fontSize={32} onClick={() => setInfo((prev) => ({ ...prev, visible: true }))} />
         </FloatingBubble>
     </div>
 }

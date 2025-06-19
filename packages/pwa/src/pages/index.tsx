@@ -7,29 +7,15 @@ export default function Index() {
   const location = useLocation()
 
   return (
-    <div>
+    <div className='flex flex-col h-full'>
       {/* 导航栏 */}
-      {/* <div className="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
-        <div className="flex items-center justify-between px-4 h-14">
-          <div className="text-xl font-['Pacifico'] text-primary">logo</div>
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 flex items-center justify-center cursor-pointer">
-              <i className="ri-notification-3-line ri-lg"></i>
-            </div>
-            <div className="w-8 h-8 flex items-center justify-center">
-              <i className="ri-notification-3-line ri-lg"></i>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
-      <div className='pt-[60px] pb-[70px]'>
+      <div className='grow overflow-y-auto'>
         <Outlet />
       </div>
 
       {/* 悬浮按钮 */}
       <div
-        className="fixed bottom-0 left-0 w-full bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50"
+        className="flex-grow bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50"
       >
         <TabBar activeKey={location.pathname}>
           <TabBar.Item key={"/home"} icon={<AppOutline />} title="明细" onClick={() => navigate("home", { replace: true })} />

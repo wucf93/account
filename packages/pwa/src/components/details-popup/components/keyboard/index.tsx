@@ -68,9 +68,6 @@ export default function Keyboard({
             onAccountChange?.(newValue);
         } else if (key === 'save') {
             onSave?.();
-        } else if (key === "zero") {
-            setInputValue("0");
-            onAccountChange?.("0");
         } else if (key === "date") {
             setVisible(true)
         }
@@ -80,7 +77,7 @@ export default function Keyboard({
         <>
             <div className="grid grid-cols-4 gap-1 px-1">
                 {
-                    [1, 2, 3, "date", 4, 5, 6, 'zero', 7, 8, 9, 'delete', 0, '.', "save"].map((item) => (
+                    [1, 2, 3, "date", 4, 5, 6, 'ai', 7, 8, 9, 'delete', 0, '.', "save"].map((item) => (
                         <Fragment key={item}>
                             {
                                 item === "delete" ? (
@@ -104,12 +101,12 @@ export default function Keyboard({
                                     >
                                         {dayjs().isSame(dayjs(dateValue), "day") ? "今天" : dayjs(dateValue).format('YY/MM/DD')}
                                     </div>
-                                ) : item === "zero" ? (
+                                ) : item === "ai" ? (
                                     <div
                                         className="bg-white h-12 flex items-center justify-center rounded cursor-pointer text-sm hover:bg-gray-100 transition-colors"
                                         onClick={() => handleKeyPress(item)}
                                     >
-                                        清空
+                                        AI
                                     </div>
                                 ) : (
                                     <div

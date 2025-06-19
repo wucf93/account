@@ -5,18 +5,20 @@ import { BrowserRouter, useRoutes } from 'react-router-dom'
 import { routeConfig } from './routes'
 
 function RoutePages() {
-  const routes = useRoutes(routeConfig);
-  return routes;
+  const routes = useRoutes(routeConfig,);
+  return <div className='grow overflow-y-auto'>{routes}</div>;
 }
 
 export default function App() {
   return (
     <BrowserRouter>
-      {/* 导航栏 */}
-      <Navbar />
+      <div className='h-screen overflow-hidden flex flex-col'>
+        {/* 导航栏 */}
+        <Navbar className='flex-none' />
 
-      {/* 路由页面 */}
-      <RoutePages />
+        {/* 路由页面 */}
+        <RoutePages />
+      </div>
 
       {/* 一些全局的弹窗 */}
       <ModifyDetailsModal />

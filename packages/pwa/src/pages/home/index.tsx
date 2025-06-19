@@ -1,14 +1,16 @@
 import { FloatingBubble } from "antd-mobile";
-import { DownFill, EditSFill, SearchOutline } from "antd-mobile-icons";
+import { EditSFill, SearchOutline } from "antd-mobile-icons";
 import { useSetAtom } from "jotai";
 import { detailsPopupInfo } from "../../components/details-popup/atom";
+import DataAnalysis from "./components/data-analysis";
+
 
 export default function Home() {
     const setInfo = useSetAtom(detailsPopupInfo)
 
-    return <div id="details-page" className="px-4">
-        {/* <!-- 搜索栏 --> */}
-        <div className="mt-2 mb-4 relative">
+    return <div className="flex flex-col h-full overflow-hidden">
+        {/* 搜索栏 */}
+        <div className="m-4 relative flex-none">
             <div className="relative">
                 <input
                     type="text"
@@ -22,51 +24,13 @@ export default function Home() {
                 </div>
             </div>
         </div>
-        {/* <!-- 日期筛选 --> */}
-        <div className="mb-4 flex items-center justify-between">
-            <div className="text-sm text-gray-500">2025年6月</div>
-            <div className="flex items-center space-x-2">
-                <div
-                    className="px-3 py-1 bg-white rounded-full text-xs shadow-sm flex items-center cursor-pointer"
-                >
-                    <span>本月</span>
-                    <DownFill className="ml-1" fontSize={8} />
-                </div>
-                <div
-                    className="w-7 h-7 flex items-center justify-center bg-white rounded-full shadow-sm cursor-pointer"
-                >
-                    <i className="ri-calendar-line"></i>
-                </div>
-            </div>
-        </div>
-        {/* <!-- 本月统计 --> */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <div className="flex justify-between items-center mb-3">
-                <div className="text-sm text-gray-500">本月收支</div>
-                <a
-                    href="https://readdy.ai/home/461dc214-bcea-4905-bbdc-f1e6ed1c8ea6/fdf9fe6b-6ec6-4da6-bf9c-366ab5969ae6"
-                    data-readdy="true"
-                    className="text-xs text-primary cursor-pointer"
-                >查看详情</a>
-            </div>
-            <div className="flex justify-between">
-                <div>
-                    <div className="text-xs text-gray-500 mb-1">收入</div>
-                    <div className="text-lg font-medium income">¥ 8,756.00</div>
-                </div>
-                <div>
-                    <div className="text-xs text-gray-500 mb-1">支出</div>
-                    <div className="text-lg font-medium expense">¥ 5,342.50</div>
-                </div>
-                <div>
-                    <div className="text-xs text-gray-500 mb-1">结余</div>
-                    <div className="text-lg font-medium">¥ 3,413.50</div>
-                </div>
-            </div>
-        </div>
-        {/* <!-- 交易记录 --> */}
-        <div className="mb-4">
-            {/* <!-- 今天 --> */}
+
+        {/* 本月统计 */}
+        <DataAnalysis className="bg-white rounded-lg shadow-sm p-4 m-4 mt-0 flex-none" />
+
+        {/* 交易记录 */}
+        <div className="p-4 pt-0 grow overflow-y-auto">
+            {/* 今天 */}
             <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
                     <div className="text-sm font-medium">今天</div>
@@ -127,7 +91,8 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            {/* <!-- 昨天 --> */}
+
+            {/* 昨天 */}
             <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
                     <div className="text-sm font-medium">昨天</div>
@@ -172,6 +137,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+
             {/* <!-- 6月14日 --> */}
             <div>
                 <div className="flex justify-between items-center mb-2">

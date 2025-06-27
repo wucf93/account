@@ -7,22 +7,28 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-pwa-icons": "pwa-assets-generator"
+    "generate-pwa-icons": "pwa-assets-generator",
+    "swet": "swet co"
   },
   "dependencies": {
+    "@swet/cli": "^0.1.2",
     "antd-mobile": "^5.39.0",
     "antd-mobile-icons": "^0.3.0",
+    "axios": "^1.10.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "jotai": "^2.12.5",
+    "lodash": "^4.17.21",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.6.2",
+    "react-use": "^17.6.0",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@tailwindcss/vite": "^4.1.10",
+    "@types/lodash": "^4.17.19",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-router-dom": "^5.3.3",
@@ -32,6 +38,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
+    "prettier": "^3.6.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.20.0",
     "vite": "^6.0.11",

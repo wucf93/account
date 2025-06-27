@@ -1,25 +1,32 @@
-import { atom } from 'jotai';
-import dayjs, { Dayjs } from 'dayjs';
+import { atom } from 'jotai'
+import dayjs, { Dayjs } from 'dayjs'
+import { globalStore } from '@/store'
 
 export enum DetailsType {
-    /** 收入 */
-    Income = 'income',
-    /** 支出 */
-    Expenditure = 'expenditure',
+  /** 收入 */
+  Income = 'income',
+  /** 支出 */
+  Expenditure = 'expenditure',
 }
 
 export interface DetailsPopupInfo {
-    visible: boolean,
-    type: DetailsType,
-    account: string,
-    date: Dayjs
+  visible: boolean
+  type: DetailsType
+  amount: string
+  date: Dayjs
+  categoryId: number
+  description: string
+  onSuccess?: () => void
 }
 
-export const INITIAL_DETAILS_POPUP_INFO: DetailsPopupInfo = {
-    visible: false,
-    type: DetailsType.Expenditure,
-    account: '0',
-    date: dayjs()
-}
+export const getDefaultValue = () => ({
+  visible: false,
+  type: DetailsType.Expenditure,
+  amount: '0',
+  date: dayjs(),
+  categoryId:
+    globalStore.categoryConfigs?.[DetailsType.Expenditure]?.[0]?.category_id,
+  description: '',
+})
 
-export const detailsPopupInfo = atom<DetailsPopupInfo>(INITIAL_DETAILS_POPUP_INFO);
+export const detailsPopupInfo = atom<DetailsPopupInfo>(getDefaultValue())

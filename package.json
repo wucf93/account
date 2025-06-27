@@ -3,7 +3,9 @@
   "private": true,
   "description": "请填写项目的简要描述",
   "scripts": {
-    "pwa": "pnpm --filter pwa run dev"
+    "pwa:dev": "pnpm --filter pwa run dev",
+    "pwa:build": "pnpm --filter pwa run build",
+    "api:dev": "pnpm --filter api run dev"
   },
   "keywords": [],
   "author": "wucf",

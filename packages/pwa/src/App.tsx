@@ -12,7 +12,9 @@ function RoutePages() {
 export default function App() {
   return (
     <GlobalProvider>
-      <BrowserRouter>
+      <BrowserRouter
+        future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+      >
         <div className="h-screen overflow-hidden flex flex-col">
           {/* 导航栏 */}
           <Navbar className="flex-none" />

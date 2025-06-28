@@ -26,7 +26,6 @@
 			"binding": "DB",
 			"database_name": "prod-account",
 			"database_id": "94add3a3-9f4d-4977-949f-5e88a5e56a2c",
-			"migrations_dir": "drizzle"
 		}
 	]
 	/**

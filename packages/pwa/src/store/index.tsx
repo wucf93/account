@@ -50,7 +50,11 @@ export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
 
   globalStore = { ...store }
 
-  return <GlobalContent value={store}>{props.children}</GlobalContent>
+  return (
+    <GlobalContent.Provider value={store}>
+      {props.children}
+    </GlobalContent.Provider>
+  )
 }
 
 export const useGlobalStore = () => {

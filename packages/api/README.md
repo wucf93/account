@@ -24,8 +24,16 @@ This is an example project made to be used as a quick start into building OpenAP
 2. Open `http://localhost:8787/` in your browser to see the Swagger interface where you can try the endpoints.
 3. Changes made in the `src/` folder will automatically trigger the server to reload, you only need to refresh the Swagger interface.
 
-## sql
-1. npx wrangler d1 execute prod-account --local --file=./sql/transactions.sql
-2. npx wrangler d1 execute prod-account --remote --file=./sql/transactions.sql
-3. npx wrangler d1 execute prod-account --local --file=./sql/categorys.sql
-4. npx wrangler d1 execute prod-account --remote --file=./sql/categorys.sql
+## DB
+
+### 生成表
+
+npx wrangler d1 migrations create prod-account create_post_table
+
+### 迁移
+
+npx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0003_update_transaction_table.sql
+
+### 执行
+
+npx wrangler d1 migrations apply prod-account --local

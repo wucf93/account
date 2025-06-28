@@ -1,15 +1,6 @@
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE IF NOT EXISTS `categories` (
-    `category_id` INTEGER PRIMARY KEY AUTOINCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `type` TEXT NOT NULL CHECK (`type` IN ('income', 'expenditure')),
-    `icon` VARCHAR(30) NOT NULL,
-    `color` VARCHAR(20) NOT NULL,
-    `sort_order` INTEGER NOT NULL,
-    UNIQUE (name)
-);
+-- Migration number: 0002 	 2025-06-28T11:16:42.205Z
 -- 收入分类 (income) - category_id 1-99
-INSERT INTO `categories` (`category_id`, `name`, `type`, `icon`, `color`, `sort_order`) VALUES
+INSERT INTO `Category` (`id`, `name`, `type`, `icon`, `color`, `sortOrder`) VALUES
 (1, '工资收入', 'income', 'ri-money-dollar-circle-line', 'red', 1),
 (2, '奖金收入', 'income', 'ri-medal-line', 'blue', 2),
 (3, '投资理财', 'income', 'ri-line-chart-line', 'pink', 3),
@@ -18,7 +9,7 @@ INSERT INTO `categories` (`category_id`, `name`, `type`, `icon`, `color`, `sort_
 (6, '退款返现', 'income', 'ri-refund-line', 'green', 6);
 
 -- 支出分类 (expenditure) - category_id 101-199
-INSERT INTO `categories` (`category_id`, `name`, `type`, `icon`, `color`, `sort_order`) VALUES
+INSERT INTO `Category` (`id`, `name`, `type`, `icon`, `color`, `sortOrder`) VALUES
 (101, '餐饮美食', 'expenditure', 'ri-restaurant-line', 'red', 101),
 (102, '交通出行', 'expenditure', 'ri-car-line', 'blue', 102),
 (103, '购物消费', 'expenditure', 'ri-shopping-bag-line', 'pink', 103),

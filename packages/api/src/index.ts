@@ -1,23 +1,25 @@
-import { fromHono } from "chanfana";
-import { Hono } from "hono";
+import { fromHono } from 'chanfana'
+import { Hono } from 'hono'
 
-import { CreateTransaction } from "./endpoints/transaction/transactionCreate"
-import { ListTransaction } from "./endpoints/transaction/transactionList"
+import { CategoryListRoute } from './endpoints/category/list'
 
-import { ListCategory } from "./endpoints/category/categoryList"
+import { TransactionCreateRoute } from './endpoints/transaction/create'
+import { TransactionListRoute } from './endpoints/transaction/list'
+import { TransactionDeleteRoute } from './endpoints/transaction/delete'
 
 // Start a Hono app
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono<{ Bindings: Env }>()
 
 // Setup OpenAPI registry
-const openapi = fromHono(app, { docs_url: "/" });
-
-// 交易记录
-openapi.post('/api/transactions', CreateTransaction);
-openapi.get('/api/transactions', ListTransaction);
+const openapi = fromHono(app, { docs_url: '/' })
 
 // 分类
-openapi.get('/api/categories', ListCategory);
+openapi.get('/api/category/list', CategoryListRoute)
+
+// 交易记录
+openapi.post('/api/transaction/create', TransactionCreateRoute)
+openapi.get('/api/transaction/list/:transactionDate', TransactionListRoute)
+openapi.delete('/api/transaction/list/:transactionId', TransactionDeleteRoute)
 
 // Export the Hono app
-export default app;
+export default app

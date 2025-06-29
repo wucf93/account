@@ -32,7 +32,7 @@ npx wrangler d1 migrations create prod-account create_post_table
 
 ### 迁移
 
-npx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0003_update_transaction_table.sql
+npx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0007_create_user_table.sql
 
 ### 执行
 

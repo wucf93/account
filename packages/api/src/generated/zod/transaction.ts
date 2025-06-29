@@ -3,7 +3,7 @@ import { TransactionType } from "../prisma"
 
 export const TransactionModel = z.object({
   id: z.number().int(),
-  userId: z.number().int(),
+  userId: z.string(),
   amount: z.number(),
   transactionType: z.nativeEnum(TransactionType),
   transactionDate: z.date(),

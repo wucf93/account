@@ -3,7 +3,6 @@ import { OpenAPIRoute, contentJson } from 'chanfana'
 import { PrismaClient } from '@/generated/prisma/'
 import { PrismaD1 } from '@prisma/adapter-d1'
 import { TransactionModel } from '@/generated/zod'
-import dayjs from 'dayjs'
 import { type AppContext } from '@/types'
 
 export class TransactionCreateRoute extends OpenAPIRoute {
@@ -30,7 +29,7 @@ export class TransactionCreateRoute extends OpenAPIRoute {
     },
   }
 
-  async handle({ env, req }: AppContext) {
+  async handle({ env, req, get }: AppContext) {
     const adapter = new PrismaD1(env.DB)
     const prisma = new PrismaClient({ adapter })
 
@@ -39,7 +38,7 @@ export class TransactionCreateRoute extends OpenAPIRoute {
       data: {
         ...transaction,
         transactionDate: new Date(transaction.transactionDate),
-        userId: 1,
+        userId: get('user').id,
       },
     })
     return { success: true }

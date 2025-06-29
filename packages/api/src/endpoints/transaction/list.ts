@@ -24,7 +24,7 @@ export class TransactionListRoute extends OpenAPIRoute {
     },
   }
 
-  async handle({ env, req }: AppContext) {
+  async handle({ env, req, get }: AppContext) {
     const adapter = new PrismaD1(env.DB)
     const prisma = new PrismaClient({ adapter })
     const transactionDate = dayjs(Number(req.param('transactionDate')))
@@ -33,6 +33,7 @@ export class TransactionListRoute extends OpenAPIRoute {
       success: true,
       result: await prisma.transaction.findMany({
         where: {
+          userId: get('user').id,
           transactionDate: {
             lte: transactionDate.endOf('month').toDate(),
             gte: transactionDate.startOf('month').toDate(),

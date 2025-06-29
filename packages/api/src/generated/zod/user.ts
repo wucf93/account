@@ -1,10 +1,11 @@
 import * as z from "zod"
 
 export const UserModel = z.object({
-  id: z.number().int(),
+  id: z.string(),
   name: z.string(),
   email: z.string(),
-  password: z.string(),
+  emailVerified: z.boolean(),
+  image: z.string().nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

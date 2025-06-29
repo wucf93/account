@@ -66,7 +66,7 @@ export default function ModifyDetailsModal() {
                   ...info,
                   type: val,
                   categoryId:
-                    globalStore.categoryConfigs[val]?.[0]?.category_id,
+                    globalStore.categoryConfigs[val]?.[0]?.id,
                 })
               }
               options={[

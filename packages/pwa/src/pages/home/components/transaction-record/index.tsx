@@ -42,7 +42,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
   if (!list.length)
     return (
       <div
-        className={clsx(props.className, 'text-center text-gray-400')}
+        className={clsx(props.className, 'text-center text-gray-400 mt-6')}
         style={props.style}
       >
         暂无数据，请选择月份查询

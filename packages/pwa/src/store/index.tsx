@@ -1,9 +1,19 @@
-import { useAtomValue } from 'jotai'
 import { createContext, useContext, type FC } from 'react'
-import { categoryAtom, type CategoryType } from './category'
 import { SpinLoading } from 'antd-mobile'
+import useSWR from 'swr'
+import { getCategoryListRoute } from '@/apis/Category'
+import { authClient } from '@/lib'
+
+export type CategoryType = Awaited<
+  ReturnType<typeof getCategoryListRoute>
+>['data']['result'][number]
+
+export type UserInfo = Awaited<
+  (typeof authClient)['$Infer']['Session']['user'] | null
+>
 
 export interface GlobalStore {
+  userInfo: UserInfo
   categoryConfigs: {
     expenditure: CategoryType[]
     income: CategoryType[]
@@ -11,17 +21,30 @@ export interface GlobalStore {
 }
 
 export let globalStore: GlobalStore = {
+  userInfo: null,
   categoryConfigs: { expenditure: [], income: [] },
 }
 
-const GlobalContent = createContext<GlobalStore>({
-  categoryConfigs: { expenditure: [], income: [] },
-})
+const GlobalContent = createContext<GlobalStore>({ ...globalStore })
 
 export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
-  const categoryValue = useAtomValue(categoryAtom)
+  const {
+    data: [categoryValue, userInfo] = [],
+    isLoading,
+    isValidating,
+  } = useSWR('globalStore', () =>
+    Promise.all([
+      getCategoryListRoute()
+        .then((res) => res?.data?.result || ([] as CategoryType[]))
+        .catch(() => [] as CategoryType[]),
+      authClient
+        .getSession()
+        .then((res) => res.data?.user || null)
+        .catch(() => null),
+    ])
+  )
 
-  if (categoryValue.state === 'loading') {
+  if (isLoading || isValidating) {
     return (
       <div className="h-screen w-screen flex items-center justify-center overflow-hidden">
         <SpinLoading color="primary" />
@@ -30,16 +53,11 @@ export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
   }
 
   const store = {
+    userInfo: userInfo || null,
     categoryConfigs: {
       expenditure:
-        categoryValue.state === 'hasError'
-          ? []
-          : categoryValue.data.filter((item) => item.type === 'expenditure') ||
-            [],
-      income:
-        categoryValue.state === 'hasError'
-          ? []
-          : categoryValue.data.filter((item) => item.type === 'income') || [],
+        categoryValue?.filter((item) => item.type === 'expenditure') || [],
+      income: categoryValue?.filter((item) => item.type === 'income') || [],
     },
   }
 
@@ -55,5 +73,3 @@ export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
 export const useGlobalStore = () => {
   return useContext(GlobalContent)
 }
-
-export { CategoryType }

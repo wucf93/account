@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/adapter-d1": "^6.10.1",
     "@prisma/client": "^6.10.1",
+    "better-auth": "^1.2.12",
     "chanfana": "^2.6.3",
     "dayjs": "^1.11.13",
     "hono": "^4.6.20",

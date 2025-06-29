@@ -25,7 +25,7 @@ export const getDefaultValue = () => ({
   amount: '0',
   date: dayjs(),
   categoryId:
-    globalStore.categoryConfigs?.[DetailsType.Expenditure]?.[0]?.category_id,
+    globalStore.categoryConfigs?.[DetailsType.Expenditure]?.[0]?.id,
   description: '',
 })
 

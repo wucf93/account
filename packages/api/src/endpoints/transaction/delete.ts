@@ -2,7 +2,6 @@ import z from 'zod'
 import { OpenAPIRoute, contentJson } from 'chanfana'
 import { PrismaClient } from '@/generated/prisma/'
 import { PrismaD1 } from '@prisma/adapter-d1'
-import { TransactionModel } from '@/generated/zod'
 import { type AppContext } from '@/types'
 
 export class TransactionDeleteRoute extends OpenAPIRoute {
@@ -20,11 +19,13 @@ export class TransactionDeleteRoute extends OpenAPIRoute {
     },
   }
 
-  async handle({ env, req }: AppContext) {
+  async handle({ env, req, get }: AppContext) {
     const adapter = new PrismaD1(env.DB)
     const prisma = new PrismaClient({ adapter })
     const { transactionId } = req.param()
-    await prisma.transaction.delete({ where: { id: Number(transactionId) } })
+    await prisma.transaction.delete({
+      where: { id: Number(transactionId), userId: get('user').id },
+    })
     return { success: true }
   }
 }

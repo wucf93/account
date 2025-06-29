@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "generate": "prisma generate",
     "predev": "prisma generate",
     "predeploy": "prisma generate",
     "deploy": "wrangler deploy",

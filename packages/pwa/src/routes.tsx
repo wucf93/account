@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom'
-import App from './app.tsx'
+import App from './App.tsx'
 // 首页
 import Home from './pages/index.tsx'
 import HomeIndex from './pages/home'

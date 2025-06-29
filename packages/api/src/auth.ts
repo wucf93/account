@@ -12,7 +12,7 @@ export const auth = (env: Env) => {
     database: prismaAdapter(prisma, {
       provider: 'sqlite',
     }),
-    trustedOrigins: ['http://localhost:5173', 'account-b1e.pages.dev'],
+    trustedOrigins: ['http://localhost:5173', 'https://account-b1e.pages.dev'],
     emailAndPassword: {
       enabled: true,
       autoSignIn: true,

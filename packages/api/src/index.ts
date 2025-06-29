@@ -15,6 +15,20 @@ const app = new Hono<{
   Variables: { user: UserType; session: SessionType }
 }>()
 
+// 解决跨域问题
+app.use(
+  '/api/*',
+  cors({
+    origin: ['http://localhost:5173', 'https://account-b1e.pages.dev'], // replace with your origin
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['POST', 'GET', 'DELETE', 'OPTIONS'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true,
+  })
+)
+
+// 解决权限问题
 app.use('/api/*', async (c, next) => {
   const session = await auth(c.env).api.getSession({
     headers: c.req.raw.headers,
@@ -38,19 +52,6 @@ app.use('/api/*', async (c, next) => {
   c.set('session', session.session)
   return next()
 })
-
-// 解决跨域问题
-app.use(
-  '/api/*',
-  cors({
-    origin: ['http://localhost:5173', 'https://account-b1e.pages.dev'], // replace with your origin
-    allowHeaders: ['Content-Type', 'Authorization'],
-    allowMethods: ['POST', 'GET', 'DELETE', 'OPTIONS'],
-    exposeHeaders: ['Content-Length'],
-    maxAge: 600,
-    credentials: true,
-  })
-)
 
 // 鉴权
 app.on(['GET', 'POST'], '/api/auth/**', (c) => auth(c.env).handler(c.req.raw))

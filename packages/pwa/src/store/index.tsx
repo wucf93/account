@@ -1,10 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { createContext, useContext, type FC } from 'react'
-import {
-  expenditureCategoryAtom,
-  incomeCategoryAtom,
-  type CategoryType,
-} from './category'
+import { categoryAtom, type CategoryType } from './category'
 import { SpinLoading } from 'antd-mobile'
 
 export interface GlobalStore {
@@ -23,13 +19,9 @@ const GlobalContent = createContext<GlobalStore>({
 })
 
 export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
-  const expenditureCategory = useAtomValue(expenditureCategoryAtom)
-  const incomeCategory = useAtomValue(incomeCategoryAtom)
+  const categoryValue = useAtomValue(categoryAtom)
 
-  if (
-    expenditureCategory.state === 'loading' ||
-    incomeCategory.state === 'loading'
-  ) {
+  if (categoryValue.state === 'loading') {
     return (
       <div className="h-screen w-screen flex items-center justify-center overflow-hidden">
         <SpinLoading color="primary" />
@@ -40,11 +32,14 @@ export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
   const store = {
     categoryConfigs: {
       expenditure:
-        expenditureCategory.state === 'hasError'
+        categoryValue.state === 'hasError'
           ? []
-          : expenditureCategory.data || [],
+          : categoryValue.data.filter((item) => item.type === 'expenditure') ||
+            [],
       income:
-        incomeCategory.state === 'hasError' ? [] : incomeCategory.data || [],
+        categoryValue.state === 'hasError'
+          ? []
+          : categoryValue.data.filter((item) => item.type === 'income') || [],
     },
   }
 

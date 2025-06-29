@@ -1,29 +1,17 @@
 import axios from 'axios';
-/** Transaction Create a new Transaction */
-export async function postCreateTransaction(payload?: {
-  user_id?: number;
-  category_id?: number;
+/** Transaction 创建交易记录 */
+export async function postTransactionCreateRoute(payload?: {
+  categoryId?: number;
   amount?: number;
-  transaction_type?: 'income' | 'expenditure';
-  transaction_date?: number;
+  transactionType?: 'income' | 'expenditure';
+  transactionDate?: string;
   description?: any;
   payee?: any;
 }) {
   const data = payload;
 
-  const result = await axios.request<{
-    success: boolean;
-    result: {
-      user_id: number;
-      category_id: number;
-      amount: number;
-      transaction_type: 'income' | 'expenditure';
-      transaction_date: number;
-      description: any;
-      payee: any;
-    };
-  }>({
-    url: `/api/transactions`,
+  const result = await axios.request<{ success: boolean }>({
+    url: `/api/transaction/create`,
     method: 'post',
     data,
     headers: { 'Content-Type': 'application/json' },
@@ -32,28 +20,44 @@ export async function postCreateTransaction(payload?: {
   return result;
 }
 
-/** Transaction List Transaction */
-export async function getListTransaction(payload: { page?: number; per_page?: number }) {
-  const params = payload;
-
+/** Transaction 获取交易列表 */
+export async function getTransactionListRoute(payload: { transactionDate: number }) {
   const result = await axios.request<{
     success: boolean;
     result: Array<{
-      transaction_id: number;
-      user_id: number;
-      category_id: number;
+      id: number;
+      userId: number;
       amount: number;
-      transaction_type: 'income' | 'expenditure';
-      transaction_date: number;
+      transactionType: 'income' | 'expenditure';
+      transactionDate: string;
       description: any;
       payee: any;
-      created_at: number;
-      updated_at: number;
+      createdAt: string;
+      updatedAt: string;
+      categoryId: number;
+      category: {
+        id: number;
+        name: string;
+        type: 'income' | 'expenditure';
+        icon: string;
+        color: string;
+        sortOrder: number;
+      };
     }>;
   }>({
-    url: `/api/transactions`,
+    url: `/api/transaction/list/${payload.transactionDate}`,
     method: 'get',
-    params,
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  return result;
+}
+
+/** Transaction 删除交易记录 */
+export async function deleteTransactionDeleteRoute(payload: { transactionId: number }) {
+  const result = await axios.request<{ success: boolean }>({
+    url: `/api/transaction/list/${payload.transactionId}`,
+    method: 'delete',
     headers: { 'Content-Type': 'application/json' },
   });
 

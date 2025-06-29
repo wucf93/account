@@ -19,6 +19,6 @@ export class CategoryListRoute extends OpenAPIRoute {
   async handle({ env }) {
     const adapter = new PrismaD1(env.DB)
     const prisma = new PrismaClient({ adapter })
-    return { success: true, result: await prisma.transaction.findMany() }
+    return { success: true, result: await prisma.category.findMany() }
   }
 }

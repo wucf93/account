@@ -17,12 +17,14 @@
     "axios": "^1.10.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
+    "decimal.js": "^10.5.0",
     "jotai": "^2.12.5",
     "lodash": "^4.17.21",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
     "react-use": "^17.6.0",
+    "swr": "^2.3.3",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {

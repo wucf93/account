@@ -1,28 +1,19 @@
 import axios from 'axios';
-/** Category List Category */
-export async function getListCategory(payload: {
-  page?: number;
-  per_page?: number;
-  type?: 'income' | 'expenditure';
-}) {
-  const params = payload;
-
+/** Category 分类列表 */
+export async function getCategoryListRoute() {
   const result = await axios.request<{
     success: boolean;
     result: Array<{
-      category_id: number;
+      id: number;
       name: string;
       type: 'income' | 'expenditure';
       icon: string;
       color: string;
-      sort_order: number;
-      created_at: number;
-      updated_at: number;
+      sortOrder: number;
     }>;
   }>({
-    url: `/api/categories`,
+    url: `/api/category/list`,
     method: 'get',
-    params,
     headers: { 'Content-Type': 'application/json' },
   });
 

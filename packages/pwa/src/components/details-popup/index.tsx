@@ -10,7 +10,7 @@ import Keyboard from './components/keyboard'
 import Switch from '../switch-btn'
 import CategorySelect from './components/category-select'
 import { useCallback } from 'react'
-import { postCreateTransaction } from '@/apis/Transaction'
+import { postTransactionCreateRoute } from '@/apis/Transaction'
 import { globalStore } from '@/store'
 
 export default function ModifyDetailsModal() {
@@ -20,12 +20,11 @@ export default function ModifyDetailsModal() {
     if (!Number(info.amount)) {
       return Toast.show({ content: '请输入金额' })
     }
-    await postCreateTransaction({
-      user_id: 1,
+    await postTransactionCreateRoute({
       amount: Number(info.amount),
-      category_id: info.categoryId,
-      transaction_type: info.type,
-      transaction_date: info.date.valueOf(),
+      categoryId: info.categoryId,
+      transactionType: info.type,
+      transactionDate: info.date.toString(),
       description: info.description,
     }).then((res) => {
       if (res.data.success) {

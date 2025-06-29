@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { getListCategory } from '@/apis/Category'
+import { getCategoryListRoute } from '@/apis/Category'
 
 export enum DetailsType {
   /** 收入 */
@@ -15,27 +15,15 @@ export interface CategoryConfig {
   color: string
 }
 
-export const expenditureCategoryAtom = loadable(
+export const categoryAtom = loadable(
   atom(
     async () =>
-      await getListCategory({
-        type: DetailsType.Expenditure,
-        per_page: 100,
-      })
-        .then((res) => res?.data?.result || [])
-        .catch(() => [])
-  )
-)
-
-export const incomeCategoryAtom = loadable(
-  atom(
-    async () =>
-      await getListCategory({ type: DetailsType.Income, per_page: 100 })
+      await getCategoryListRoute()
         .then((res) => res?.data?.result || [])
         .catch(() => [])
   )
 )
 
 export type CategoryType = Awaited<
-  ReturnType<typeof getListCategory>
+  ReturnType<typeof getCategoryListRoute>
 >['data']['result'][number]

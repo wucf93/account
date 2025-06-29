@@ -1,7 +1,7 @@
 import z from 'zod'
 import { OpenAPIRoute, contentJson } from 'chanfana'
 import { PrismaClient } from '@/generated/prisma/'
-import { TransactionModel } from '@/generated/zod'
+import { TransactionModel, CategoryModel } from '@/generated/zod'
 import { PrismaD1 } from '@prisma/adapter-d1'
 import dayjs from 'dayjs'
 import { type AppContext } from '@/types'
@@ -11,14 +11,14 @@ export class TransactionListRoute extends OpenAPIRoute {
     tags: ['Transaction'],
     summary: '获取交易列表',
     request: {
-      params: z.object({ transactionDate: z.string() }),
+      params: z.object({ transactionDate: z.number() }),
     },
     responses: {
       200: {
         description: '获取交易列表',
         ...contentJson({
           success: z.boolean(),
-          result: TransactionModel.array(),
+          result: TransactionModel.extend({ category: CategoryModel }).array(),
         }),
       },
     },
@@ -37,6 +37,12 @@ export class TransactionListRoute extends OpenAPIRoute {
             lte: transactionDate.endOf('month').toDate(),
             gte: transactionDate.startOf('month').toDate(),
           },
+        },
+        orderBy: {
+          transactionDate: 'desc',
+        },
+        include: {
+          category: true,
         },
       }),
     }

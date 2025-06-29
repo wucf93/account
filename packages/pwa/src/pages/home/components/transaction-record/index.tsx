@@ -75,8 +75,12 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                     : day.format('MM-DD')}
               </div>
               <div className="text-xs text-gray-500">
-                {!!total[1] && <span className="mr-2">支出:¥{total[1]}</span>}
-                {!!total[0] && <span>收入:¥{total[0]}</span>}
+                {!!total[1] && (
+                  <span className="mr-2">
+                    支出 ¥{total[1].toLocaleString()}
+                  </span>
+                )}
+                {!!total[0] && <span>收入 ¥{total[0].toLocaleString()}</span>}
               </div>
             </div>
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -96,9 +100,11 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                   <div className="flex-1">
                     <div className="flex justify-between">
                       <div className="font-medium">{item2?.category?.name}</div>
-                      <div className="font-medium">
+                      <div
+                        className={`text-${item2.transactionType === 'income' ? 'green' : 'red'}-500`}
+                      >
                         {item2.transactionType === 'income' ? '+' : '-'}
-                        {item2.amount}元
+                        {Number(item2.amount).toLocaleString()}
                       </div>
                     </div>
                     <div className="flex justify-between mt-1">

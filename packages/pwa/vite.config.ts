@@ -32,7 +32,6 @@ export default defineConfig({
         description:
           '快记账，一款便捷高效的记账应用，助您轻松管理日常收支，清晰掌握财务状况。',
         theme_color: '#ffffff',
-
         icons: [
           {
             src: 'pwa-64x64.png',

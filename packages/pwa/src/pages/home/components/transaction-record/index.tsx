@@ -6,7 +6,7 @@ import { useCallback, useMemo, useState, type FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
 import Decimal from 'decimal.js'
-import { ActionSheet, ErrorBlock } from 'antd-mobile'
+import { ActionSheet } from 'antd-mobile'
 import clsx from 'classnames'
 
 export type TransactionType = Awaited<

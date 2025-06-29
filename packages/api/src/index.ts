@@ -43,7 +43,7 @@ app.use('/api/*', async (c, next) => {
 app.use(
   '/api/*',
   cors({
-    origin: ['http://localhost:5173'], // replace with your origin
+    origin: ['http://localhost:5173', 'https://account-b1e.pages.dev'], // replace with your origin
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'DELETE', 'OPTIONS'],
     exposeHeaders: ['Content-Length'],

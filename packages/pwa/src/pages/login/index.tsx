@@ -13,7 +13,7 @@ export default function Login() {
       { email: userInfo.email, password: userInfo.password },
       {
         onSuccess() {
-          Toast.show('注册成功')
+          Toast.show('登录成功')
           navigate('/home', { replace: true })
         },
         onError({ error }) {

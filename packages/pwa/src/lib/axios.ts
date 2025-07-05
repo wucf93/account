@@ -1,21 +1,19 @@
-import axios from 'axios'
 import { history } from './history'
 import { FETCH_API_URL } from '@/config'
+import { client } from '@/apis/client.gen'
 
-axios.defaults.baseURL = FETCH_API_URL
-axios.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    if (error.status === 401) {
-      history.navigate('/login', { replace: true })
-    }
-    return Promise.reject(error)
+client.setConfig({
+  baseURL: FETCH_API_URL,
+})
+
+client.instance.interceptors.response.use((response) => {
+  if (response.data.code === 401) {
+    history.navigate('/login', { replace: true })
   }
-)
+  return response
+})
 
-axios.interceptors.request.use(
+client.instance.interceptors.request.use(
   (config) => {
     config.withCredentials = true
     return config
@@ -24,5 +22,3 @@ axios.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
-export { axios }

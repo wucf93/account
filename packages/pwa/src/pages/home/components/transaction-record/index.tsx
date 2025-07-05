@@ -1,20 +1,13 @@
-import {
-  getTransactionListRoute,
-  deleteTransactionDeleteRoute,
-} from '@/apis/Transaction'
+import { TransactionEntity, transactionControllerRemove } from '@/apis'
 import { useCallback, useMemo, useState, type FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
 import Decimal from 'decimal.js'
-import { ActionSheet } from 'antd-mobile'
+import { ActionSheet, Toast } from 'antd-mobile'
 import clsx from 'classnames'
 
-export type TransactionType = Awaited<
-  ReturnType<typeof getTransactionListRoute>
->['data']['result'][number]
-
 export interface TransactionRecordProps {
-  list: TransactionType[]
+  list: TransactionEntity[]
   className?: string
   style?: React.CSSProperties
   onReflush?: () => void
@@ -24,7 +17,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
   list = [],
   ...props
 }) => {
-  const [actionId, setActionId] = useState<TransactionType['id']>()
+  const [actionId, setActionId] = useState<TransactionEntity['id']>()
   const groupMap = useMemo(
     () =>
       groupBy(list, (item) =>
@@ -33,10 +26,17 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
     [list]
   )
 
-  const deleteHander = useCallback(async () => {
-    await deleteTransactionDeleteRoute({ transactionId: actionId! })
-    setActionId(undefined)
-    props.onReflush?.()
+  const deleteHander = useCallback(() => {
+    transactionControllerRemove({ path: { id: String(actionId!) } }).then(
+      (res) => {
+        if (res.data?.success) {
+          setActionId(undefined)
+          props.onReflush?.()
+        } else {
+          Toast.show({ content: res.data?.message || '删除失败' })
+        }
+      }
+    )
   }, [actionId, props.onReflush])
 
   if (!list.length)

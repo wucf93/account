@@ -32,9 +32,8 @@ model Category {
 }
 
 model Transaction {
-  id              Int             @id @default(autoincrement())
-  // 用户信息
-  userId          String
+  id Int @id @default(autoincrement())
+
   // 交易金额
   amount          Decimal         @default(0)
   // 交易类型
@@ -45,6 +44,8 @@ model Transaction {
   description     String?
   // 交易对象
   payee           String?
+  // 用户信息
+  createUserId    String
   // 创建时间
   createdAt       DateTime        @default(now())
   // 更新时间

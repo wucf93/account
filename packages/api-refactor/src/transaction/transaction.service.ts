@@ -11,7 +11,7 @@ export class TransactionService {
 
   create(userId: string, createTransactionDto: CreateTransactionDto) {
     return this.prisma.transaction.create({
-      data: { ...createTransactionDto, userId },
+      data: { ...createTransactionDto, createUserId: userId },
     });
   }
 
@@ -19,7 +19,7 @@ export class TransactionService {
     const transactionDate = dayjs(query.transactionDate);
     return this.prisma.transaction.findMany({
       where: {
-        userId,
+        createUserId: userId,
         transactionDate: {
           lte: transactionDate.endOf('month').toDate(),
           gte: transactionDate.startOf('month').toDate(),
@@ -42,11 +42,13 @@ export class TransactionService {
   ) {
     return this.prisma.transaction.update({
       data: { ...updateTransactionDto },
-      where: { id, userId },
+      where: { id, createUserId: userId },
     });
   }
 
   remove(id: number, userId: string) {
-    return this.prisma.transaction.delete({ where: { id, userId } });
+    return this.prisma.transaction.delete({
+      where: { id, createUserId: userId },
+    });
   }
 }

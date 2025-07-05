@@ -8,10 +8,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-pwa-icons": "pwa-assets-generator",
-    "swet": "swet co"
+    "api": "openapi-ts",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/logo.svg"
   },
   "dependencies": {
-    "@swet/cli": "^0.1.2",
     "antd-mobile": "^5.39.0",
     "antd-mobile-icons": "^0.3.0",
     "axios": "^1.10.0",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
+    "@hey-api/openapi-ts": "^0.77.0",
     "@tailwindcss/vite": "^4.1.10",
     "@types/lodash": "^4.17.19",
     "@types/react": "^18.0.0",

@@ -10,7 +10,7 @@ import Keyboard from './components/keyboard'
 import Switch from '../switch-btn'
 import CategorySelect from './components/category-select'
 import { useCallback } from 'react'
-import { postTransactionCreateRoute } from '@/apis/Transaction'
+import { transactionControllerCreate } from '@/apis'
 import { globalStore } from '@/store'
 
 export default function ModifyDetailsModal() {
@@ -20,16 +20,20 @@ export default function ModifyDetailsModal() {
     if (!Number(info.amount)) {
       return Toast.show({ content: '请输入金额' })
     }
-    await postTransactionCreateRoute({
-      amount: Number(info.amount),
-      categoryId: info.categoryId,
-      transactionType: info.type,
-      transactionDate: info.date.toString(),
-      description: info.description,
+    await transactionControllerCreate({
+      body: {
+        amount: Number(info.amount),
+        categoryId: info.categoryId,
+        transactionType: info.type,
+        transactionDate: info.date.toString(),
+        description: info.description,
+      },
     }).then((res) => {
-      if (res.data.success) {
+      if (res.data?.success) {
         info.onSuccess?.()
         setInfo(getDefaultValue())
+      } else {
+        Toast.show({ content: res.data?.message || '创建失败' })
       }
     })
   }, [info])
@@ -65,8 +69,7 @@ export default function ModifyDetailsModal() {
                 setInfo({
                   ...info,
                   type: val,
-                  categoryId:
-                    globalStore.categoryConfigs[val]?.[0]?.id,
+                  categoryId: globalStore.categoryConfigs[val]?.[0]?.id,
                 })
               }
               options={[

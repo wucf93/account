@@ -1,4 +1,4 @@
-import { getTransactionListRoute } from '@/apis/Transaction'
+import { transactionControllerFindAll } from '@/apis'
 import { DatePicker } from 'antd-mobile'
 import { SearchOutline } from 'antd-mobile-icons'
 import dayjs from 'dayjs'
@@ -18,8 +18,8 @@ export const useFilter = () => {
   const { data: list = [], mutate } = useSWR(
     ['/api/transaction/list', transactionDate],
     () =>
-      getTransactionListRoute({ transactionDate })
-        .then((res) => res.data.result || [])
+      transactionControllerFindAll({ query: { transactionDate } })
+        .then((res) => res.data?.data || [])
         .catch(() => [])
   )
 

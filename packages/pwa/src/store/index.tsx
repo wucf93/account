@@ -1,12 +1,8 @@
 import { createContext, useContext, type FC } from 'react'
 import { SpinLoading } from 'antd-mobile'
 import useSWR from 'swr'
-import { getCategoryListRoute } from '@/apis/Category'
+import { categoryControllerFindAll, CategoryEntity } from '@/apis'
 import { authClient } from '@/lib'
-
-export type CategoryType = Awaited<
-  ReturnType<typeof getCategoryListRoute>
->['data']['result'][number]
 
 export type UserInfo = Awaited<
   (typeof authClient)['$Infer']['Session']['user'] | null
@@ -15,8 +11,8 @@ export type UserInfo = Awaited<
 export interface GlobalStore {
   userInfo: UserInfo
   categoryConfigs: {
-    expenditure: CategoryType[]
-    income: CategoryType[]
+    expenditure: CategoryEntity[]
+    income: CategoryEntity[]
   }
 }
 
@@ -34,9 +30,9 @@ export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
     isValidating,
   } = useSWR('globalStore', () =>
     Promise.all([
-      getCategoryListRoute()
-        .then((res) => res?.data?.result || ([] as CategoryType[]))
-        .catch(() => [] as CategoryType[]),
+      categoryControllerFindAll()
+        .then((res) => res?.data?.data || ([] as CategoryEntity[]))
+        .catch(() => [] as CategoryEntity[]),
       authClient
         .getSession()
         .then((res) => res.data?.user || null)

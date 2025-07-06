@@ -114,6 +114,9 @@ export const useShareImage = () => {
 
   useEffect(() => {
     const onmessage = (event: MessageEvent) => {
+      alert('进来了')
+      alert(event.data.action)
+      alert(event.data.file)
       if (event.data.action !== 'load-image') return
       setFile(event.data.file)
     }

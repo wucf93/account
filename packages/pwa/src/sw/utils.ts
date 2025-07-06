@@ -1,16 +1,5 @@
 declare let self: ServiceWorkerGlobalScope
 
-const nextMessageResolveMap = new Map<string, (() => void)[]>()
-
-function nextMessage(dataVal: string): Promise<void> {
-  return new Promise((resolve) => {
-    if (!nextMessageResolveMap.has(dataVal)) {
-      nextMessageResolveMap.set(dataVal, [])
-    }
-    nextMessageResolveMap.get(dataVal)!.push(resolve)
-  })
-}
-
 // 处理分享数据
 export function serveShareTarget(event: FetchEvent): void {
   const dataPromise = event.request.formData()

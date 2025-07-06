@@ -4,9 +4,6 @@ declare let self: ServiceWorkerGlobalScope
 export function serveShareTarget(event: FetchEvent): void {
   const dataPromise = event.request.formData()
 
-  console.log('进来了~')
-  alert('简历饿了')
-
   // Redirect so the user can refresh the page without resending data.
   event.respondWith(Response.redirect('/home?share-target'))
 

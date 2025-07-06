@@ -1,12 +1,5 @@
 <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-  <rect x="0" y="0" width="200" height="200" fill="url(#gradient)"></rect>
-  
-  <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2CB9B0"></stop>
-      <stop offset="100%" stop-color="#4CD964"></stop>
-    </linearGradient>
-  </defs>
+  <rect x="0" y="0" width="200" height="200" fill="#2CB9B0"></rect>
   
   <path d="M65 110 L90 135 L135 85" fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>

@@ -64,11 +64,11 @@ export default defineConfig({
         share_target: {
           action: '/share-target/?share-target',
           method: 'POST',
-          enctype: 'multipart/form-data', // 文件传输必需
+          enctype: 'multipart/form-data',
           params: {
             files: [
               {
-                name: 'image',
+                name: 'file',
                 accept: ['image/*'],
               },
             ],

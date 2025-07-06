@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./db:/app/prisma/db  # 持久化 SQLite 数据库
+      - ./logs:/app/logs     # 可选：日志持久化
+    environment:
+      DATABASE_URL: "file:./db/database.db"

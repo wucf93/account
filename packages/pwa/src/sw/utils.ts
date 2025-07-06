@@ -4,15 +4,14 @@ declare let self: ServiceWorkerGlobalScope
 export function serveShareTarget(event: FetchEvent): void {
   const dataPromise = event.request.formData()
 
-  // Redirect so the user can refresh the page without resending data.
   event.respondWith(Response.redirect('/home?share-target'))
 
   event.waitUntil(
     (async function () {
       const client = await self.clients.get(event.resultingClientId)
       const data = await dataPromise
-      const file = data.get('image')
-      client!.postMessage({ file, action: 'load-image' })
+      const file = data.get('file')
+      file && client && client.postMessage({ file, action: 'load-image' })
     })()
   )
 }

@@ -10,7 +10,7 @@ export class TransactionEntity implements Omit<Transaction, 'amount'> {
   amount: number;
 
   @ApiProperty({ description: '用户id' })
-  userId: string;
+  createUserId: string;
 
   @ApiProperty({ enum: TransactionType, description: '交易类型' })
   transactionType: TransactionType;

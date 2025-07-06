@@ -23,6 +23,9 @@ export default defineConfig({
     tailwindcss(),
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src/sw',
+      filename: 'index.ts',
       registerType: 'prompt',
       injectRegister: false,
 
@@ -57,16 +60,28 @@ export default defineConfig({
             purpose: 'maskable',
           },
         ],
+
+        share_target: {
+          action: '/?share-target',
+          method: 'POST',
+          enctype: 'multipart/form-data', // 文件传输必需
+          params: {
+            files: [
+              {
+                name: 'image',
+                accept: ['image/*'],
+              },
+            ],
+          },
+        },
       },
 
-      workbox: {
+      injectManifest: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
-        cleanupOutdatedCaches: true,
-        clientsClaim: true,
       },
 
       devOptions: {
-        enabled: false,
+        enabled: true,
         navigateFallback: 'index.html',
         suppressWarnings: true,
         type: 'module',

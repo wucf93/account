@@ -2,7 +2,7 @@ import { transactionControllerFindAll } from '@/apis'
 import { DatePicker } from 'antd-mobile'
 import { SearchOutline } from 'antd-mobile-icons'
 import dayjs from 'dayjs'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 
 export const useFilter = () => {
@@ -107,4 +107,22 @@ export const useFilter = () => {
   )
 
   return { filterRender, list, filterList, reflush: mutate }
+}
+
+export const useShareImage = () => {
+  const [file, setFile] = useState<File>()
+
+  useEffect(() => {
+    const onmessage = (event: MessageEvent) => {
+      if (event.data.action !== 'load-image') return
+      setFile(event.data.file)
+    }
+    navigator.serviceWorker.addEventListener('message', onmessage)
+
+    return () => {
+      navigator.serviceWorker.removeEventListener('message', onmessage)
+    }
+  }, [])
+
+  return [file]
 }

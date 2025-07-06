@@ -1,3 +1,4 @@
+-- This is an empty migration.
 INSERT INTO 'category' ('id', 'name', 'type', 'icon', 'color', 'sortOrder') VALUES
 (1, '工资收入', 'income', 'ri-money-dollar-circle-line', 'red', 1),
 (2, '奖金收入', 'income', 'ri-medal-line', 'blue', 2),

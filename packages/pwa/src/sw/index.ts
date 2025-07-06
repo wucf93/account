@@ -48,13 +48,11 @@ registerRoute(
 // 监听 fetch 事件
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url)
-
   if (
     url.pathname === '/' &&
     url.searchParams.has('share-target') &&
     event.request.method === 'POST'
   ) {
     serveShareTarget(event)
-    return
   }
 })

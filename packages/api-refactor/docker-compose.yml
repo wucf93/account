@@ -9,3 +9,4 @@ services:
       - ./logs:/app/logs     # 可选：日志持久化
     environment:
       DATABASE_URL: "file:./db/database.db"
+      PORT: 3000

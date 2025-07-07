@@ -1,5 +1,4 @@
 node_modules
-!nodes_modules/.prisma
 dist
 *.log
 *.md

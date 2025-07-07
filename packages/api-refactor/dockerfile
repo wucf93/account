@@ -7,16 +7,12 @@ WORKDIR /app
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
-# Install dependencies
-RUN npm config set registry https://registry.npmmirror.com
-RUN npm install --verbose
-
 # Copy the rest of the application code to the container
 COPY . .
 
-# Generate Prisma Client
-RUN npx prisma generate
-RUN npx prisma migrate deploy 
+# Install dependencies
+RUN npm config set registry https://registry.npmmirror.com
+RUN npm install --verbose
 
 # Build Prisma client
 RUN npm run build
@@ -25,4 +21,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Define the command to run your app
-CMD ["npm", "run", "start:prod"]
+CMD ["sh","-c","npm run db:deploy && npmx run start:prod"]

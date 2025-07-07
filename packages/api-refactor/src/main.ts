@@ -9,7 +9,7 @@ async function bootstrap() {
     bodyParser: false,
     // 解决跨域问题
     cors: {
-      origin: 'http://localhost:5173',
+      origin: ['http://localhost:5173', 'https://account-b1e.pages.dev'],
       credentials: true,
     },
   });

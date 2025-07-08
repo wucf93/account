@@ -62,13 +62,13 @@ export default defineConfig({
         ],
 
         share_target: {
-          action: '/share-target/?share-target',
+          action: '/share-target',
           method: 'POST',
           enctype: 'multipart/form-data',
           params: {
             files: [
               {
-                name: 'file',
+                name: 'image',
                 accept: ['image/*'],
               },
             ],

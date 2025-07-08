@@ -7,7 +7,6 @@ import {
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 import { CacheFirst } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
-import { serveShareTarget } from './utils'
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -49,11 +48,20 @@ registerRoute(
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url)
 
-  if (
-    url.pathname === '/share-target' &&
-    url.searchParams.has('share-target') &&
-    event.request.method === 'POST'
-  ) {
-    serveShareTarget(event)
+  // 拦截分享请求
+  if (event.request.method === 'POST' && url.pathname === '/share-target') {
+    event.respondWith(
+      (async () => {
+        const formData = await event.request.formData()
+        const image = formData.get('image')
+
+        // 存储分享数据
+        const cache = await caches.open('share-data')
+        await cache.put('shared-image', new Response(image))
+
+        // 重定向到应用页面
+        return Response.redirect('/home?share=success', 303)
+      })()
+    )
   }
 })

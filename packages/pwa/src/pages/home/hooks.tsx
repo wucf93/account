@@ -50,7 +50,9 @@ export const useFilter = () => {
           </div>
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <div className="text-sm text-gray-500">2025年6月</div>
+          <div className="text-sm text-gray-500">
+            {dateValue.format('YYYY年MM月')}
+          </div>
           <div className="flex items-center space-x-2">
             <div
               className="px-3 py-1 bg-white rounded-full text-xs shadow-sm flex items-center cursor-pointer"

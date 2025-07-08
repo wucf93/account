@@ -7,18 +7,19 @@ WORKDIR /app
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
-# Copy the rest of the application code to the container
-COPY . .
-
 # Install dependencies
 RUN npm config set registry https://registry.npmmirror.com
 RUN npm install --verbose
 
-# Build Prisma client
+# Copy the rest of the application code to the container
+COPY . .
+
+# Generate Prisma Client
+RUN npx prisma generate
+RUN npx prisma migrate deploy
+
+# Build the NestJS application
 RUN npm run build
 
-# Expose the port that the app will run on
-EXPOSE 3000
-
 # Define the command to run your app
-CMD ["sh","-c","npm run db:deploy && npmx run start:prod"]
+CMD ["npm", "run", "start:prod"]

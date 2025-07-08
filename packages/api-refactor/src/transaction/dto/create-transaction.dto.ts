@@ -21,13 +21,13 @@ export class CreateTransactionDto {
   @IsString()
   description: string;
 
-  @ApiProperty({ description: '收款人', required: false })
-  // @IsOptional()
-  // @IsString()
+  @ApiProperty({ description: '收款方式', required: false })
+  @IsOptional()
+  @IsString()
   payee: string;
 
   @ApiProperty({ description: '分类id', required: false })
-  // @IsOptional()
-  // @IsString()
+  @IsOptional()
+  @IsNumber()
   categoryId: number;
 }

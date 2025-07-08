@@ -22,7 +22,7 @@ export class TransactionService {
     const transactionDate = dayjs(query.transactionDate);
 
     this.logger.log(
-      `查询用户 ${userId} ${transactionDate.format('YYYY-MM')} 的交易记录`,
+      `查询用户  ${userId} ${query.transactionDate} ${transactionDate.format('YYYY-MM')} 的交易记录`,
     );
 
     return this.prisma.transaction.findMany({

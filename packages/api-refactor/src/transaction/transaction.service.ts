@@ -21,10 +21,6 @@ export class TransactionService {
   findAll(userId: string, query: QueryDataTransactionDto) {
     const transactionDate = dayjs(query.transactionDate);
 
-    this.logger.log(
-      `查询用户  ${userId} ${query.transactionDate} ${transactionDate.format('YYYY-MM')} 的交易记录`,
-    );
-
     return this.prisma.transaction.findMany({
       where: {
         createUserId: userId,

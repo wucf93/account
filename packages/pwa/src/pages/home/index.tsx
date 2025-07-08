@@ -11,7 +11,7 @@ import { useFilter, useShareImage } from './hooks'
 
 export default function Home() {
   const setInfo = useSetAtom(detailsPopupInfo)
-  const [file] = useShareImage()
+  const [sharedImage] = useShareImage()
   const { filterList, list, filterRender, reflush } = useFilter()
 
   // 月统计数据
@@ -33,10 +33,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <img
-        className="m-4 relative flex-none"
-        src={file ? URL.createObjectURL(file) : ''}
-      />
+      <img className="m-4 relative flex-none" src={sharedImage} />
 
       {/* 搜索项 */}
       <div className="m-4 relative flex-none">{filterRender}</div>

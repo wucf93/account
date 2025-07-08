@@ -112,22 +112,40 @@ export const useFilter = () => {
 }
 
 export const useShareImage = () => {
-  const [file, setFile] = useState<File>()
+  const [sharedImage, setSharedImage] = useState<string>()
 
   useEffect(() => {
-    const onmessage = (event: MessageEvent) => {
-      alert('进来了')
-      alert(event.data.action)
-      alert(typeof event.data.file)
-      if (event.data.action !== 'load-image') return
-      setFile(event.data.file)
-    }
-    navigator.serviceWorker.addEventListener('message', onmessage)
+    const fetchSharedImage = async () => {
+      try {
+        // 检查是否从分享打开
+        const urlParams = new URLSearchParams(window.location.search)
+        if (urlParams.get('share') === 'success') {
+          console.log('讲来了')
+          // 从缓存获取图片
+          const cache = await caches.open('share-data')
+          const response = await cache.match('shared-image')
 
-    return () => {
-      navigator.serviceWorker.removeEventListener('message', onmessage)
+          if (!response) {
+            throw new Error('未找到分享内容')
+          }
+
+          // 创建对象URL
+          const blob = await response.blob()
+          const imageUrl = URL.createObjectURL(blob)
+          alert('suceess')
+          setSharedImage(imageUrl)
+
+          // 清理缓存
+          await cache.delete('shared-image')
+        }
+      } catch (err: any) {
+        alert(typeof err.message === 'string' ? err.message : '报错了')
+        console.error('获取分享失败:', err)
+      }
     }
+
+    fetchSharedImage()
   }, [])
 
-  return [file]
+  return [sharedImage]
 }

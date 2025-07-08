@@ -12,4 +12,11 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+  advanced: {
+    defaultCookieAttributes: {
+      sameSite: 'none',
+      secure: true,
+      partitioned: true,
+    },
+  },
 });

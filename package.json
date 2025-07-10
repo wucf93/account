@@ -1,7 +1,7 @@
 {
   "name": "account-pwa",
   "private": true,
-  "description": "请填写项目的简要描述",
+  "description": "一款基于 PWA 技术的记账软件",
   "scripts": {
     "pwa:dev": "pnpm --filter pwa run dev",
     "pwa:build": "pnpm --filter pwa run build",
@@ -9,9 +9,5 @@
   },
   "keywords": [],
   "author": "wucf",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "请填写仓库地址"
-  }
+  "license": "ISC"
 }

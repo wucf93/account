@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState, type FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
 import Decimal from 'decimal.js'
-import { ActionSheet, Button, Toast } from 'antd-mobile'
+import { ActionSheet, Toast } from 'antd-mobile'
 import clsx from 'classnames'
 
 export interface TransactionRecordProps {
@@ -11,7 +11,6 @@ export interface TransactionRecordProps {
   className?: string
   style?: React.CSSProperties
   onReflush?: () => void
-  onAdd?: () => void
 }
 
 const TransactionRecord: FC<TransactionRecordProps> = ({
@@ -51,18 +50,6 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
     )
   return (
     <div className={props.className} style={props.style}>
-      <div className="flex items-center justify-between">
-        <div className="text-sm">收支记录</div>
-        <Button
-          size="mini"
-          shape="rounded"
-          color="primary"
-          onClick={props.onAdd}
-        >
-          记一笔
-        </Button>
-      </div>
-
       {Object.keys(groupMap).map((item) => {
         const day = dayjs(Number(item))
         const total = groupMap[item].reduce(
@@ -78,29 +65,33 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
         )
 
         return (
-          <div className="my-4 bg-white rounded-xl shadow-xs px-3" key={item}>
-            <div className="flex justify-between items-center pt-3 text-xs text-gray-600">
-              <div>
+          <div className="mb-4" key={item}>
+            <div className="flex justify-between items-center mb-2">
+              <div className="text-sm font-medium">
                 {day.isSame(dayjs(), 'day')
                   ? '今天'
                   : day.isSame(dayjs().subtract(1, 'day'), 'day')
                     ? '昨天'
                     : day.format('MM-DD')}
               </div>
-              <div>
-                {!!total[1] && <span>支出：{total[1].toFixed(2)}</span>}
-                {!!total[0] && <span>收入：{total[0].toFixed(2)}</span>}
+              <div className="text-xs text-gray-500">
+                {!!total[1] && (
+                  <span className="mr-2">
+                    支出 ¥{total[1].toLocaleString()}
+                  </span>
+                )}
+                {!!total[0] && <span>收入 ¥{total[0].toLocaleString()}</span>}
               </div>
             </div>
-            <div className="overflow-hidden">
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
               {groupMap[item].map((item2) => (
                 <div
                   key={item2.id}
-                  className="flex items-center py-3 border-b border-gray-100"
+                  className="flex items-center p-4 border-b border-gray-100"
                   onClick={() => setActionId(item2.id)}
                 >
                   <div
-                    className={`w-9 h-9 rounded-lg bg-${item2?.category?.color}-100 flex items-center justify-center mr-2`}
+                    className={`w-10 h-10 rounded-full bg-${item2?.category?.color}-100 flex items-center justify-center mr-3`}
                   >
                     <i
                       className={`${item2?.category?.icon} text-${item2?.category?.color}-500 ri-lg`}
@@ -108,23 +99,20 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <div className="text-sm font-bold">
-                        {item2?.category?.name}
-                      </div>
+                      <div className="font-medium">{item2?.category?.name}</div>
                       <div
-                        className={`flex items-center gap-0.5  font-bold text-${item2.transactionType === 'income' ? 'black' : 'indigo'}-500`}
+                        className={`text-${item2.transactionType === 'income' ? 'green' : 'red'}-500`}
                       >
-                        <span>
-                          {(
-                            Number(item2.amount) *
-                            (item2.transactionType === 'income' ? 1 : -1)
-                          ).toFixed(2)}
-                        </span>
+                        {item2.transactionType === 'income' ? '+' : '-'}
+                        {Number(item2.amount).toLocaleString()}
                       </div>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between mt-1">
                       <div className="text-xs text-gray-500">
                         {item2.description || item2?.category?.name}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {item2.transactionType === 'income' ? '收入' : '支出'}
                       </div>
                     </div>
                   </div>

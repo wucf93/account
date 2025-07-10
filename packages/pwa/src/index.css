@@ -1,10 +1,15 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@theme {
-    --color-primary: #3B82F6;
-    --color-secondary: #10B981;
+html,
+body {
+  background-color: var(--color-gray-100);
 }
 
+/* @theme {
+    --color-primary: #3B82F6;
+    --color-secondary: #10B981;
+} */
+
 :root:root {
-    --adm-color-primary: #3B82F6;
+  --adm-color-primary: var(--color-indigo-500);
 }

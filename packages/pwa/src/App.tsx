@@ -1,4 +1,4 @@
-import Navbar from './components/navbar'
+// import Navbar from './components/navbar'
 import ModifyDetailsModal from './components/details-popup'
 import { GlobalProvider } from './store'
 import { Outlet } from 'react-router-dom'
@@ -8,18 +8,10 @@ export default function App() {
   return (
     <SWRConfig value={{ revalidateOnFocus: false }}>
       <GlobalProvider>
-        <div className="h-screen overflow-hidden flex flex-col">
-          {/* 导航栏 */}
-          <Navbar className="flex-none" />
+        <Outlet />
 
-          {/* 路由页面 */}
-          <div className="grow overflow-y-auto">
-            <Outlet />
-          </div>
-
-          {/* 一些全局的弹窗 */}
-          <ModifyDetailsModal />
-        </div>
+        {/** 记账弹窗 */}
+        <ModifyDetailsModal />
       </GlobalProvider>
     </SWRConfig>
   )

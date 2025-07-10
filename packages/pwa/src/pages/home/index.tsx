@@ -1,17 +1,14 @@
 import { useMemo } from 'react'
-import { FloatingBubble } from 'antd-mobile'
-import { EditSFill } from 'antd-mobile-icons'
-import { useSetAtom } from 'jotai'
-import { detailsPopupInfo } from '../../components/details-popup/atom'
 import DataAnalysis from './components/data-analysis'
+import { useFilter } from './hooks'
 import { globalStore } from '@/store'
+import { Decimal } from 'decimal.js'
+import { useSetAtom } from 'jotai'
 import TransactionRecord from './components/transaction-record'
-import Decimal from 'decimal.js'
-import { useFilter, useShareImage } from './hooks'
+import { detailsPopupInfo } from '@/components/details-popup/atom'
 
-export default function Home() {
+export default function HomePage() {
   const setInfo = useSetAtom(detailsPopupInfo)
-  const [sharedImage] = useShareImage()
   const { filterList, list, filterRender, reflush } = useFilter()
 
   // 月统计数据
@@ -32,47 +29,30 @@ export default function Home() {
   )
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
-      <img className="m-4 relative flex-none" src={sharedImage} />
+    <div>
+      {/* top */}
+      <div className="p-4 bg-gradient-to-b from-indigo-500 to-gray-100">
+        {filterRender}
+        <DataAnalysis
+          className="mt-4"
+          totalIncome={total[0]}
+          totalExpenditure={total[1]}
+        />
+      </div>
 
-      {/* 搜索项 */}
-      <div className="m-4 relative flex-none">{filterRender}</div>
-
-      {/* 本月统计 */}
-      <DataAnalysis
-        totalIncome={total[0]}
-        totalExpenditure={total[1]}
-        className="bg-white rounded-lg shadow-sm p-4 m-4 mt-0 flex-none"
-      />
-
-      {/* 交易记录 */}
       <TransactionRecord
         list={filterList}
-        className="p-4 pt-0 grow overflow-y-auto"
-        onReflush={() => reflush()}
+        className="px-4"
+        onAdd={() =>
+          setInfo((prev) => ({
+            ...prev,
+            visible: true,
+            categoryId: globalStore.categoryConfigs?.[prev.type]?.[0]?.id,
+            onSuccess: () => reflush(),
+          }))
+        }
+        onReflush={reflush}
       />
-
-      {/* 详情弹窗 */}
-      <FloatingBubble
-        style={{
-          '--initial-position-bottom': '108px',
-          '--initial-position-right': '38px',
-          '--edge-distance': '38px',
-          '--z-index': '60',
-        }}
-      >
-        <EditSFill
-          fontSize={32}
-          onClick={() =>
-            setInfo((prev) => ({
-              ...prev,
-              visible: true,
-              categoryId: globalStore.categoryConfigs?.[prev.type]?.[0]?.id,
-              onSuccess: () => reflush(),
-            }))
-          }
-        />
-      </FloatingBubble>
     </div>
   )
 }

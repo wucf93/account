@@ -1,14 +1,14 @@
 import { transactionControllerFindAll } from '@/apis'
-import { DatePicker } from 'antd-mobile'
-import { SearchOutline } from 'antd-mobile-icons'
+// import { DatePicker } from 'antd-mobile'
+// import { SearchOutline } from 'antd-mobile-icons'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import useSWR from 'swr'
 
 export const useFilter = () => {
-  const [keyword, setKeyword] = useState('')
-  const [dateValue, setDateValue] = useState(dayjs())
-  const [dateVisible, setDateVisible] = useState(false)
+  const [keyword] = useState('')
+  const [dateValue] = useState(dayjs())
+  const [dateVisible] = useState(false)
   // 月第一天
   const transactionDate = useMemo(
     () => dateValue.startOf('month').startOf('month').valueOf(),

@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState, type FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
 import Decimal from 'decimal.js'
-import { ActionSheet, Button, Toast } from 'antd-mobile'
+import { ActionSheet, Toast } from 'antd-mobile'
 import clsx from 'classnames'
 
 export interface TransactionRecordProps {
@@ -11,7 +11,6 @@ export interface TransactionRecordProps {
   className?: string
   style?: React.CSSProperties
   onReflush?: () => void
-  onAdd?: () => void
 }
 
 const TransactionRecord: FC<TransactionRecordProps> = ({
@@ -51,18 +50,6 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
     )
   return (
     <div className={props.className} style={props.style}>
-      <div className="flex items-center justify-between">
-        <div className="text-sm">收支记录</div>
-        <Button
-          size="mini"
-          shape="rounded"
-          color="primary"
-          onClick={props.onAdd}
-        >
-          记一笔
-        </Button>
-      </div>
-
       {Object.keys(groupMap).map((item) => {
         const day = dayjs(Number(item))
         const total = groupMap[item].reduce(
@@ -78,7 +65,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
         )
 
         return (
-          <div className="my-4 bg-white rounded-xl shadow-xs px-3" key={item}>
+          <div className="mb-4 bg-white rounded-xl shadow-xs px-3" key={item}>
             <div className="flex justify-between items-center pt-3 text-xs text-gray-600">
               <div>
                 {day.isSame(dayjs(), 'day')
@@ -100,7 +87,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                   onClick={() => setActionId(item2.id)}
                 >
                   <div
-                    className={`w-9 h-9 rounded-lg bg-${item2?.category?.color}-100 flex items-center justify-center mr-2`}
+                    className={`w-9 h-9 rounded-lg bg-${item2?.category?.color}-100 flex items-center justify-center mr-3`}
                   >
                     <i
                       className={`${item2?.category?.icon} text-${item2?.category?.color}-500 ri-lg`}
@@ -112,14 +99,12 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                         {item2?.category?.name}
                       </div>
                       <div
-                        className={`flex items-center gap-0.5  font-bold text-${item2.transactionType === 'income' ? 'black' : 'indigo'}-500`}
+                        className={`flex items-center gap-0.5 font-bold text-${item2.transactionType === 'income' ? 'black' : 'indigo'}-500 text-sm`}
                       >
-                        <span>
-                          {(
-                            Number(item2.amount) *
-                            (item2.transactionType === 'income' ? 1 : -1)
-                          ).toFixed(2)}
-                        </span>
+                        {(
+                          Number(item2.amount) *
+                          (item2.transactionType === 'income' ? 1 : -1)
+                        ).toFixed(2)}
                       </div>
                     </div>
                     <div className="flex justify-between">

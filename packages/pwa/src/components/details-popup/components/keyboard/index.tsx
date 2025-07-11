@@ -104,7 +104,7 @@ export default function Keyboard({
             ) : item === 'save' ? (
               <div
                 className={
-                  'bg-primary h-12 flex items-center justify-center rounded cursor-pointer text-white col-span-2 hover:bg-primary/90 transition-colors'
+                  'h-12 flex items-center justify-center rounded cursor-pointer text-white bg-indigo-500 col-span-2 hover:bg-primary/90 transition-colors'
                 }
                 onClick={() => handleKeyPress(item)}
               >

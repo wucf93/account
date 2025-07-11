@@ -52,7 +52,7 @@ export default function ModifyDetailsModal() {
     >
       <div className="h-full flex flex-col">
         {/* 输入区域 */}
-        <div className="flex-1 px-4">
+        <div className="flex-1">
           {/* 金额输入 */}
           <div className="mt-2 mb-4 text-center">
             <div className="text-sm text-gray-500 mb-2">金额</div>
@@ -81,7 +81,7 @@ export default function ModifyDetailsModal() {
 
           {/* 分类选择 */}
           <div className="mb-4">
-            <div className="text-sm text-gray-500 mb-3">分类</div>
+            <div className="text-sm px-4 text-gray-500 mb-3">分类</div>
             <CategorySelect
               type={info.type}
               categoryId={info.categoryId}
@@ -90,7 +90,7 @@ export default function ModifyDetailsModal() {
           </div>
 
           {/* 备注 */}
-          <div className="mb-4">
+          <div className="mb-4 px-4">
             <div className="text-sm text-gray-500 mb-2">备注</div>
             <input
               value={info.description}
@@ -98,7 +98,7 @@ export default function ModifyDetailsModal() {
                 setInfo({ ...info, description: val.target.value })
               }
               placeholder="添加备注..."
-              className="w-full h-12 px-3 rounded-lg bg-white border-none shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-full h-12 px-3 rounded-lg bg-white border-none shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/80"
             />
           </div>
         </div>

@@ -71,7 +71,7 @@ export type CreateTransactionDto = {
      */
     description?: string;
     /**
-     * 收款人
+     * 收款方式
      */
     payee?: string;
     /**
@@ -92,7 +92,7 @@ export type TransactionEntity = {
     /**
      * 用户id
      */
-    userId: string;
+    createUserId: string;
     /**
      * 交易类型
      */
@@ -145,13 +145,43 @@ export type UpdateTransactionDto = {
      */
     description?: string;
     /**
-     * 收款人
+     * 收款方式
      */
     payee?: string;
     /**
      * 分类id
      */
     categoryId?: number;
+};
+
+export type GenTransactionEntity = {
+    /**
+     * 金额
+     */
+    amount: number;
+    /**
+     * 交易类型
+     */
+    transactionType: 'income' | 'expenditure';
+    /**
+     * 交易日期
+     */
+    transactionDate: string;
+    /**
+     * 描述
+     */
+    description?: string;
+    /**
+     * 分类id
+     */
+    categoryId: number;
+};
+
+export type GenTransactionDto = {
+    /**
+     * 图片内容
+     */
+    message: string;
 };
 
 export type CategoryControllerFindAllData = {
@@ -254,6 +284,21 @@ export type TransactionControllerUpdateResponses = {
 };
 
 export type TransactionControllerUpdateResponse = TransactionControllerUpdateResponses[keyof TransactionControllerUpdateResponses];
+
+export type AiControllerGenTransactionData = {
+    body: GenTransactionDto;
+    path?: never;
+    query?: never;
+    url: '/api/ai/gen/transaction';
+};
+
+export type AiControllerGenTransactionResponses = {
+    default: ApiResponseDto & {
+        data?: GenTransactionEntity;
+    };
+};
+
+export type AiControllerGenTransactionResponse = AiControllerGenTransactionResponses[keyof AiControllerGenTransactionResponses];
 
 export type ClientOptions = {
     baseURL: string;

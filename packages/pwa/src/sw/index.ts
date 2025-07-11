@@ -1,10 +1,11 @@
 /// <reference lib="webworker" />
+
 import {
   cleanupOutdatedCaches,
   createHandlerBoundToURL,
   precacheAndRoute,
 } from 'workbox-precaching'
-import { NavigationRoute, registerRoute } from 'workbox-routing'
+import { NavigationRoute, registerRoute, Route } from 'workbox-routing'
 import { CacheFirst } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
 
@@ -32,16 +33,20 @@ registerRoute(
 
 // 注册路由规则来处理 CDN 资源
 registerRoute(
-  ({ url }) => url.origin === 'https://cdnjs.cloudflare.com',
-  new CacheFirst({
-    cacheName: 'cdn-cache',
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30天
-      }),
-    ],
-  })
+  new Route(
+    ({ url }) =>
+      url.origin === 'https://cdnjs.cloudflare.com' ||
+      url.origin === 'https://cdn.jsdelivr.net',
+    new CacheFirst({
+      cacheName: 'cdn-cache',
+      plugins: [
+        new ExpirationPlugin({
+          maxEntries: 50,
+          maxAgeSeconds: 30 * 24 * 60 * 60, // 30天
+        }),
+      ],
+    })
+  )
 )
 
 // 监听 fetch 事件

@@ -24,7 +24,7 @@ export default function DataAnalysis({
       (
         Decimal(Math.abs(totalIncome))
           .div(Decimal.add(Math.abs(totalIncome), Math.abs(totalExpenditure)))
-          .toNumber() * 10
+          .toNumber() * 100
       ).toFixed(0),
     [totalExpenditure, totalIncome]
   )
@@ -34,30 +34,27 @@ export default function DataAnalysis({
       (
         Decimal(Math.abs(totalExpenditure))
           .div(Decimal.add(Math.abs(totalIncome), Math.abs(totalExpenditure)))
-          .toNumber() * 10
+          .toNumber() * 100
       ).toFixed(0),
     [totalExpenditure, totalIncome]
   )
 
-  console.log(totalIncomeRatio);
-  console.log(expenditureRatio);
-
-
   return (
     <div
-      className={clss('bg-white p-4 rounded-lg', props.className)}
+      className={clss('bg-white p-4 rounded-lg shadow-xs', props.className)}
       style={props.style}
     >
-      <div className=" text-gray-500">本月结余(元)</div>
+      <div className="text-gray-500 text-sm">本月结余(元)</div>
       <div className="text-2xl font-sans font-semibold mt-1">
         {minus.toFixed(2)}
       </div>
-      <div className="flex gap-3 items-center mt-3">
+      <div className="flex gap-3 items-center mt-4">
         <div className="text-xs text-gray-500 flex-none">本月支出(元)</div>
         <div className="flex-auto">
           <div className="relative h-2.5 w-36 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className={`absolute top-0 left-0 h-full w-${expenditureRatio}/10 bg-indigo-400 rounded-full`}
+              style={{ width: `${expenditureRatio ? expenditureRatio : 0}%` }}
+              className="absolute top-0 left-0 h-full bg-indigo-400 rounded-full"
             />
           </div>
         </div>
@@ -70,7 +67,8 @@ export default function DataAnalysis({
         <div className="flex-auto">
           <div className="relative h-2.5 w-36 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className={`absolute top-0 left-0 h-full w-${totalIncomeRatio}/10 bg-amber-400 rounded-full`}
+              style={{ width: `${totalIncomeRatio ? totalIncomeRatio : 0}%` }}
+              className="absolute top-0 left-0 h-full bg-amber-400 rounded-full"
             />
           </div>
         </div>

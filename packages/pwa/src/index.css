@@ -5,11 +5,7 @@ body {
   background-color: var(--color-gray-100);
 }
 
-/* @theme {
-    --color-primary: #3B82F6;
-    --color-secondary: #10B981;
-} */
-
 :root:root {
+  --adm-font-size-main: var(--text-base);
   --adm-color-primary: var(--color-indigo-500);
 }

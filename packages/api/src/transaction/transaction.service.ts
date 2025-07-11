@@ -4,12 +4,9 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { QueryDataTransactionDto } from './dto/query-transaction.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as dayjs from 'dayjs';
-import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class TransactionService {
-  private readonly logger = new Logger(TransactionService.name);
-
   constructor(private prisma: PrismaService) {}
 
   create(userId: string, createTransactionDto: CreateTransactionDto) {

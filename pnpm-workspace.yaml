@@ -1,6 +1,2 @@
 packages:
-  - 'packages/**'
-
-  DATABASE_URL="file:./db/database.db"
-HUNYUAN_LITE_BASE_URL="https://api.hunyuan.cloud.tencent.com/v1"
-HUNYUAN_LITE_APP_KEY="sk-6VgJoI3nj3G6hLGT2z6FVukPlVEiQbssTYbgwChfEZ30gPiy"
+  - "packages/**"

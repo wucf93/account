@@ -5,6 +5,7 @@ import { useRef } from 'react'
 interface ImageToolProps {
   className?: string
   style?: React.CSSProperties
+  onSaveHander?: () => void
 }
 
 export default function ImageTool(props: ImageToolProps) {
@@ -33,7 +34,7 @@ export default function ImageTool(props: ImageToolProps) {
         accept="image/*"
         onChange={(e) => {
           if (e.target.files?.[0]) {
-            imageScan(e.target.files[0])
+            imageScan(e.target.files[0], props.onSaveHander)
           }
           if (inputRef.current?.value) {
             inputRef.current.value = ''

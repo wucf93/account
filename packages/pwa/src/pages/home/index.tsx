@@ -7,10 +7,13 @@ import { useSetAtom } from 'jotai'
 import TransactionRecord from './components/transaction-record'
 import { detailsPopupInfo } from '@/components/details-popup/atom'
 import QuickTools from './components/quick-tools'
+import { useShareImage } from './hooks/useShareImage'
 
 export default function HomePage() {
   const setInfo = useSetAtom(detailsPopupInfo)
   const { filterList, list, filterRender, reflush } = useFilter()
+  // 用户分享的照片
+  useShareImage(reflush)
 
   // 月统计数据
   const total = useMemo(
@@ -43,7 +46,7 @@ export default function HomePage() {
         />
 
         {/* 工具 */}
-        <QuickTools className="mt-4" />
+        <QuickTools className="mt-4" onReflush={reflush} />
 
         <div className="flex items-center justify-between mt-4">
           <div className="text-sm font-bold">收支记录</div>

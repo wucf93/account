@@ -175,6 +175,10 @@ export type GenTransactionEntity = {
      * 分类id
      */
     categoryId: number;
+    /**
+     * 分类名称
+     */
+    categoryName: string;
 };
 
 export type GenTransactionDto = {

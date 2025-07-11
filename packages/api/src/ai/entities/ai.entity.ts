@@ -19,4 +19,7 @@ export class GenTransactionEntity
 
   @ApiProperty({ description: '分类id' })
   categoryId: number;
+
+  @ApiProperty({ description: '分类名称' })
+  categoryName: string;
 }

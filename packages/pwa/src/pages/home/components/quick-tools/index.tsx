@@ -4,7 +4,7 @@ import ImageTool from './components/image-tool'
 interface QuickToolsProps {
   className?: string
   style?: React.CSSProperties
-  onAdd?: () => void
+  onReflush?: () => void
 }
 
 export default function QuickTools(porps: QuickToolsProps) {
@@ -14,7 +14,7 @@ export default function QuickTools(porps: QuickToolsProps) {
       style={porps.style}
     >
       {/* 图片识别工具 */}
-      <ImageTool />
+      <ImageTool onSaveHander={porps.onReflush} />
 
       <div className="flex flex-col justify-center">
         <div className="w-12 h-12 flex items-center justify-center bg-indigo-200 rounded-xl shadow-2xl">

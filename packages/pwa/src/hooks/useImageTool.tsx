@@ -1,13 +1,5 @@
 import { useCallback } from 'react'
-import {
-  Toast,
-  Dialog,
-  List,
-  Modal,
-  Image,
-  DotLoading,
-  SpinLoading,
-} from 'antd-mobile'
+import { Toast, Dialog, List } from 'antd-mobile'
 import useOCR from './useOCR'
 import {
   aiControllerGenTransaction,

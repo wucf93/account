@@ -13,9 +13,9 @@ export class AiController {
   async genTransaction(@Body() genTransactionDto: GenTransactionDto) {
     const result = await this.aiService.genTransaction(genTransactionDto);
 
-    if (!result.json)
-      throw new HttpException(result.content || '解析失败', 500);
+    if (!result.success)
+      throw new HttpException(result.message || '解析失败', 500);
 
-    return result.json;
+    return result.data;
   }
 }

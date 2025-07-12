@@ -14,20 +14,28 @@ export class AiService {
         { role: 'system', content: genTransactionPrompt },
         { role: 'user', content: genTransactionDto.message },
       ],
+      response_format: {
+        type: 'json_object',
+      },
     });
 
     const content = completion.choices[0].message.content;
     console.log(content);
-    const result = { content, json: null };
 
     if (content) {
       try {
-        result.json = JSON.parse(content);
-      } catch (error) {
-        console.log(content);
-        console.log(error);
-      }
+        return JSON.parse(content) as {
+          success: boolean;
+          message: string;
+          data: any;
+        };
+      } catch (error) {}
     }
-    return result;
+
+    return {
+      success: false,
+      message: '解析失败',
+      data: null,
+    };
   }
 }

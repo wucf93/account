@@ -3,8 +3,7 @@ import { useCallback, useMemo, useState, type FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
 import Decimal from 'decimal.js'
-import { ActionSheet, Toast } from 'antd-mobile'
-import clsx from 'classnames'
+import { ActionSheet, ErrorBlock, Toast } from 'antd-mobile'
 import { useSetAtom } from 'jotai'
 import { detailsPopupInfo, DetailsType } from '@/components/details-popup/atom'
 
@@ -44,11 +43,13 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
 
   if (!list.length)
     return (
-      <div
-        className={clsx(props.className, 'text-center text-gray-400 mt-6')}
-        style={props.style}
-      >
-        暂无数据，请选择月份查询
+      <div className={props.className} style={props.style}>
+        <ErrorBlock
+          className="w-60 m-auto flex flex-col items-center mt-12"
+          status="empty"
+          description=""
+          title="暂无数据，请选择月份查询"
+        />
       </div>
     )
 

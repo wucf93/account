@@ -35,16 +35,17 @@ export const useFilter = () => {
 
   const filterRender = useMemo(
     () => (
-      <div className="flex font items-center justify-between text-white">
-        <div className="text-lg font-bold">
+      <div className="flex items-center justify-between text-white">
+        <div className="text-lg font-bold" onClick={() => setDateVisible(true)}>
           {dateValue.get('month') + 1}月账单
+          <i className="ri-arrow-drop-down-fill" />
         </div>
-        <div
+        {/* <div
           className="w-7 h-7 flex items-center justify-center rounded-full bg-white/20"
           onClick={() => setDateVisible(true)}
         >
           <i className="ri-calendar-line" />
-        </div>
+        </div> */}
         <DatePicker
           title="查询日期"
           visible={dateVisible}

@@ -1,7 +1,6 @@
 import { useState, Fragment, useRef } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import { DatePicker } from 'antd-mobile'
-import { useOCR } from '@/hooks'
 
 interface KeyboardProps {
   initialAccountValue?: string
@@ -22,7 +21,6 @@ export default function Keyboard({
   const [dateValue, setDateValue] = useState<Dayjs>(initialDateValue)
   const fileRef = useRef<HTMLInputElement>(null)
   const [visible, setVisible] = useState(false)
-  const { recognizeText } = useOCR()
 
   const handleKeyPress = (key: string | number) => {
     if (typeof key === 'number') {
@@ -124,21 +122,7 @@ export default function Keyboard({
                 className="bg-white h-12 flex items-center justify-center rounded cursor-pointer text-sm hover:bg-gray-100 transition-colors"
                 onClick={() => handleKeyPress(item)}
               >
-                AI识别
-                <input
-                  className="hidden"
-                  type="file"
-                  accept="image/*"
-                  ref={fileRef}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0]
-                    if (file) {
-                      recognizeText(file)
-                    }
-                    // 清空
-                    if (fileRef.current) fileRef.current.value = ''
-                  }}
-                />
+                AI
               </div>
             ) : (
               <div

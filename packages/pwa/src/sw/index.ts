@@ -1,5 +1,4 @@
 /// <reference lib="webworker" />
-
 import {
   cleanupOutdatedCaches,
   createHandlerBoundToURL,

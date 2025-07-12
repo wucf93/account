@@ -84,7 +84,6 @@ export default defineConfig({
       devOptions: {
         enabled: false,
         navigateFallback: 'index.html',
-        suppressWarnings: true,
         type: 'module',
       },
     }),

@@ -8,6 +8,8 @@ import {
 } from '@/apis'
 import omit from 'lodash/omit'
 import dayjs from 'dayjs'
+import { useSetAtom } from 'jotai'
+import { detailsPopupInfo, DetailsType } from '@/components/details-popup/atom'
 
 const Config: Array<{
   key: keyof GenTransactionEntity
@@ -38,6 +40,7 @@ const Config: Array<{
 
 export default function useImageTool() {
   const { recognizeText } = useOCR()
+  const setInfo = useSetAtom(detailsPopupInfo)
 
   const submitHander = useCallback(
     (info: GenTransactionEntity, cb?: () => void) => {
@@ -79,6 +82,18 @@ export default function useImageTool() {
           })
         },
         cancelText: '修改',
+        onCancel: () => {
+          setInfo((pre) => ({
+            ...pre,
+            visible: true,
+            amount: String(info.amount),
+            transactionDate: dayjs(info.transactionDate),
+            transactionType: info.transactionType as unknown as DetailsType,
+            categoryId: info.categoryId,
+            description: info.description || '',
+            onSuccess: cb,
+          }))
+        },
       })
     },
     []

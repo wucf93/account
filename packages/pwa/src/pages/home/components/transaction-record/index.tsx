@@ -5,6 +5,8 @@ import dayjs from 'dayjs'
 import Decimal from 'decimal.js'
 import { ActionSheet, Toast } from 'antd-mobile'
 import clsx from 'classnames'
+import { useSetAtom } from 'jotai'
+import { detailsPopupInfo, DetailsType } from '@/components/details-popup/atom'
 
 export interface TransactionRecordProps {
   list: TransactionEntity[]
@@ -17,6 +19,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
   list = [],
   ...props
 }) => {
+  const setInfo = useSetAtom(detailsPopupInfo)
   const [actionId, setActionId] = useState<TransactionEntity['id']>()
   const groupMap = useMemo(
     () =>
@@ -129,7 +132,28 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
         visible={!!actionId}
         cancelText="取消"
         actions={[
-          { text: '修改', key: 'edit' },
+          {
+            text: '修改',
+            key: 'edit',
+            onClick: () => {
+              const selectInfo = list.find((item) => item.id === actionId)
+              if (selectInfo) {
+                setInfo((pre) => ({
+                  ...pre,
+                  visible: true,
+                  id: selectInfo.id,
+                  transactionType:
+                    selectInfo.transactionType as unknown as DetailsType,
+                  amount: String(selectInfo.amount),
+                  transactionDate: dayjs(selectInfo.transactionDate),
+                  categoryId: selectInfo.categoryId,
+                  description: selectInfo.description || '',
+                  onSuccess: props.onReflush,
+                }))
+              }
+              setActionId(undefined)
+            },
+          },
           {
             text: '删除',
             key: 'delete',

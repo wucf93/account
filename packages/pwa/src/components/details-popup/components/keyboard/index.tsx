@@ -34,9 +34,9 @@ export default function Keyboard({
         newValue = inputValue + key.toString()
       }
 
-      // 检查小数点后位数不超过4位
+      // 检查小数点后位数不超过2位
       const [, decimalPart] = newValue.split('.')
-      if (decimalPart && decimalPart.length > 4) return
+      if (decimalPart && decimalPart.length > 2) return
 
       // 检查数值不超过百万
       if (newValue.trim() && !isNaN(Number(newValue))) {

@@ -9,7 +9,7 @@ export const genTransactionPrompt = `
     "transactionType": "income"(收入) 或 "expenditure"(支出),
     "transactionDate":交易日期（格式为日期格式，如"2025-07-08T23:39:20"）,
     "description": 交易描述（简洁概括，如"星巴克咖啡"）,
-    "categoryId": 分类ID（根据描述匹配下表，必须精确到ID）,如果没有匹配到，默认值为其他类型（收入类： 其他收入，支出类： 其他支出）,
+    "categoryId": 分类ID（根据描述匹配下表，必须精确到ID）,如果没有匹配到，默认值为其他类型,
     "categoryName": 分类名称，根据分类ID匹配到的名称
   }
 }
@@ -21,7 +21,7 @@ export const genTransactionPrompt = `
      - 兼职/副业 → 4
      - 房租/租金 → 5
      - 退款/返现 → 6
-     - 其他收入 → 7
+     - 其他 → 7
    - **支出类**（优先匹配具体分类）：
      - 餐饮/外卖/零食 → 101
      - 公交/打车/油费 → 102
@@ -36,7 +36,7 @@ export const genTransactionPrompt = `
      - 旅行/酒店 → 111
      - 礼物/红包 → 112
      - 宠物用品 → 113
-     - 其他支出 → 114
+     - 其他 → 114
 5. **错误处理**：
    - 如果出现任何歧义（如智能货柜既可能是餐饮也可能是购物），选择最匹配的单一分类
    - 禁止返回多个JSON对象或修正版本

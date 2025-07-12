@@ -11,9 +11,10 @@ export enum DetailsType {
 
 export interface DetailsPopupInfo {
   visible: boolean
-  type: DetailsType
+  id?: number
+  transactionType: DetailsType
   amount: string
-  date: Dayjs
+  transactionDate: Dayjs
   categoryId: number
   description: string
   onSuccess?: () => void
@@ -21,11 +22,10 @@ export interface DetailsPopupInfo {
 
 export const getDefaultValue = () => ({
   visible: false,
-  type: DetailsType.Expenditure,
+  transactionType: DetailsType.Expenditure,
   amount: '0',
-  date: dayjs(),
-  categoryId:
-    globalStore.categoryConfigs?.[DetailsType.Expenditure]?.[0]?.id,
+  transactionDate: dayjs(),
+  categoryId: globalStore.categoryConfigs?.[DetailsType.Expenditure]?.[0]?.id,
   description: '',
 })
 

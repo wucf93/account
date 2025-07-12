@@ -10,7 +10,10 @@ import Keyboard from './components/keyboard'
 import Switch from '../switch-btn'
 import CategorySelect from './components/category-select'
 import { useCallback } from 'react'
-import { transactionControllerCreate } from '@/apis'
+import {
+  transactionControllerCreate,
+  transactionControllerUpdate,
+} from '@/apis'
 import { globalStore } from '@/store'
 
 export default function ModifyDetailsModal() {
@@ -20,20 +23,22 @@ export default function ModifyDetailsModal() {
     if (!Number(info.amount)) {
       return Toast.show({ content: '请输入金额' })
     }
-    await transactionControllerCreate({
-      body: {
-        amount: Number(info.amount),
-        categoryId: info.categoryId,
-        transactionType: info.type,
-        transactionDate: info.date.toString(),
-        description: info.description,
-      },
-    }).then((res) => {
+    const body = {
+      amount: Number(info.amount),
+      categoryId: info.categoryId,
+      transactionType: info.transactionType,
+      transactionDate: info.transactionDate.toString(),
+      description: info.description,
+    }
+    ;(info.id
+      ? transactionControllerUpdate({ body, path: { id: String(info.id) } })
+      : transactionControllerCreate({ body })
+    ).then((res) => {
       if (res.data?.success) {
         info.onSuccess?.()
         setInfo(getDefaultValue())
       } else {
-        Toast.show({ content: res.data?.message || '创建失败' })
+        Toast.show({ content: res.data?.message || '操作失败' })
       }
     })
   }, [info])
@@ -63,12 +68,12 @@ export default function ModifyDetailsModal() {
 
           {/* 类型切换 */}
           <div className="mb-4 flex justify-between">
-            <Switch<DetailsPopupInfo['type']>
-              value={info.type}
+            <Switch<DetailsPopupInfo['transactionType']>
+              value={info.transactionType}
               onChange={(val) =>
                 setInfo({
                   ...info,
-                  type: val,
+                  transactionType: val,
                   categoryId: globalStore.categoryConfigs[val]?.[0]?.id,
                 })
               }
@@ -83,7 +88,7 @@ export default function ModifyDetailsModal() {
           <div className="mb-4">
             <div className="text-sm px-4 text-gray-500 mb-3">分类</div>
             <CategorySelect
-              type={info.type}
+              type={info.transactionType}
               categoryId={info.categoryId}
               onCategoryChange={(val) => setInfo({ ...info, categoryId: val })}
             />
@@ -108,8 +113,8 @@ export default function ModifyDetailsModal() {
           <Keyboard
             initialAccountValue={info.amount}
             onAccountChange={(val) => setInfo({ ...info, amount: val })}
-            initialDateValue={info.date}
-            onDateChange={(val) => setInfo({ ...info, date: val })}
+            initialDateValue={info.transactionDate}
+            onDateChange={(val) => setInfo({ ...info, transactionDate: val })}
             onSave={onSaveHandle}
           />
         </div>

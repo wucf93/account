@@ -55,7 +55,8 @@ export default function HomePage() {
               setInfo((prev) => ({
                 ...prev,
                 visible: true,
-                categoryId: globalStore.categoryConfigs?.[prev.type]?.[0]?.id,
+                categoryId:
+                  globalStore.categoryConfigs?.[prev.transactionType]?.[0]?.id,
                 onSuccess: () => reflush(),
               }))
             }

@@ -1,8 +1,9 @@
 import { createContext, useContext, type FC } from 'react'
-import { SpinLoading } from 'antd-mobile'
 import useSWR from 'swr'
 import { categoryControllerFindAll, CategoryEntity } from '@/apis'
 import { authClient } from '@/lib'
+import classNames from 'classnames'
+import GlobalLoading from '@/components/global-loading'
 
 export type UserInfo = Awaited<
   (typeof authClient)['$Infer']['Session']['user'] | null
@@ -23,7 +24,13 @@ export let globalStore: GlobalStore = {
 
 const GlobalContent = createContext<GlobalStore>({ ...globalStore })
 
-export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
+interface GlobalProviderProps {
+  className?: string
+  style?: React.CSSProperties
+  children: React.ReactNode
+}
+
+export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
   const {
     data: [categoryValue, userInfo] = [],
     isLoading,
@@ -41,11 +48,7 @@ export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
   )
 
   if (isLoading || isValidating) {
-    return (
-      <div className="h-screen w-screen flex items-center justify-center overflow-hidden">
-        <SpinLoading color="primary" />
-      </div>
-    )
+    return <GlobalLoading />
   }
 
   const store = {
@@ -61,7 +64,12 @@ export const GlobalProvider: FC<{ children: React.ReactNode }> = (props) => {
 
   return (
     <GlobalContent.Provider value={store}>
-      {props.children}
+      <div
+        className={classNames('min-h-screen', props.className)}
+        style={props.style}
+      >
+        {props.children}
+      </div>
     </GlobalContent.Provider>
   )
 }

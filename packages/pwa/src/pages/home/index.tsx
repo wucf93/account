@@ -34,7 +34,7 @@ export default function HomePage() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <div className="flex-none bg-gradient-to-b p-4 from-indigo-500 via-gray-100 to-gray-100">
+      <div className="flex-none p-4">
         {/* 各种筛选 */}
         {filterRender}
 

@@ -1,4 +1,5 @@
 import clsx from 'classnames'
+import { useNavigate } from 'react-router-dom'
 import ImageTool from './components/image-tool'
 
 interface QuickToolsProps {
@@ -8,6 +9,8 @@ interface QuickToolsProps {
 }
 
 export default function QuickTools(porps: QuickToolsProps) {
+  const navigate = useNavigate()
+
   return (
     <div
       className={clsx('flex items-center gap-6', porps.className)}
@@ -17,7 +20,10 @@ export default function QuickTools(porps: QuickToolsProps) {
       <ImageTool onSaveHander={porps.onReflush} />
 
       {/* 智能记账 */}
-      <div className="flex flex-col justify-center">
+      <div
+        className="flex flex-col justify-center"
+        onClick={() => navigate('/ai')}
+      >
         <div className="w-12 h-12 flex items-center justify-center bg-indigo-200 rounded-xl shadow-2xl">
           <i className="ri-robot-3-fill text-3xl text-indigo-500" />
         </div>

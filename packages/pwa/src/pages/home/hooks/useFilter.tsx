@@ -37,8 +37,8 @@ export const useFilter = () => {
     () => (
       <div className="flex items-center justify-between text-white">
         <div className="text-lg font-bold" onClick={() => setDateVisible(true)}>
-          {dateValue.get('month') + 1}月账单
-          <i className="ri-arrow-drop-down-fill" />
+          <span>{dateValue.get('month') + 1}月账单</span>
+          <i className="ri-arrow-down-s-fill ml-0.5"></i>
         </div>
         {/* <div
           className="w-7 h-7 flex items-center justify-center rounded-full bg-white/20"

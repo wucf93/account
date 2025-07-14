@@ -41,7 +41,7 @@ export default function DataAnalysis({
 
   return (
     <div
-      className={clss('bg-white p-4 rounded-lg shadow-xs', props.className)}
+      className={clss('bg-white p-4 rounded-xl shadow-xs', props.className)}
       style={props.style}
     >
       <div className="text-gray-500 text-sm">本月结余(元)</div>

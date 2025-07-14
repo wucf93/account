@@ -6,7 +6,7 @@ import { SWRConfig } from 'swr'
 export default function App() {
   return (
     <SWRConfig value={{ revalidateOnFocus: false }}>
-      <GlobalProvider>
+      <GlobalProvider className="bg-gradient-to-b from-indigo-500 via-gray-100 to-gray-100">
         <Outlet />
 
         {/** 记账弹窗 */}

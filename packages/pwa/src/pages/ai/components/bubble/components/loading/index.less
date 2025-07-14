@@ -1,0 +1,25 @@
+.message-loading {
+  background-image: conic-gradient(
+    from var(--border-angle) at 50% 50%,
+    #0084ff 0%,
+    #00e1ff 25%,
+    #f14cff 50%,
+    #0084ff 100%
+  );
+  animation: stream-loading 3s linear infinite 0ms;
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0turn;
+}
+
+@keyframes stream-loading {
+  0% {
+    --border-angle: 0turn;
+  }
+  100% {
+    --border-angle: 1turn;
+  }
+}

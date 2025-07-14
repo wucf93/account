@@ -34,7 +34,7 @@ export default defineConfig({
         short_name: '快记账',
         description:
           '快记账，一款便捷高效的记账应用，助您轻松管理日常收支，清晰掌握财务状况。',
-        theme_color: '#8a8ef0',
+        // theme_color: '#8a8ef0',
         background_color: '#8a8ef0',
 
         icons: [

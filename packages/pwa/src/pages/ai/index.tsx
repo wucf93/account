@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import classNames from 'classnames'
 import { TextArea } from 'antd-mobile'
+import Bubble from './components/bubble'
+import { useMessage } from './hooks'
 
 export default function AiPage() {
+  const { messages, sendMessage, loading } = useMessage()
   const [inputValue, setInputValue] = useState('')
 
   return (
@@ -15,10 +18,18 @@ export default function AiPage() {
         <span>智能记账</span>
       </div>
 
-      <div className="flex-auto overflow-x-auto">333</div>
+      <div className="flex-auto overflow-x-auto">
+        <Bubble.List
+          dataSource={messages}
+          itemRender={(item) => <Bubble {...item} />}
+        />
+      </div>
 
       <div
-        className={`group flex-none w-full py-1 px-2 shadow-sm rounded-lg bg-white flex items-center focus-within:ring-2 focus-within:ring-indigo-500 gap-2`}
+        className={classNames(
+          'group flex-none w-full py-1 px-2 shadow-sm rounded-lg flex items-center focus-within:ring-2 focus-within:ring-indigo-500 gap-2',
+          loading ? 'bg-gray-200' : 'bg-white'
+        )}
       >
         <TextArea
           placeholder="请输入内容"
@@ -28,9 +39,17 @@ export default function AiPage() {
           className="my-1"
           value={inputValue}
           onChange={setInputValue}
+          disabled={loading}
         />
 
-        <div className="flex h-full items-end ">
+        <div
+          className="flex h-full items-end"
+          onClick={() => {
+            if (loading || !inputValue?.trim()) return
+            sendMessage(inputValue)
+            setInputValue('')
+          }}
+        >
           <i
             className={classNames(
               'ri-arrow-up-circle-fill text-3xl transition-colors',

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import './index.less'
+import './index.css'
 
 interface MessageLoadingProps {
   className?: string

@@ -9,3 +9,30 @@ body {
   --adm-font-size-main: var(--text-base);
   --adm-color-primary: var(--color-indigo-500);
 }
+
+/* 边框流光效果 */
+.border-loading {
+  background-image: conic-gradient(
+    from var(--border-angle) at 50% 50%,
+    #0084ff 0%,
+    #00e1ff 25%,
+    #f14cff 50%,
+    #0084ff 100%
+  );
+  animation: border-loading-animation 3s linear infinite 0ms;
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0turn;
+}
+
+@keyframes border-loading-animation {
+  0% {
+    --border-angle: 0turn;
+  }
+  100% {
+    --border-angle: 1turn;
+  }
+}

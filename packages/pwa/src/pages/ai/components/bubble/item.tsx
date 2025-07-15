@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import MessageLoading from './components/loading'
 
 export interface BubbleItemProps {
   className?: string
@@ -13,10 +12,6 @@ export interface BubbleItemProps {
   timestamp?: number
   /** 隐藏角色 */
   hiddenRole?: boolean
-  /** 加载中 */
-  loading?: boolean
-  /** 加载失败 */
-  loadingText?: React.ReactNode
   /** 底部工具栏 */
   footer?: React.ReactNode
 }
@@ -39,26 +34,15 @@ export default function BubbleItem(props: BubbleItemProps) {
             </div>
           )}
         </div>
-        <div className="flex-auto overflow-hidden">
-          {props.loading ? (
-            <MessageLoading className="text-sm">
-              {props.loadingText}
-            </MessageLoading>
-          ) : (
-            <>
-              <div
-                className={classNames(
-                  'rounded-lg py-3 px-4 text-sm',
-                  props.role === 'user'
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-white text-black'
-                )}
-              >
-                {props.content}
-              </div>
-              {props.footer && <div className="mt-2">{props.footer}</div>}
-            </>
+
+        <div
+          className={classNames(
+            'flex-auto overflow-hidden flex flex-col',
+            props.role === 'user' ? 'items-end' : 'items-start'
           )}
+        >
+          {props.content}
+          {props.footer}
         </div>
 
         <div className="w-10 h-10 flex-none">

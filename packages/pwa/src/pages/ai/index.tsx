@@ -5,7 +5,7 @@ import Bubble from './components/bubble'
 import { useMessage } from './hooks'
 
 export default function AiPage() {
-  const { messages, sendMessage, loading } = useMessage()
+  const { messageList, sendMessage, loading, resumeMessage } = useMessage()
   const [inputValue, setInputValue] = useState('')
 
   return (
@@ -20,15 +20,14 @@ export default function AiPage() {
 
       <div className="flex-auto overflow-x-auto">
         <Bubble.List
-          dataSource={messages}
+          dataSource={messageList}
           itemRender={(item) => <Bubble {...item} />}
         />
       </div>
 
       <div
         className={classNames(
-          'group flex-none w-full py-1 px-2 shadow-sm rounded-lg flex items-center focus-within:ring-2 focus-within:ring-indigo-500 gap-2',
-          loading ? 'bg-gray-200' : 'bg-white'
+          'group flex-none w-full py-1 px-2 shadow-sm rounded-lg flex items-center focus-within:ring-2 focus-within:ring-indigo-500 gap-2'
         )}
       >
         <TextArea
@@ -39,23 +38,29 @@ export default function AiPage() {
           className="my-1"
           value={inputValue}
           onChange={setInputValue}
-          disabled={loading}
         />
 
         <div
           className="flex h-full items-end"
           onClick={() => {
-            if (loading || !inputValue?.trim()) return
+            if (!inputValue?.trim()) return
             sendMessage(inputValue)
             setInputValue('')
           }}
         >
-          <i
-            className={classNames(
-              'ri-arrow-up-circle-fill text-3xl transition-colors',
-              inputValue?.trim() ? 'text-indigo-500' : 'text-indigo-300'
-            )}
-          ></i>
+          {loading ? (
+            <i
+              className="ri-stop-circle-line text-3xl text-indigo-500"
+              onClick={resumeMessage}
+            />
+          ) : (
+            <i
+              className={classNames(
+                'ri-arrow-up-circle-fill text-3xl transition-colors',
+                inputValue?.trim() ? 'text-indigo-500' : 'text-indigo-300'
+              )}
+            />
+          )}
         </div>
       </div>
     </div>

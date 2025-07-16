@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import classNames from 'classnames'
 import { TextArea } from 'antd-mobile'
 import Bubble from './components/bubble'
@@ -8,9 +8,11 @@ export default function AiPage() {
   const { messageList, sendMessage, loading, resumeMessage } = useMessage()
   const [inputValue, setInputValue] = useState('')
 
+  useLayoutEffect(() => {})
+
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col px-4 pb-4">
-      <div className="text-lg font-bold text-white py-4 flex items-center gap-2">
+    <div className="h-screen w-screen overflow-hidden flex flex-col pb-18 relative">
+      <div className="text-lg font-bold text-white py-4 flex items-center gap-2 px-4">
         <i
           className="ri-arrow-go-back-line"
           onClick={() => window.history.back()}
@@ -18,7 +20,7 @@ export default function AiPage() {
         <span>智能记账</span>
       </div>
 
-      <div className="flex-auto overflow-x-auto">
+      <div className="flex-auto overflow-x-auto px-4">
         <Bubble.List
           dataSource={messageList}
           itemRender={(item) => <Bubble {...item} />}
@@ -27,7 +29,7 @@ export default function AiPage() {
 
       <div
         className={classNames(
-          'group flex-none w-full py-1 px-2 shadow-sm rounded-lg flex items-center focus-within:ring-2 focus-within:ring-indigo-500 gap-2'
+          'group fixed bottom-4 left-4 right-4 py-1 px-2 shadow-sm rounded-lg flex items-center ring-indigo-300 ring-2 focus-within:ring-indigo-500 gap-2'
         )}
       >
         <TextArea

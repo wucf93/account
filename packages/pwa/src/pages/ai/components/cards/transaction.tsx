@@ -1,9 +1,10 @@
-import { StringContentRender } from './string'
 import { useCallback, useMemo } from 'react'
 import { GenTransactionEntity, transactionControllerCreate } from '@/apis'
 import omit from 'lodash/omit'
 import { Toast } from 'antd-mobile'
 import { CardRenderType } from './type'
+import classNames from 'classnames'
+import dayjs from 'dayjs'
 
 export function TransactionContentRender(props: CardRenderType) {
   const extraJSON = useMemo(() => {
@@ -54,9 +55,50 @@ export function TransactionContentRender(props: CardRenderType) {
     [props.message, props.modifyMessages]
   )
 
+  const transaction = useMemo<GenTransactionEntity>(() => {
+    try {
+      return JSON.parse(props.message.content) || {}
+    } catch (error) {
+      return {}
+    }
+  }, [props.message.content])
+
   return (
     <>
-      <StringContentRender {...props} />
+      <div
+        className={classNames(
+          'rounded-lg inline-block py-3 px-4 text-sm max-w-full overflow-hidden break-all w-full',
+          props.message.role === 'user'
+            ? 'bg-indigo-600 text-white'
+            : 'bg-white text-black'
+        )}
+      >
+        <div className="flex justify-between items-center">
+          <div className="text-xs text-gray-600">
+            识别到一笔
+            {transaction.transactionType === 'income' ? '收入' : '支出'}
+          </div>
+          <div className="text-xs text-gray-500">
+            {dayjs(transaction.transactionDate).format('YYYY-MM-DD')}
+          </div>
+        </div>
+        <div className="h-[0.5px] w-full my-2 bg-gray-300" />
+        <div className="flex justify-between items-center">
+          <div>
+            <div className="text-xs">{transaction.categoryName}</div>
+            <div className="text-xs text-gray-400 mt-1">
+              {transaction.description || transaction.categoryName}
+            </div>
+          </div>
+          <div className="text-indigo-500">
+            {(
+              transaction.amount *
+              (transaction.transactionType === 'income' ? 1 : -1)
+            ).toFixed(2)}
+            <span className="ml-0.5">元</span>
+          </div>
+        </div>
+      </div>
 
       {(extraJSON.edit || extraJSON.save || extraJSON.remove) && (
         <div className="flex items-center gap-2 mt-2">

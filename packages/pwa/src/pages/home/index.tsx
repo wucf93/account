@@ -1,79 +1,33 @@
-import { useMemo } from 'react'
-import DataAnalysis from './components/data-analysis'
+import Page from '@/components/page'
 import { useFilter } from './hooks'
-import { globalStore } from '@/store'
-import { Decimal } from 'decimal.js'
-import { useSetAtom } from 'jotai'
-import TransactionRecord from './components/transaction-record'
-import { detailsPopupInfo } from '@/components/details-popup/atom'
+import DataAnalysis from './components/data-analysis'
 import QuickTools from './components/quick-tools'
-import { useShareImage } from './hooks/useShareImage'
+import TransactionRecord from './components/transaction-record'
+import MonthPicker from '@/components/month-picker'
+import { useState } from 'react'
+import dayjs from 'dayjs'
 
 export default function HomePage() {
-  const setInfo = useSetAtom(detailsPopupInfo)
-  const { filterList, list, filterRender, reflush } = useFilter()
-  // 用户分享的照片
-  useShareImage(reflush)
-
-  // 月统计数据
-  const total = useMemo(
-    () =>
-      list?.reduce(
-        ([income, expenditure], cur) => {
-          if (cur.transactionType === 'income') {
-            income = Decimal(income).add(cur.amount).toNumber()
-          } else {
-            expenditure = Decimal(expenditure).add(cur.amount).toNumber()
-          }
-          return [income, expenditure]
-        },
-        [0, 0]
-      ),
-    [list]
-  )
+  const [dateValue, setDateValue] = useState(dayjs())
+  const { filterList, list } = useFilter(dateValue)
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
-      <div className="flex-none p-4">
-        {/* 各种筛选 */}
-        {filterRender}
+    <Page
+      title={
+        <MonthPicker value={dateValue} onChange={setDateValue}>
+          <span>{dateValue.get('month') + 1}月账单</span>
+          <i className="ri-arrow-down-s-fill ml-0.5" />
+        </MonthPicker>
+      }
+      titleExtra={<i className="ri-add-large-line text-2xl" />}
+    >
+      {/* 数据统计 */}
+      <DataAnalysis totalList={list} />
 
-        {/* 数据分析 */}
-        <DataAnalysis
-          totalIncome={total[0]}
-          totalExpenditure={total[1]}
-          className="mt-4"
-        />
+      {/* 快捷工具 */}
+      <QuickTools />
 
-        {/* 工具 */}
-        <QuickTools className="mt-4" onReflush={reflush} />
-
-        <div className="flex items-center justify-between mt-4">
-          <div className="text-sm font-bold">收支记录</div>
-          <div
-            onClick={() =>
-              setInfo((prev) => ({
-                ...prev,
-                visible: true,
-                categoryId:
-                  globalStore.categoryConfigs?.[prev.transactionType]?.[0]?.id,
-                onSuccess: () => reflush(),
-              }))
-            }
-            className="h-7 flex items-center gap-1 text-xs rounded-full bg-indigo-500 px-3 text-white"
-          >
-            <i className="ri-pencil-line text-base" />
-            <span>记一笔</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 记录 */}
-      <TransactionRecord
-        list={filterList}
-        className="px-4 flex-auto overflow-y-auto"
-        onReflush={reflush}
-      />
-    </div>
+      <TransactionRecord list={filterList} />
+    </Page>
   )
 }

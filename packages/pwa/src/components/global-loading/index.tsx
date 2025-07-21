@@ -1,5 +1,3 @@
-import { SpinLoading } from 'antd-mobile'
-
 export default function GlobalLoading() {
   return (
     <div
@@ -7,7 +5,7 @@ export default function GlobalLoading() {
         'h-screen w-screen flex items-center justify-center overflow-hidden'
       }
     >
-      <SpinLoading color="primary" />
+      加载中...
     </div>
   )
 }

@@ -1,11 +1,11 @@
 import clsx from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import ImageTool from './components/image-tool'
+import classnames from 'classnames'
+import { QUICK_TOOLS } from './config'
 
 interface QuickToolsProps {
   className?: string
   style?: React.CSSProperties
-  onReflush?: () => void
 }
 
 export default function QuickTools(porps: QuickToolsProps) {
@@ -13,40 +13,20 @@ export default function QuickTools(porps: QuickToolsProps) {
 
   return (
     <div
-      className={clsx('flex items-center gap-6', porps.className)}
+      className={clsx('px-4 py-3 grid grid-cols-3 gap-3', porps.className)}
       style={porps.style}
     >
-      {/* 图片识别工具 */}
-      <ImageTool onSaveHander={porps.onReflush} />
-
-      {/* 智能记账 */}
-      <div
-        className="flex flex-col justify-center"
-        onClick={() => navigate('/ai')}
-      >
-        <div className="w-12 h-12 flex items-center justify-center bg-indigo-200 rounded-xl shadow-2xl">
-          <i className="ri-robot-3-fill text-3xl text-indigo-500" />
+      {QUICK_TOOLS.map((item) => (
+        <div
+          key={item.name}
+          className={clsx(
+            'h-8 flex items-center justify-center gap-2 rounded-full p-2 bg-gray-100'
+          )}
+        >
+          <i className={classnames(item.icon, 'text-xl')} />
+          <span className="text-sm">{item.name}</span>
         </div>
-        <span className="text-xs mt-1.5 text-gray-500">智能记账</span>
-      </div>
-
-      {/* 定时记账 */}
-      <div className="flex flex-col justify-center">
-        <div className="w-12 h-12 flex items-center justify-center bg-blue-200 rounded-xl shadow-2xl">
-          <i className="ri-timer-flash-fill text-3xl text-blue-500" />
-        </div>
-        <span className="text-xs mt-1.5 text-gray-500 text-center">
-          定时记账
-        </span>
-      </div>
-
-      {/* 统计分析 */}
-      <div className="flex flex-col justify-center">
-        <div className="w-12 h-12 flex items-center justify-center bg-violet-200 rounded-xl shadow-2xl">
-          <i className="ri-bar-chart-box-fill text-3xl text-violet-500" />
-        </div>
-        <span className="text-xs mt-1.5 text-gray-500">统计分析</span>
-      </div>
+      ))}
     </div>
   )
 }

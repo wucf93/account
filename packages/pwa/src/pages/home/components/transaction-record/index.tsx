@@ -1,11 +1,9 @@
-import { TransactionEntity, transactionControllerRemove } from '@/apis'
-import { useCallback, useMemo, useState, type FC } from 'react'
+import { TransactionEntity } from '@/apis'
+import { useMemo, type FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
-import Decimal from 'decimal.js'
-import { ActionSheet, ErrorBlock, Toast } from 'antd-mobile'
-import { useSetAtom } from 'jotai'
-import { detailsPopupInfo, DetailsType } from '@/components/details-popup/atom'
+import classnames from 'classnames'
+import { formatNumber } from '@/utils'
 
 export interface TransactionRecordProps {
   list: TransactionEntity[]
@@ -18,8 +16,6 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
   list = [],
   ...props
 }) => {
-  const setInfo = useSetAtom(detailsPopupInfo)
-  const [actionId, setActionId] = useState<TransactionEntity['id']>()
   const groupMap = useMemo(
     () =>
       groupBy(list, (item) =>
@@ -28,144 +24,63 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
     [list]
   )
 
-  const deleteHander = useCallback(() => {
-    transactionControllerRemove({ path: { id: String(actionId!) } }).then(
-      (res) => {
-        if (res.data?.success) {
-          setActionId(undefined)
-          props.onReflush?.()
-        } else {
-          Toast.show({ content: res.data?.message || '删除失败' })
-        }
-      }
-    )
-  }, [actionId, props.onReflush])
-
-  if (!list.length)
-    return (
-      <div className={props.className} style={props.style}>
-        <ErrorBlock
-          className="w-60 m-auto flex flex-col items-center mt-12"
-          status="empty"
-          description=""
-          title="暂无数据，请选择月份查询"
-        />
-      </div>
-    )
-
   return (
-    <div className={props.className} style={props.style}>
+    <div className={classnames('px-4', props.className)} style={props.style}>
+      <div className="mt-5 mb-3 text-xl font-bold">交易记录</div>
+
+      {!list.length && (
+        <div className={'px-2 flex flex-col items-center mt-12'}>
+          <div className="font-bold text-lg mt-6">没有交易记录</div>
+          <div className="mt-2 text-sm">
+            开始记录您的收入和支出，以便更好地管理财务。
+          </div>
+          <div className="m-auto mt-6 inline-block px-4 py-2.5 rounded-full bg-gray-100 text-sm font-bold">
+            新增交易
+          </div>
+        </div>
+      )}
+
       {Object.keys(groupMap)
         .sort((a, b) => Number(b) - Number(a))
         .map((item) => {
           const day = dayjs(Number(item))
-          const total = groupMap[item].reduce(
-            ([income, expenditure], cur) => {
-              if (cur.transactionType === 'income') {
-                income = Decimal(income).add(cur.amount).toNumber()
-              } else {
-                expenditure = Decimal(expenditure).add(cur.amount).toNumber()
-              }
-              return [income, expenditure]
-            },
-            [0, 0]
-          )
 
           return (
-            <div className="mb-4 bg-white rounded-xl shadow-xs px-3" key={item}>
-              <div className="flex justify-between items-center pt-3 text-xs text-gray-600">
-                <div>
-                  {day.isSame(dayjs(), 'day')
-                    ? '今天'
-                    : day.isSame(dayjs().subtract(1, 'day'), 'day')
-                      ? '昨天'
-                      : day.format('MM-DD')}
-                </div>
-                <div>
-                  {!!total[1] && <span>支出：{total[1].toFixed(2)}</span>}
-                  {!!total[0] && (
-                    <span className="ml-2">收入：{total[0].toFixed(2)}</span>
-                  )}
-                </div>
+            <div key={item}>
+              <div className="mt-4 mb-2 font-bold text-lg">
+                {day.isSame(dayjs(), 'day')
+                  ? '今天'
+                  : day.isSame(dayjs().subtract(1, 'day'), 'day')
+                    ? '昨天'
+                    : day.format('MM-DD')}
               </div>
-              <div className="overflow-hidden">
-                {groupMap[item].map((item2) => (
+
+              {groupMap[item].map((item2) => (
+                <div key={item2.id} className="flex items-center py-3 gap-4">
                   <div
-                    key={item2.id}
-                    className="flex items-center py-3 border-b border-gray-100"
-                    onClick={() => setActionId(item2.id)}
+                    className={`flex-none w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center`}
                   >
-                    <div
-                      className={`w-9 h-9 rounded-lg bg-${item2?.category?.color}-100 flex items-center justify-center mr-3`}
-                    >
-                      <i
-                        className={`${item2?.category?.icon} text-${item2?.category?.color}-500 ri-lg`}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <div className="text-sm font-bold">
-                          {item2?.category?.name}
-                        </div>
-                        <div
-                          className={`flex items-center gap-0.5 font-bold text-${item2.transactionType === 'income' ? 'black' : 'indigo'}-500 text-sm`}
-                        >
-                          {(
-                            Number(item2.amount) *
-                            (item2.transactionType === 'income' ? 1 : -1)
-                          ).toFixed(2)}
-                        </div>
-                      </div>
-                      <div className="flex justify-between">
-                        <div className="text-xs text-gray-500">
-                          {item2.description || item2?.category?.name}
-                        </div>
-                      </div>
+                    <i className={`${item2?.category?.icon} text-2xl`} />
+                  </div>
+
+                  <div className="flex-auto overflow-hidden">
+                    <div className="font-medium">{item2?.category?.name}</div>
+                    <div className="text-sm text-gray-500 truncate">
+                      {item2.description || item2?.category?.name}
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="flex-none">
+                    <span className="mr-0.5">
+                      {item2.transactionType === 'income' ? '+' : '-'}
+                    </span>
+                    <span>{formatNumber(Number(item2.amount))}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           )
         })}
-
-      <ActionSheet
-        visible={!!actionId}
-        cancelText="取消"
-        actions={[
-          {
-            text: '修改',
-            key: 'edit',
-            onClick: () => {
-              const selectInfo = list.find((item) => item.id === actionId)
-              if (selectInfo) {
-                setInfo((pre) => ({
-                  ...pre,
-                  visible: true,
-                  id: selectInfo.id,
-                  transactionType:
-                    selectInfo.transactionType as unknown as DetailsType,
-                  amount: String(selectInfo.amount),
-                  transactionDate: dayjs(selectInfo.transactionDate),
-                  categoryId: selectInfo.categoryId,
-                  description: selectInfo.description || '',
-                  onSuccess: props.onReflush,
-                }))
-              }
-              setActionId(undefined)
-            },
-          },
-          {
-            text: '删除',
-            key: 'delete',
-            description: '删除后数据不可恢复',
-            danger: true,
-            bold: true,
-            onClick: () => deleteHander(),
-          },
-        ]}
-        onClose={() => setActionId(undefined)}
-      />
     </div>
   )
 }

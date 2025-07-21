@@ -3,24 +3,24 @@ import { Navigate } from 'react-router-dom'
 import App from './App.tsx'
 
 // 登录&注册
-const LoginPage = lazy(() => import('./pages/login'))
-const RegisterPage = lazy(() => import('./pages/register'))
+// const LoginPage = lazy(() => import('./pages/login'))
+// const RegisterPage = lazy(() => import('./pages/register'))
 // 首页
 const HomePage = lazy(() => import('./pages/home'))
 // 智能记账
-const AiPage = lazy(() => import('./pages/ai'))
+// const AiPage = lazy(() => import('./pages/ai'))
 
 export const routeConfig = [
-  {
-    path: '/login',
-    name: '登录',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    name: '注册',
-    element: <RegisterPage />,
-  },
+  // {
+  //   path: '/login',
+  //   name: '登录',
+  //   element: <LoginPage />,
+  // },
+  // {
+  //   path: '/register',
+  //   name: '注册',
+  //   element: <RegisterPage />,
+  // },
   {
     path: '/',
     element: <App />,
@@ -33,10 +33,10 @@ export const routeConfig = [
         path: 'home',
         element: <HomePage />,
       },
-      {
-        path: 'ai',
-        element: <AiPage />,
-      },
+      // {
+      //   path: 'ai',
+      //   element: <AiPage />,
+      // },
     ],
   },
 ]

@@ -7,6 +7,9 @@ import App from './App.tsx'
 // const RegisterPage = lazy(() => import('./pages/register'))
 // 首页
 const HomePage = lazy(() => import('./pages/home'))
+// 新增/编辑明细
+const TransactionPage = lazy(() => import('./pages/transaction'))
+
 // 智能记账
 // const AiPage = lazy(() => import('./pages/ai'))
 
@@ -32,6 +35,10 @@ export const routeConfig = [
       {
         path: 'home',
         element: <HomePage />,
+      },
+      {
+        path: 'transaction',
+        element: <TransactionPage />,
       },
       // {
       //   path: 'ai',

@@ -1,5 +1,6 @@
 import { TransactionEntity } from '@/apis'
 import { useMemo, type FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
 import classnames from 'classnames'
@@ -16,6 +17,8 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
   list = [],
   ...props
 }) => {
+  const navigate = useNavigate()
+
   const groupMap = useMemo(
     () =>
       groupBy(list, (item) =>
@@ -34,7 +37,10 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
           <div className="mt-2 text-sm">
             开始记录您的收入和支出，以便更好地管理财务。
           </div>
-          <div className="m-auto mt-6 inline-block px-4 py-2.5 rounded-full bg-gray-100 text-sm font-bold">
+          <div
+            className="m-auto mt-6 inline-block px-4 py-2.5 rounded-full bg-gray-100 text-sm font-bold"
+            onClick={() => navigate('/transaction')}
+          >
             新增交易
           </div>
         </div>

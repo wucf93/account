@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionType {
+  income
+  expenditure
+}
+
+model Category {
+  id          Int             @id @default(autoincrement())
+  name        String          @unique
+  type        TransactionType
+  icon        String
+  sortOrder   Int
+  Transaction Transaction[]
+
+  @@map("category")
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+
+  // 交易金额
+  amount          Decimal         @default(0)
+  // 交易类型
+  transactionType TransactionType
+  // 交易日期
+  transactionDate DateTime
+  // 交易描述
+  description     String?
+  // 交易对象
+  payee           String?
+  // 用户信息
+  createUserId    String
+  // 创建时间
+  createdAt       DateTime        @default(now())
+  // 更新时间
+  updatedAt       DateTime        @updatedAt
+  // 交易分类
+  category        Category        @relation(fields: [categoryId], references: [id])
+  // 交易分类ID
+  categoryId      Int
+
+  @@map("transaction")
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}

@@ -1,8 +1,9 @@
-import { Bool, OpenAPIRoute } from "chanfana";
+import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Task } from "../types";
+import { type AppContext } from "../types";
 import { PrismaD1 } from "@prisma/adapter-d1";
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from "@/generated/prisma";
+import { CategorySchema } from "@/generated/zod";
 
 export class CategoryList extends OpenAPIRoute {
   schema = {
@@ -14,12 +15,8 @@ export class CategoryList extends OpenAPIRoute {
         content: {
           "application/json": {
             schema: z.object({
-              series: z.object({
-                success: Bool(),
-                result: z.object({
-                  tasks: Task.array(),
-                }),
-              }),
+              success: z.boolean(),
+              data: CategorySchema.openapi("Category").array(),
             }),
           },
         },

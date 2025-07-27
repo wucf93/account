@@ -18,10 +18,10 @@ app.on(["POST", "GET"], "/api/auth/**", (c) => auth(c.env).handler(c.req.raw));
 const openapi = fromHono(app, { docs_url: "/" });
 
 // Register OpenAPI endpoints
-openapi.get("/api/tasks", TaskList);
-openapi.post("/api/tasks", TaskCreate);
-openapi.get("/api/tasks/:taskSlug", TaskFetch);
-openapi.delete("/api/tasks/:taskSlug", TaskDelete);
+// openapi.get("/api/tasks", TaskList);
+// openapi.post("/api/tasks", TaskCreate);
+// openapi.get("/api/tasks/:taskSlug", TaskFetch);
+// openapi.delete("/api/tasks/:taskSlug", TaskDelete);
 
 // Category
 openapi.get("/api/categories", CategoryList);

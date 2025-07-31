@@ -1,6 +1,6 @@
 import { createContext, useContext, type FC } from 'react'
 import useSWR from 'swr'
-import { categoryControllerFindAll, CategoryEntity } from '@/apis'
+import { getCategoryList, Category } from '@/apis'
 import { authClient } from '@/lib'
 import classNames from 'classnames'
 import GlobalLoading from '@/components/global-loading'
@@ -12,8 +12,8 @@ export type UserInfo = Awaited<
 export interface GlobalStore {
   userInfo: UserInfo
   categoryConfigs: {
-    expenditure: CategoryEntity[]
-    income: CategoryEntity[]
+    expenditure: Category[]
+    income: Category[]
   }
 }
 
@@ -37,9 +37,9 @@ export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
     isValidating,
   } = useSWR('globalStore', () =>
     Promise.all([
-      categoryControllerFindAll()
-        .then((res) => res?.data?.data || ([] as CategoryEntity[]))
-        .catch(() => [] as CategoryEntity[]),
+      getCategoryList()
+        .then((res) => res?.data?.data || ([] as Category[]))
+        .catch(() => [] as Category[]),
       authClient
         .getSession()
         .then((res) => res.data?.user || null)

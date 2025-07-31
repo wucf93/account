@@ -4,10 +4,7 @@ import Switch from '@/components/switch-btn'
 import { globalStore } from '@/store'
 import CategorySelect, { DetailsType } from './components/category-select'
 import Keyboard from './components/keyboard'
-import {
-  transactionControllerCreate,
-  transactionControllerUpdate,
-} from '@/apis'
+import { postTransactionCreate, putTransactionUpdate } from '@/apis'
 import { useCallback, useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -41,21 +38,21 @@ export default function TransactionPage() {
       return alert('请输入金额')
     }
     const body = {
-      amount: Number(info.amount),
+      amount: info.amount,
       categoryId: info.categoryId,
       transactionType: info.transactionType,
       transactionDate: info.transactionDate.toString(),
       description: info.description,
     }
     ;(info.id
-      ? transactionControllerUpdate({ body, path: { id: String(info.id) } })
-      : transactionControllerCreate({ body })
+      ? putTransactionUpdate({ body, path: { transactionId: String(info.id) } })
+      : postTransactionCreate({ body })
     ).then((res) => {
       if (res.data?.success) {
         alert('新增成功！')
         navigate(-1)
       } else {
-        alert(res.data?.message || '操作失败')
+        alert('操作失败')
       }
     })
   }, [info])

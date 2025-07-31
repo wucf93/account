@@ -1,4 +1,4 @@
-import { transactionControllerFindAll } from '@/apis'
+import { getTransactionList } from '@/apis'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import useSWR from 'swr'
@@ -15,7 +15,9 @@ export const useFilter = (dateValue: dayjs.Dayjs) => {
   const { data: list = [], mutate } = useSWR(
     ['/api/transaction/list', transactionDate],
     () =>
-      transactionControllerFindAll({ query: { transactionDate } })
+      getTransactionList({
+        query: { transactionDate: transactionDate.toString() },
+      })
         .then((res) => res.data?.data || [])
         .catch(() => [])
   )

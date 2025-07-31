@@ -31,15 +31,14 @@ export class TransactionFetch extends OpenAPIRoute {
     const { transactionId } = data.params;
     const prisma = getPrismaClient(c.env);
 
-    await prisma.transaction.delete({
-      where: {
-        id: Number(transactionId),
-        createUserId: "xxx",
-      },
-    });
-
     return {
       success: true,
+      data: await prisma.transaction.findFirst({
+        where: {
+          id: Number(transactionId),
+          createUserId: c.var.user?.id,
+        },
+      }),
     };
   }
 }

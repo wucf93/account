@@ -34,7 +34,7 @@ export class TransactionDelete extends OpenAPIRoute {
     await prisma.transaction.delete({
       where: {
         id: Number(transactionId),
-        createUserId: "xxx",
+        createUserId: c.var.user?.id,
       },
     });
 

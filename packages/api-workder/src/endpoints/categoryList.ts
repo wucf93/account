@@ -1,9 +1,8 @@
-import { OpenAPIRoute } from "chanfana";
+import { OpenAPIRoute, Bool } from "chanfana";
 import { z } from "zod";
-import { type AppContext } from "../types";
-import { PrismaD1 } from "@prisma/adapter-d1";
-import { PrismaClient } from "@/generated/prisma";
 import { CategorySchema } from "@/generated/zod";
+import { getPrismaClient } from "@/lib/prisma";
+import { type AppContext } from "@/types";
 
 export class CategoryList extends OpenAPIRoute {
   schema = {
@@ -15,7 +14,7 @@ export class CategoryList extends OpenAPIRoute {
         content: {
           "application/json": {
             schema: z.object({
-              success: z.boolean(),
+              ssuccess: Bool(),
               data: CategorySchema.openapi("Category").array(),
             }),
           },
@@ -25,8 +24,7 @@ export class CategoryList extends OpenAPIRoute {
   };
 
   async handle({ env }: AppContext) {
-    const adapter = new PrismaD1(env.DB);
-    const prisma = new PrismaClient({ adapter });
+    const prisma = getPrismaClient(env);
 
     // Get validated data
     return await prisma.category.findMany();

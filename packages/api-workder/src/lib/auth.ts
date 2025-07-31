@@ -1,27 +1,36 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaD1 } from "@prisma/adapter-d1";
-import { PrismaClient } from "../generated/prisma/";
+import { getPrismaClient } from "./prisma";
 
-export const auth = (env: Env) => {
-  const adapter = new PrismaD1(env.DB);
-  const prisma = new PrismaClient({ adapter });
+export const getAuth = (env: Env) => {
+  const prisma = getPrismaClient(env);
 
   return betterAuth({
     database: prismaAdapter(prisma, {
       provider: "sqlite",
     }),
-    trustedOrigins: ["http://localhost:5173", "https://account-b1e.pages.dev"],
+    trustedOrigins: ["http://localhost:5173"],
     emailAndPassword: {
       enabled: true,
       autoSignIn: true,
     },
-    advanced: {
-      defaultCookieAttributes: {
-        sameSite: "none",
-        secure: true,
-        partitioned: true,
+    session: {
+      cookieCache: {
+        enabled: true,
+        maxAge: 5 * 60,
       },
     },
+    // advanced: {
+    //   defaultCookieAttributes: {
+    //     sameSite: "none",
+    //     secure: true,
+    //     partitioned: true,
+    //   },
+    // },
   });
 };
+
+export type AuthSession = ReturnType<
+  typeof getAuth
+>["$Infer"]["Session"]["session"];
+export type AuthUser = ReturnType<typeof getAuth>["$Infer"]["Session"]["user"];

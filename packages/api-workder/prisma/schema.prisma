@@ -38,7 +38,7 @@ model Transaction {
   // 交易ID
   id              Int             @id @default(autoincrement())
   // 交易金额
-  amount          Decimal         @default(0)
+  amount          String
   // 交易类型
   transactionType TransactionType
   // 交易日期

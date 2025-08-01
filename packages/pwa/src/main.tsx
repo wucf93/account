@@ -12,6 +12,6 @@ createRoot(document.getElementById('root')!).render(
       <RouterProvider router={history} future={{ v7_startTransition: true }} />
     </Suspense>
 
-    {/* <PWABadge /> */}
+    <PWABadge />
   </StrictMode>
 )

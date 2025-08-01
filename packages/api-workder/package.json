@@ -22,7 +22,7 @@
     "@types/node": "22.13.0",
     "@types/service-worker-mock": "^2.0.4",
     "prisma": "^6.10.1",
-    "wrangler": "^4.26.0",
+    "wrangler": "^4.27.0",
     "zod-prisma-types": "^3.2.4"
   }
 }

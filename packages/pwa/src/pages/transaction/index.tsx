@@ -1,126 +1,254 @@
-import Page from '@/components/page'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Switch from '@/components/switch-btn'
-import { globalStore } from '@/store'
-import CategorySelect, { DetailsType } from './components/category-select'
-import Keyboard from './components/keyboard'
-import { postTransactionCreate, putTransactionUpdate } from '@/apis'
-import { useCallback, useState } from 'react'
-import dayjs, { Dayjs } from 'dayjs'
+import { useGlobalStore } from '@/store'
+import classnames from 'classnames'
+import dayjs from 'dayjs'
+import Page from '@/components/page'
+import { postTransactionCreate } from '@/apis/sdk.gen'
+import type { TransactionCreateInput } from '@/apis/types.gen'
 
-interface DetailsPopupInfo {
-  visible: boolean
-  id?: number
-  transactionType: DetailsType
-  amount: string
-  transactionDate: Dayjs
-  categoryId: number
-  description: string
-  onSuccess?: () => void
-}
-
-const DEFAULT_INFO = {
-  id: undefined,
-  visible: false,
-  transactionType: DetailsType.Expenditure,
-  amount: '0',
-  transactionDate: dayjs(),
-  categoryId: globalStore.categoryConfigs?.[DetailsType.Expenditure]?.[0]?.id,
-  description: '',
-}
+// 交易类型选项
+const TRANSACTION_TYPES = [
+  { value: 'income' as const, label: '收入' },
+  { value: 'expenditure' as const, label: '支出' },
+]
 
 export default function TransactionPage() {
-  const [info, setInfo] = useState(DEFAULT_INFO)
   const navigate = useNavigate()
+  const { categoryConfigs } = useGlobalStore()
+  const [loading, setLoading] = useState(false)
+  const [formData, setFormData] = useState<TransactionCreateInput>({
+    amount: '',
+    transactionType: 'expenditure',
+    transactionDate: dayjs().format('YYYY-MM-DD'),
+    description: '',
+    categoryId: categoryConfigs.expenditure[0]?.id || 0,
+  })
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const onSaveHandle = useCallback(async () => {
-    if (!Number(info.amount)) {
-      return alert('请输入金额')
+  // 处理输入变化
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === 'transactionType'
+          ? value
+          : name === 'categoryId'
+            ? Number(value)
+            : name === 'amount'
+              ? value || ''
+              : value,
+    }))
+    // 清除对应字段的错误
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[name]
+        return newErrors
+      })
     }
-    const body = {
-      amount: info.amount,
-      categoryId: info.categoryId,
-      transactionType: info.transactionType,
-      transactionDate: info.transactionDate.toString(),
-      description: info.description,
+  }
+
+  // 验证表单
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {}
+
+    if (
+      !formData.amount ||
+      isNaN(Number(formData.amount)) ||
+      Number(formData.amount) <= 0
+    ) {
+      newErrors.amount = '请输入有效的金额'
     }
-    ;(info.id
-      ? putTransactionUpdate({ body, path: { transactionId: String(info.id) } })
-      : postTransactionCreate({ body })
-    ).then((res) => {
-      if (res.data?.success) {
-        alert('新增成功！')
-        navigate(-1)
-      } else {
-        alert('操作失败')
-      }
-    })
-  }, [info])
+
+    if (!formData.categoryId || formData.categoryId <= 0) {
+      newErrors.categoryId = '请选择分类'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  // 处理表单提交
+  const handleSubmit = async () => {
+    if (!validateForm()) return
+
+    try {
+      setLoading(true)
+      await postTransactionCreate({ body: formData })
+      navigate(-1)
+    } catch (error) {
+      console.error('Failed to create transaction:', error)
+      alert('保存失败，请重试')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // 根据交易类型筛选分类
+  const filteredCategories = useMemo(
+    () =>
+      formData.transactionType === 'expenditure'
+        ? categoryConfigs.expenditure
+        : categoryConfigs.income,
+    [categoryConfigs, formData.transactionType]
+  )
 
   return (
     <Page
       showBack
-      title="新增明细"
+      title="添加账单"
       footer={
-        <div className="bg-gray-100 py-1">
-          <Keyboard
-            initialAccountValue={info.amount}
-            onAccountChange={(val) => setInfo({ ...info, amount: val })}
-            initialDateValue={info.transactionDate}
-            onDateChange={(val) => setInfo({ ...info, transactionDate: val })}
-            onSave={onSaveHandle}
-          />
+        <div className="p-4 bg-white dark:bg-gray-800 border-t dark:border-gray-700">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={loading}
+            className={classnames(
+              'w-full py-3 rounded-lg font-medium transition-all duration-300',
+              loading
+                ? 'bg-indigo-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+            )}
+          >
+            {loading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <i className="ri-loader-2-line animate-spin" />
+                <span>保存中...</span>
+              </div>
+            ) : (
+              '保存账单'
+            )}
+          </button>
         </div>
       }
-      className="h-screen"
     >
-      {/* 金额输入 */}
-      <div className="mt-4 mb-4 text-center">
-        <div className="text-sm text-gray-500 mb-2">金额</div>
-        <div className="text-3xl font-medium">
-          ¥ <span>{info.amount}</span>
+      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-800 p-5">
+        {/* 金额 */}
+        <div>
+          <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
+            金额（元）
+          </div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <span className="text-lg">¥</span>
+            <input
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleInputChange}
+              placeholder="0"
+              className={classnames(
+                'flex-1 text-3xl font-bold bg-transparent focus:outline-none ml-1',
+                'dark:text-white placeholder-gray-400 dark:placeholder-gray-500',
+                errors.amount ? 'text-red-500' : 'text-gray-900'
+              )}
+              step="0.01"
+              min="0"
+            />
+          </div>
+          {errors.amount && (
+            <p className="mt-1 text-sm text-red-500">{errors.amount}</p>
+          )}
         </div>
-      </div>
 
-      {/* 类型切换 */}
-      <div className="mb-4 flex justify-between">
-        <Switch<DetailsPopupInfo['transactionType']>
-          value={info.transactionType}
-          onChange={(val) =>
-            setInfo({
-              ...info,
-              transactionType: val,
-              categoryId: globalStore.categoryConfigs[val]?.[0]?.id,
-            })
-          }
-          options={[
-            { label: '支出', value: DetailsType['Expenditure'] },
-            { label: '收入', value: DetailsType['Income'] },
-          ]}
-        />
-      </div>
+        {/* 交易类型 */}
+        <div className="mt-8">
+          <div className="text-sm text-gray-500 mb-3 dark:text-gray-400">
+            交易类型
+          </div>
+          <div className="flex w-full rounded-lg bg-gray-100 p-1 dark:bg-gray-700">
+            {TRANSACTION_TYPES.map((type) => (
+              <button
+                key={type.value}
+                type="button"
+                className={classnames(
+                  'flex-1 rounded-md py-2.5 font-medium transition-all duration-200 text-sm',
+                  formData.transactionType === type.value
+                    ? 'bg-indigo-600 text-white shadow-md'
+                    : 'text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-600'
+                )}
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    transactionType: type.value,
+                  }))
+                }
+              >
+                {type.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-      {/* 分类选择 */}
-      <div className="mb-4">
-        <div className="text-sm px-4 text-gray-500 mb-3">分类</div>
-        <CategorySelect
-          type={info.transactionType}
-          categoryId={info.categoryId}
-          onCategoryChange={(val) => setInfo({ ...info, categoryId: val })}
-        />
-      </div>
+        {/* 日期 */}
+        <div className="mt-8">
+          <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
+            日期
+          </div>
+          <input
+            type="date"
+            name="transactionDate"
+            value={formData.transactionDate || ''}
+            onChange={handleInputChange}
+            max={new Date().toISOString().split('T')[0]}
+            className={classnames(
+              'w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200',
+              'dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
+              errors.transactionDate ? 'border-red-500' : 'border-gray-300'
+            )}
+          />
+          {errors.transactionDate && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.transactionDate}
+            </p>
+          )}
+        </div>
 
-      {/* 备注 */}
-      <div className="mb-4 px-4">
-        <div className="text-sm text-gray-500 mb-2">备注</div>
-        <input
-          value={info.description}
-          onChange={(val) =>
-            setInfo({ ...info, description: val.target.value })
-          }
-          placeholder="添加备注..."
-          className="w-full h-12 px-3 rounded-lg bg-white border-none shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/80"
-        />
+        {/* 分类 */}
+        <div className="mt-8">
+          <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
+            分类
+          </div>
+          <select
+            name="categoryId"
+            value={formData.categoryId}
+            onChange={handleInputChange}
+            className={classnames(
+              'w-full px-4 py-3 pr-10 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 appearance-none bg-white dark:bg-gray-700',
+              'dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
+              errors.categoryId ? 'border-red-500' : 'border-gray-300'
+            )}
+          >
+            {filteredCategories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          {errors.categoryId && (
+            <p className="mt-1 text-sm text-red-500">{errors.categoryId}</p>
+          )}
+        </div>
+
+        {/* 备注 */}
+        <div className="mt-8">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            备注 (可选)
+          </label>
+          <textarea
+            name="description"
+            value={formData.description || ''}
+            onChange={handleInputChange}
+            placeholder="请输入备注信息"
+            rows={3}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500"
+          />
+        </div>
       </div>
     </Page>
   )

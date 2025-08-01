@@ -39,12 +39,12 @@ export default function DataAnalysis(props: DataAnalysisProps) {
       )}
       style={props.style}
     >
-      <div className="grid grid-cols-3 divide-x divide-gray-100 dark:divide-gray-700">
+      <div className="grid grid-cols-2 divide-x divide-gray-100 dark:divide-gray-700">
         <div className="p-6 flex flex-col items-center justify-center bg-gradient-to-br from-green-50 to-transparent dark:from-green-900/20 dark:to-transparent">
           <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
             收入
           </div>
-          <div className="mt-2 text-xl font-bold text-green-500">
+          <div className="mt-2 text-2xl font-bold text-green-500">
             ¥ {formatNumber(totalIncome)}
           </div>
         </div>
@@ -52,11 +52,11 @@ export default function DataAnalysis(props: DataAnalysisProps) {
           <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
             支出
           </div>
-          <div className="mt-2 text-xl font-bold text-red-500">
+          <div className="mt-2 text-2xl font-bold text-red-500">
             ¥ {formatNumber(totalExpenditure)}
           </div>
         </div>
-        <div className="p-6 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/20 dark:to-transparent">
+        {/* <div className="p-6 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/20 dark:to-transparent">
           <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
             结余
           </div>
@@ -65,7 +65,7 @@ export default function DataAnalysis(props: DataAnalysisProps) {
           >
             ¥ {formatNumber(balance)}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

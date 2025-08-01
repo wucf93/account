@@ -23,10 +23,9 @@ export class TransactionList extends OpenAPIRoute {
           "application/json": {
             schema: z.object({
               success: Bool(),
-              data: TransactionSchema.setKey(
-                "category",
-                CategorySchema.openapi("Category")
-              )
+              data: TransactionSchema.extend({
+                category: CategorySchema.openapi("Category"),
+              })
                 .openapi("Transaction")
                 .array(),
             }),

@@ -18,13 +18,13 @@ export default function Page(props: PageProps) {
   return (
     <div
       className={classnames(
-        'h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800',
+        'h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white font-semibold',
         props.className
       )}
       style={props.style}
     >
       {props.title && (
-        <div className="flex-none h-16 flex items-center justify-between">
+        <div className="flex-none px-4 h-16 flex items-center justify-between">
           <div className="w-12 overflow-hidden" onClick={() => navigate(-1)}>
             {props.showBack && <i className="ri-arrow-left-line text-2xl" />}
           </div>
@@ -35,7 +35,9 @@ export default function Page(props: PageProps) {
         </div>
       )}
 
-      <div className="flex-auto overflow-y-auto">{props.children}</div>
+      <div className="flex-auto overflow-y-auto overflow-x-hidden p-4 pt-0">
+        {props.children}
+      </div>
 
       {props.footer && <div className="flex-none">{props.footer}</div>}
     </div>

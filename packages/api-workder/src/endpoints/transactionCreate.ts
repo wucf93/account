@@ -32,7 +32,6 @@ export class TransactionCreate extends OpenAPIRoute {
           "application/json": {
             schema: z.object({
               success: Bool(),
-              data: TransactionSchema.openapi("Transaction"),
             }),
           },
         },

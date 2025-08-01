@@ -8,6 +8,14 @@ export type Category = {
     sortOrder: number;
 };
 
+export type TransactionCreateInput = {
+    amount: string;
+    transactionType: 'income' | 'expenditure';
+    transactionDate: string | null;
+    description: string | null;
+    categoryId: number;
+};
+
 export type Transaction = {
     transactionType: 'income' | 'expenditure';
     id: number;
@@ -19,14 +27,7 @@ export type Transaction = {
     createdAt: string | null;
     updatedAt: string | null;
     categoryId: number;
-};
-
-export type TransactionCreateInput = {
-    amount: string;
-    transactionType: 'income' | 'expenditure';
-    transactionDate: string | null;
-    description: string | null;
-    categoryId: number;
+    category: Category;
 };
 
 export type TransactionUpdateInput = {
@@ -74,19 +75,7 @@ export type GetTransactionListResponses = {
      */
     200: {
         success: boolean;
-        data: Array<Transaction & {
-            transactionType: 'income' | 'expenditure';
-            id: number;
-            amount: string;
-            transactionDate: string | null;
-            description: string | null;
-            payee: string | null;
-            createUserId: string;
-            createdAt: string | null;
-            updatedAt: string | null;
-            categoryId: number;
-            category: Category;
-        }>;
+        data: Array<Transaction>;
     };
 };
 
@@ -105,7 +94,6 @@ export type PostTransactionCreateResponses = {
      */
     200: {
         success: boolean;
-        data: Transaction;
     };
 };
 
@@ -175,7 +163,6 @@ export type PutTransactionUpdateResponses = {
      */
     200: {
         success: boolean;
-        data: Transaction;
     };
 };
 

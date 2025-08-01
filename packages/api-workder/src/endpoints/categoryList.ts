@@ -25,8 +25,6 @@ export class CategoryList extends OpenAPIRoute {
 
   async handle({ env }: AppContext) {
     const prisma = getPrismaClient(env);
-
-    // Get validated data
-    return await prisma.category.findMany();
+    return { success: true, data: await prisma.category.findMany() };
   }
 }

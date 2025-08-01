@@ -30,15 +30,13 @@ export default function HomePage() {
         </button>
       }
     >
-      <div className="min-h-full flex-1 rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-xl">
-        {/* 数据统计 */}
-        <DataAnalysis totalList={list} className="m-4" />
+      {/* 数据统计 */}
+      <DataAnalysis totalList={list} />
 
-        {/* 快捷工具 */}
-        <QuickTools className="my-4" />
+      {/* 快捷工具 */}
+      <QuickTools />
 
-        <TransactionRecord list={filterList} />
-      </div>
+      <TransactionRecord list={filterList} />
     </Page>
   )
 }

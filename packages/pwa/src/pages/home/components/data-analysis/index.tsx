@@ -44,7 +44,7 @@ export default function DataAnalysis(props: DataAnalysisProps) {
           <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
             收入
           </div>
-          <div className="mt-2 text-2xl font-bold text-green-500">
+          <div className="mt-2 text-xl font-bold text-green-500">
             ¥ {formatNumber(totalIncome)}
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function DataAnalysis(props: DataAnalysisProps) {
           <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
             支出
           </div>
-          <div className="mt-2 text-2xl font-bold text-red-500">
+          <div className="mt-2 text-xl font-bold text-red-500">
             ¥ {formatNumber(totalExpenditure)}
           </div>
         </div>

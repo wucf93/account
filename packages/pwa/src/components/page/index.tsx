@@ -25,17 +25,20 @@ export default function Page(props: PageProps) {
     >
       {props.title && (
         <div className="flex-none px-4 h-16 flex items-center justify-between">
-          <div className="w-12 overflow-hidden" onClick={() => navigate(-1)}>
-            {props.showBack && <i className="ri-arrow-left-line text-2xl" />}
+          <div className="flex items-center gap-3 text-xl font-bold">
+            {props.showBack && (
+              <i className="ri-arrow-left-line" onClick={() => navigate(-1)} />
+            )}
+            <div>{props.title}</div>
           </div>
-          <div className="font-bold text-lg">{props.title}</div>
+
           <div className="w-12 overflow-hidden flex justify-end">
             {props.titleExtra}
           </div>
         </div>
       )}
 
-      <div className="flex-auto overflow-y-auto overflow-x-hidden p-4 pt-0">
+      <div className="flex-auto overflow-y-auto overflow-x-hidden p-4 pt-2">
         {props.children}
       </div>
 

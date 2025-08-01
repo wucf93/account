@@ -7,13 +7,12 @@ interface QuickToolsProps {
   style?: React.CSSProperties
 }
 
-
 export default function QuickTools(props: QuickToolsProps) {
   const navigate = useNavigate()
 
   return (
     <div
-      className={classnames('px-4 py-4 grid grid-cols-4 gap-3', props.className)}
+      className={classnames('py-4 grid grid-cols-4 gap-3', props.className)}
       style={props.style}
     >
       {QUICK_TOOLS.map((item) => (
@@ -27,9 +26,16 @@ export default function QuickTools(props: QuickToolsProps) {
           )}
         >
           <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center mb-2">
-            <i className={classnames(item.icon, 'text-lg text-indigo-600 dark:text-indigo-400')} />
+            <i
+              className={classnames(
+                item.icon,
+                'text-lg text-indigo-600 dark:text-indigo-400'
+              )}
+            />
           </div>
-          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{item.name}</span>
+          <span className="text-xs font-medium text-gray-700 dark:text-gray-300 mt-1">
+            {item.name}
+          </span>
         </button>
       ))}
     </div>

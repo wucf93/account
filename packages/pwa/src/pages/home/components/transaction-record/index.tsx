@@ -1,14 +1,13 @@
-import { TransactionEntity, transactionControllerRemove } from '@/apis'
-import { useCallback, useMemo, useState, type FC } from 'react'
+import { Transaction } from '@/apis/types.gen'
+import { useMemo, type FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import groupBy from 'lodash/groupBy'
 import dayjs from 'dayjs'
-import Decimal from 'decimal.js'
-import { ActionSheet, ErrorBlock, Toast } from 'antd-mobile'
-import { useSetAtom } from 'jotai'
-import { detailsPopupInfo, DetailsType } from '@/components/details-popup/atom'
+import classnames from 'classnames'
+import { formatNumber } from '@/utils'
 
 export interface TransactionRecordProps {
-  list: TransactionEntity[]
+  list: Transaction[]
   className?: string
   style?: React.CSSProperties
   onReflush?: () => void
@@ -18,8 +17,8 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
   list = [],
   ...props
 }) => {
-  const setInfo = useSetAtom(detailsPopupInfo)
-  const [actionId, setActionId] = useState<TransactionEntity['id']>()
+  const navigate = useNavigate()
+
   const groupMap = useMemo(
     () =>
       groupBy(list, (item) =>
@@ -28,144 +27,94 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
     [list]
   )
 
-  const deleteHander = useCallback(() => {
-    transactionControllerRemove({ path: { id: String(actionId!) } }).then(
-      (res) => {
-        if (res.data?.success) {
-          setActionId(undefined)
-          props.onReflush?.()
-        } else {
-          Toast.show({ content: res.data?.message || '删除失败' })
-        }
-      }
-    )
-  }, [actionId, props.onReflush])
-
-  if (!list.length)
-    return (
-      <div className={props.className} style={props.style}>
-        <ErrorBlock
-          className="w-60 m-auto flex flex-col items-center mt-12"
-          status="empty"
-          description=""
-          title="暂无数据，请选择月份查询"
-        />
-      </div>
-    )
-
   return (
-    <div className={props.className} style={props.style}>
+    <div className={classnames(props.className)} style={props.style}>
+      <div className="mt-5 mb-4 text-xl font-bold text-gray-800 dark:text-white">
+        交易记录
+      </div>
+
+      {!list.length && (
+        <div
+          className={
+            'flex flex-col items-center justify-center py-12 rounded-2xl bg-gray-50 dark:bg-gray-800/50 mt-4'
+          }
+        >
+          <div className="w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mb-4">
+            <i className="ri-file-text-line text-2xl text-indigo-500 dark:text-indigo-400" />
+          </div>
+          <div className="font-bold text-lg text-gray-800 dark:text-white">
+            没有交易记录
+          </div>
+          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center max-w-xs px-4">
+            开始记录您的收入和支出，以便更好地管理财务。
+          </div>
+          <button
+            className="mt-6 px-5 py-2.5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-md transition-all duration-200"
+            onClick={() => navigate('/transaction')}
+          >
+            新增交易
+          </button>
+        </div>
+      )}
+
       {Object.keys(groupMap)
         .sort((a, b) => Number(b) - Number(a))
         .map((item) => {
           const day = dayjs(Number(item))
-          const total = groupMap[item].reduce(
-            ([income, expenditure], cur) => {
-              if (cur.transactionType === 'income') {
-                income = Decimal(income).add(cur.amount).toNumber()
-              } else {
-                expenditure = Decimal(expenditure).add(cur.amount).toNumber()
-              }
-              return [income, expenditure]
-            },
-            [0, 0]
-          )
+          const isTodayOrYesterday =
+            day.isSame(dayjs(), 'day') ||
+            day.isSame(dayjs().subtract(1, 'day'), 'day')
 
           return (
-            <div className="mb-4 bg-white rounded-xl shadow-xs px-3" key={item}>
-              <div className="flex justify-between items-center pt-3 text-xs text-gray-600">
-                <div>
-                  {day.isSame(dayjs(), 'day')
-                    ? '今天'
-                    : day.isSame(dayjs().subtract(1, 'day'), 'day')
-                      ? '昨天'
-                      : day.format('MM-DD')}
-                </div>
-                <div>
-                  {!!total[1] && <span>支出：{total[1].toFixed(2)}</span>}
-                  {!!total[0] && (
-                    <span className="ml-2">收入：{total[0].toFixed(2)}</span>
-                  )}
-                </div>
+            <div key={item} className="mt-5">
+              <div
+                className={`text-lg font-bold ${isTodayOrYesterday ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'}`}
+              >
+                {day.isSame(dayjs(), 'day')
+                  ? '今天'
+                  : day.isSame(dayjs().subtract(1, 'day'), 'day')
+                    ? '昨天'
+                    : day.format('MM-DD')}
               </div>
-              <div className="overflow-hidden">
-                {groupMap[item].map((item2) => (
+
+              {groupMap[item].map((item2) => (
+                <button
+                  key={item2.id}
+                  onClick={() => navigate(`/transaction/detail/${item2.id}`)}
+                  className="w-full flex items-center py-3 px-4 gap-4 mt-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700"
+                >
                   <div
-                    key={item2.id}
-                    className="flex items-center py-3 border-b border-gray-100"
-                    onClick={() => setActionId(item2.id)}
+                    className={`flex-none w-12 h-12 rounded-lg flex items-center justify-center ${item2.transactionType === 'income' ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'}`}
                   >
-                    <div
-                      className={`w-9 h-9 rounded-lg bg-${item2?.category?.color}-100 flex items-center justify-center mr-3`}
-                    >
-                      <i
-                        className={`${item2?.category?.icon} text-${item2?.category?.color}-500 ri-lg`}
-                      />
+                    <i
+                      className={`${item2?.category?.icon} text-xl ${item2.transactionType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}
+                    />
+                  </div>
+
+                  <div className="flex-auto overflow-hidden">
+                    <div className="font-medium text-gray-800 dark:text-white text-left">
+                      {item2?.category?.name}
                     </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <div className="text-sm font-bold">
-                          {item2?.category?.name}
-                        </div>
-                        <div
-                          className={`flex items-center gap-0.5 font-bold text-${item2.transactionType === 'income' ? 'black' : 'indigo'}-500 text-sm`}
-                        >
-                          {(
-                            Number(item2.amount) *
-                            (item2.transactionType === 'income' ? 1 : -1)
-                          ).toFixed(2)}
-                        </div>
-                      </div>
-                      <div className="flex justify-between">
-                        <div className="text-xs text-gray-500">
-                          {item2.description || item2?.category?.name}
-                        </div>
-                      </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 text-left">
+                      {item2.description || item2?.category?.name}
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="flex-none text-right">
+                    <span
+                      className={`mr-0.5 ${item2.transactionType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}
+                    >
+                      {item2.transactionType === 'income' ? '+' : '-'}
+                    </span>
+                    <span className="font-medium text-gray-800 dark:text-white">
+                      {formatNumber(Number(item2.amount))}
+                    </span>
+                  </div>
+                </button>
+              ))}
             </div>
           )
         })}
-
-      <ActionSheet
-        visible={!!actionId}
-        cancelText="取消"
-        actions={[
-          {
-            text: '修改',
-            key: 'edit',
-            onClick: () => {
-              const selectInfo = list.find((item) => item.id === actionId)
-              if (selectInfo) {
-                setInfo((pre) => ({
-                  ...pre,
-                  visible: true,
-                  id: selectInfo.id,
-                  transactionType:
-                    selectInfo.transactionType as unknown as DetailsType,
-                  amount: String(selectInfo.amount),
-                  transactionDate: dayjs(selectInfo.transactionDate),
-                  categoryId: selectInfo.categoryId,
-                  description: selectInfo.description || '',
-                  onSuccess: props.onReflush,
-                }))
-              }
-              setActionId(undefined)
-            },
-          },
-          {
-            text: '删除',
-            key: 'delete',
-            description: '删除后数据不可恢复',
-            danger: true,
-            bold: true,
-            onClick: () => deleteHander(),
-          },
-        ]}
-        onClose={() => setActionId(undefined)}
-      />
     </div>
   )
 }

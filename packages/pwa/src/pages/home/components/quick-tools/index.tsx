@@ -1,52 +1,43 @@
-import clsx from 'classnames'
+import classnames from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import ImageTool from './components/image-tool'
+import { QUICK_TOOLS } from './config'
 
 interface QuickToolsProps {
   className?: string
   style?: React.CSSProperties
-  onReflush?: () => void
 }
 
-export default function QuickTools(porps: QuickToolsProps) {
+export default function QuickTools(props: QuickToolsProps) {
   const navigate = useNavigate()
 
   return (
     <div
-      className={clsx('flex items-center gap-6', porps.className)}
-      style={porps.style}
+      className={classnames('py-4 grid grid-cols-4 gap-3', props.className)}
+      style={props.style}
     >
-      {/* 图片识别工具 */}
-      <ImageTool onSaveHander={porps.onReflush} />
-
-      {/* 智能记账 */}
-      <div
-        className="flex flex-col justify-center"
-        onClick={() => navigate('/ai')}
-      >
-        <div className="w-12 h-12 flex items-center justify-center bg-indigo-200 rounded-xl shadow-2xl">
-          <i className="ri-robot-3-fill text-3xl text-indigo-500" />
-        </div>
-        <span className="text-xs mt-1.5 text-gray-500">智能记账</span>
-      </div>
-
-      {/* 定时记账 */}
-      <div className="flex flex-col justify-center">
-        <div className="w-12 h-12 flex items-center justify-center bg-blue-200 rounded-xl shadow-2xl">
-          <i className="ri-timer-flash-fill text-3xl text-blue-500" />
-        </div>
-        <span className="text-xs mt-1.5 text-gray-500 text-center">
-          定时记账
-        </span>
-      </div>
-
-      {/* 统计分析 */}
-      <div className="flex flex-col justify-center">
-        <div className="w-12 h-12 flex items-center justify-center bg-violet-200 rounded-xl shadow-2xl">
-          <i className="ri-bar-chart-box-fill text-3xl text-violet-500" />
-        </div>
-        <span className="text-xs mt-1.5 text-gray-500">统计分析</span>
-      </div>
+      {QUICK_TOOLS.map((item) => (
+        <button
+          key={item.name}
+          onClick={() => navigate(item.path)}
+          className={classnames(
+            'flex flex-col items-center justify-center py-3 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-200',
+            'hover:-translate-y-0.5',
+            'border border-gray-100 dark:border-gray-700'
+          )}
+        >
+          <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center mb-2">
+            <i
+              className={classnames(
+                item.icon,
+                'text-lg text-indigo-600 dark:text-indigo-400'
+              )}
+            />
+          </div>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            {item.name}
+          </span>
+        </button>
+      ))}
     </div>
   )
 }

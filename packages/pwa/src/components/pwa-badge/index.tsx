@@ -1,5 +1,5 @@
+import { useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
-import { Dialog } from 'antd-mobile'
 
 function registerPeriodicSync(
   period: number,
@@ -43,28 +43,15 @@ export default function PWABadge() {
     },
   })
 
-  function close() {
-    setNeedRefresh(false)
-  }
+  useEffect(() => {
+    if (needRefresh) {
+      if (window.confirm('发现新内容，是否刷新？')) {
+        updateServiceWorker(true)
+      } else {
+        setNeedRefresh(false)
+      }
+    }
+  }, [needRefresh])
 
-  return (
-    <Dialog
-      title="新内容可用"
-      content="发现新内容，是否刷新？"
-      visible={needRefresh}
-      actions={[
-        {
-          key: 'refresh',
-          text: '刷新',
-          onClick: () => updateServiceWorker(true),
-        },
-        {
-          key: 'close',
-          text: '关闭',
-          onClick: () => close(),
-          className: 'text-gray-500',
-        },
-      ]}
-    />
-  )
+  return <></>
 }

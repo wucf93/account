@@ -1,6 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import 'tailwindcss';
 
+@theme {
+  --font-roboto: 'Roboto', sans-serif;
+}
+
 html,
+body {
+  color: #121217;
+  font-family: var(--font-roboto);
+  /* font-family: 'Noto Sans', sans-serif; */
+}
+
+/* html,
 body {
   background-color: var(--color-gray-100);
 }
@@ -8,7 +20,7 @@ body {
 :root:root {
   --adm-font-size-main: var(--text-base);
   --adm-color-primary: var(--color-indigo-500);
-}
+} */
 
 /* 边框流光效果 */
 .border-loading {

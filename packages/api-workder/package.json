@@ -5,7 +5,7 @@
   "scripts": {
     "prisma:gen": "npx prisma generate",
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
+    "dev": "TZ=UTC wrangler dev",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {

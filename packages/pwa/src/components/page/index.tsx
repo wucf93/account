@@ -18,13 +18,17 @@ export default function Page(props: PageProps) {
   return (
     <div
       className={classnames(
-        'h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white',
+        'relative',
+        {
+          'pt-16': props.title,
+          'pb-20': props.footer,
+        },
         props.className
       )}
       style={props.style}
     >
       {props.title && (
-        <div className="flex-none px-4 h-16 flex items-center justify-between">
+        <div className="px-4 h-16 flex items-center justify-between fixed top-0 left-0 right-0 global-bg-color">
           <div className="flex items-center gap-3 text-xl font-bold">
             {props.showBack && (
               <i className="ri-arrow-left-line" onClick={() => navigate(-1)} />
@@ -38,11 +42,15 @@ export default function Page(props: PageProps) {
         </div>
       )}
 
-      <div className="flex-auto overflow-y-auto overflow-x-hidden p-4 pt-2">
+      <div className="overflow-y-auto overflow-x-hidden p-4 pt-2">
         {props.children}
       </div>
 
-      {props.footer && <div className="flex-none">{props.footer}</div>}
+      {props.footer && (
+        <div className="h-20 fixed bottom-0 left-0 right-0 global-bg-color border-t border-gray-700">
+          {props.footer}
+        </div>
+      )}
     </div>
   )
 }

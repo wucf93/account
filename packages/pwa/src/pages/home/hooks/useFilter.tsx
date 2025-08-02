@@ -1,5 +1,5 @@
 import { getTransactionList } from '@/apis'
-import dayjs from 'dayjs'
+import { dayjs } from '@/lib'
 import { useMemo, useState } from 'react'
 import useSWR from 'swr'
 
@@ -7,10 +7,13 @@ export const useFilter = (dateValue: dayjs.Dayjs) => {
   const [keyword] = useState('')
   const [dateVisible, setDateVisible] = useState(false)
   // 月第一天
-  const transactionDate = useMemo(
-    () => dateValue.startOf('month').startOf('month').valueOf(),
-    [dateValue]
-  )
+  const transactionDate = useMemo(() => {
+    console.log(dateValue.toISOString())
+    console.log(dateValue.clone().tz('utc').toISOString())
+    console.log(dateValue.clone().tz('utc').startOf('month').toISOString())
+
+    return dateValue.clone().tz('utc').startOf('month').valueOf()
+  }, [dateValue])
 
   const { data: list = [], mutate } = useSWR(
     ['/api/transaction/list', transactionDate],

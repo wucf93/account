@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalStore } from '@/store'
 import classnames from 'classnames'
-import dayjs from 'dayjs'
+import { dayjs } from '@/lib'
 import Page from '@/components/page'
 import { postTransactionCreate } from '@/apis/sdk.gen'
 import type { TransactionCreateInput } from '@/apis/types.gen'
@@ -80,7 +80,14 @@ export default function TransactionPage() {
 
     try {
       setLoading(true)
-      await postTransactionCreate({ body: formData })
+      await postTransactionCreate({
+        body: {
+          ...formData,
+          transactionDate: dayjs
+            .tz(formData.transactionDate, 'utc')
+            .toISOString(),
+        },
+      })
       navigate(-1)
     } catch (error) {
       console.error('Failed to create transaction:', error)
@@ -104,7 +111,7 @@ export default function TransactionPage() {
       showBack
       title="添加账单"
       footer={
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 h-full w-full">
           <button
             type="button"
             onClick={handleSubmit}
@@ -129,7 +136,7 @@ export default function TransactionPage() {
       }
     >
       {/* 金额 */}
-      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-800 p-5">
+      <div className="rounded-xl bg-white shadow-2xl dark:bg-gray-900 p-5">
         <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
           金额（元）
         </div>
@@ -156,7 +163,7 @@ export default function TransactionPage() {
       </div>
 
       {/* 交易类型 */}
-      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-800 p-5 mt-5">
+      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-900 p-5 mt-5">
         <div className="text-sm text-gray-500 mb-3 dark:text-gray-400">
           交易类型
         </div>
@@ -185,18 +192,20 @@ export default function TransactionPage() {
       </div>
 
       {/* 日期 */}
-      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-800 p-5 mt-5">
+      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-900 p-5 mt-5">
         <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
           日期
         </div>
         <input
           type="date"
           name="transactionDate"
-          value={formData.transactionDate || ''}
+          value={
+            dayjs(formData.transactionDate).local().format('YYYY-MM-DD') || ''
+          }
           onChange={handleInputChange}
           max={new Date().toISOString().split('T')[0]}
           className={classnames(
-            'w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200',
+            'w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-200',
             'dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
             errors.transactionDate ? 'border-red-500' : 'border-gray-300'
           )}
@@ -207,7 +216,7 @@ export default function TransactionPage() {
       </div>
 
       {/* 分类 */}
-      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-800 p-5 mt-5">
+      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-900 p-5 mt-5">
         <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
           分类
         </div>
@@ -216,10 +225,10 @@ export default function TransactionPage() {
           value={formData.categoryId}
           onChange={handleInputChange}
           className={classnames(
-            'w-full px-4 py-3 pr-10 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 appearance-none bg-white dark:bg-gray-700',
-            'dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
-            errors.categoryId ? 'border-red-500' : 'border-gray-300'
-          )}
+          'w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none transition-all duration-200 appearance-none bg-white dark:bg-gray-700',
+          'dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
+          errors.categoryId ? 'border-red-500' : 'border-gray-300'
+        )}
         >
           {filteredCategories.map((category) => (
             <option key={category.id} value={category.id}>
@@ -233,7 +242,7 @@ export default function TransactionPage() {
       </div>
 
       {/* 备注 */}
-      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-800 p-5 mt-5">
+      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-900 p-5 mt-5">
         <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
           备注 (可选)
         </label>
@@ -243,7 +252,7 @@ export default function TransactionPage() {
           onChange={handleInputChange}
           placeholder="请输入备注信息"
           rows={3}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500"
+          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500"
         />
       </div>
     </Page>

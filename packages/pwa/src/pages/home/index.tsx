@@ -6,10 +6,10 @@ import DataAnalysis from './components/data-analysis'
 import QuickTools from './components/quick-tools'
 import TransactionRecord from './components/transaction-record'
 import MonthPicker from '@/components/month-picker'
-import dayjs from 'dayjs'
+import { dayjs } from '@/lib'
 
 export default function HomePage() {
-  const [dateValue, setDateValue] = useState(dayjs())
+  const [dateValue, setDateValue] = useState(dayjs.tz(dayjs(), 'utc'))
   const { filterList, list } = useFilter(dateValue)
   const navigate = useNavigate()
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { getPrismaClient } from "@/lib/prisma";
 import { CategorySchema, TransactionSchema } from "@/generated/zod";
-import dayjs from "dayjs";
+import { dayjs } from "@/lib/day";
 import { type AppContext } from "../types";
 
 export class TransactionList extends OpenAPIRoute {
@@ -40,9 +40,9 @@ export class TransactionList extends OpenAPIRoute {
     const { transactionDate } = data.query;
     const prisma = getPrismaClient(c.env);
 
-    console.log(transactionDate.format("YYYY-MM-DD"));
-    console.log(transactionDate.endOf("month").toDate());
-    console.log(transactionDate.startOf("month").toDate());
+    console.log(transactionDate.format("YYYY-MM-DD HH:mm:ss"));
+    console.log(transactionDate.endOf("month").format("YYYY-MM-DD HH:mm:ss"));
+    console.log(transactionDate.startOf("month").format("YYYY-MM-DD HH:mm:ss"));
 
     return {
       success: true,

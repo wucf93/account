@@ -38,7 +38,7 @@ export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
   } = useSWR('globalStore', () =>
     Promise.all([
       getCategoryList()
-        .then((res) =>  res?.data?.data || ([] as Category[]))
+        .then((res) => res?.data?.data || ([] as Category[]))
         .catch(() => [] as Category[]),
       authClient
         .getSession()
@@ -61,8 +61,6 @@ export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
   }
 
   globalStore = { ...store }
-
-  console.log(store)
 
   return (
     <GlobalContent.Provider value={store}>

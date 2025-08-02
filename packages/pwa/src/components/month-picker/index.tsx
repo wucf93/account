@@ -20,11 +20,10 @@ export default function MonthPicker(props: MonthPickerProps) {
     <div className="relative" onClick={showPicker}>
       {props.children}
       <input
-        value={props.value?.format('YYYY-MM')}
-        onChange={(e) => {
-          console.log(e.target.value)
-          props.onChange?.(dayjs(e.target.value || new Date()))
-        }}
+        value={props.value?.local().format('YYYY-MM')}
+        onChange={(e) =>
+          props.onChange?.(dayjs.tz(e.target.value || new Date(), 'utc'))
+        }
         type="month"
         ref={ref}
         max={props.max?.format('YYYY-MM')}

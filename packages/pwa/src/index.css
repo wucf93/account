@@ -3,24 +3,27 @@
 
 @theme {
   --font-roboto: 'Roboto', sans-serif;
+  --global-bg-color: var(--color-white);
+  --global-font-clor: #121217;
 }
 
-html,
+@media (prefers-color-scheme: dark) {
+  body {
+    --global-bg-color: var(--color-gray-800);
+    --global-font-clor: var(--color-white);
+  }
+}
+
 body {
-  color: #121217;
   font-family: var(--font-roboto);
-  /* font-family: 'Noto Sans', sans-serif; */
+  font-family: 'Noto Sans', sans-serif;
+  color: var(--global-font-clor);
+  background-color: var(--global-bg-color);
 }
 
-/* html,
-body {
-  background-color: var(--color-gray-100);
+.global-bg-color {
+  background-color: var(--global-bg-color);
 }
-
-:root:root {
-  --adm-font-size-main: var(--text-base);
-  --adm-color-primary: var(--color-indigo-500);
-} */
 
 /* 边框流光效果 */
 .border-loading {

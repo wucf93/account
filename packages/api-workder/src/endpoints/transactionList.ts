@@ -40,6 +40,10 @@ export class TransactionList extends OpenAPIRoute {
     const { transactionDate } = data.query;
     const prisma = getPrismaClient(c.env);
 
+    console.log(transactionDate.format("YYYY-MM-DD"));
+    console.log(transactionDate.endOf("month").toDate());
+    console.log(transactionDate.startOf("month").toDate());
+
     return {
       success: true,
       data: await prisma.transaction.findMany({

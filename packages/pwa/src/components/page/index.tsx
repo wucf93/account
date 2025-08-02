@@ -18,7 +18,7 @@ export default function Page(props: PageProps) {
   return (
     <div
       className={classnames(
-        'h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white font-semibold',
+        'h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white',
         props.className
       )}
       style={props.style}

@@ -33,7 +33,7 @@ export default function QuickTools(props: QuickToolsProps) {
               )}
             />
           </div>
-          <span className="text-xs font-medium text-gray-700 dark:text-gray-300 mt-1">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {item.name}
           </span>
         </button>

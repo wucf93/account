@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prisma:gen": "npx prisma generate",
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "start": "wrangler dev",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {

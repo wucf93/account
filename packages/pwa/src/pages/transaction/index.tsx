@@ -136,7 +136,8 @@ export default function TransactionPage() {
       }
     >
       {/* 金额 */}
-      <div className="rounded-xl bg-white shadow-2xl dark:bg-gray-900 p-5">
+      <div className="rounded-xl bg-white shadow-lg
+       dark:bg-gray-900 p-5">
         <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
           金额（元）
         </div>
@@ -225,10 +226,10 @@ export default function TransactionPage() {
           value={formData.categoryId}
           onChange={handleInputChange}
           className={classnames(
-          'w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none transition-all duration-200 appearance-none bg-white dark:bg-gray-700',
-          'dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
-          errors.categoryId ? 'border-red-500' : 'border-gray-300'
-        )}
+            'w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none transition-all duration-200 appearance-none bg-white dark:bg-gray-700',
+            'dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
+            errors.categoryId ? 'border-red-500' : 'border-gray-300'
+          )}
         >
           {filteredCategories.map((category) => (
             <option key={category.id} value={category.id}>

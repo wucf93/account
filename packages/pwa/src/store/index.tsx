@@ -2,7 +2,6 @@ import { createContext, useContext, type FC } from 'react'
 import useSWR from 'swr'
 import { getCategoryList, Category } from '@/apis'
 import { authClient } from '@/lib'
-import classNames from 'classnames'
 import GlobalLoading from '@/components/global-loading'
 
 export type UserInfo = Awaited<
@@ -64,12 +63,7 @@ export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
 
   return (
     <GlobalContent.Provider value={store}>
-      <div
-        className={classNames('min-h-screen', props.className)}
-        style={props.style}
-      >
-        {props.children}
-      </div>
+      {props.children}
     </GlobalContent.Provider>
   )
 }

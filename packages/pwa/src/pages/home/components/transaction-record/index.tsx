@@ -66,9 +66,9 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
             day.isSame(dayjs().subtract(1, 'day'), 'day')
 
           return (
-            <div key={item} className="mt-5">
+            <div key={item} className="mt-6 overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700">
               <div
-                className={`text-lg font-bold ${isTodayOrYesterday ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'}`}
+                className={`px-6 py-3 text-lg font-bold ${isTodayOrYesterday ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20' : 'text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900/30'}`}
               >
                 {day.isSame(dayjs(), 'day')
                   ? '今天'
@@ -77,12 +77,13 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                     : day.format('MM-DD')}
               </div>
 
-              {groupMap[item].map((item2) => (
-                <button
-                  key={item2.id}
-                  onClick={() => navigate(`/transaction/detail/${item2.id}`)}
-                  className="w-full flex items-center py-3 px-4 gap-4 mt-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700"
-                >
+              <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                {groupMap[item].map((item2) => (
+                  <button
+                    key={item2.id}
+                    onClick={() => navigate(`/transaction/detail/${item2.id}`)}
+                    className="w-full flex items-center py-3 px-6 gap-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-all duration-200"
+                  >
                   <div
                     className={`flex-none w-12 h-12 rounded-lg flex items-center justify-center ${item2.transactionType === 'income' ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'}`}
                   >
@@ -111,7 +112,8 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                     </span>
                   </div>
                 </button>
-              ))}
+                ))}
+              </div>
             </div>
           )
         })}

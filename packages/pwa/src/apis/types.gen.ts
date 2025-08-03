@@ -38,6 +38,13 @@ export type TransactionUpdateInput = {
     categoryId: number;
 };
 
+export type TransactionFetchAiRequest = {
+    /**
+     * LLM message
+     */
+    message: string;
+};
+
 export type GetCategoryListData = {
     body?: never;
     path?: never;
@@ -167,6 +174,25 @@ export type PutTransactionUpdateResponses = {
 };
 
 export type PutTransactionUpdateResponse = PutTransactionUpdateResponses[keyof PutTransactionUpdateResponses];
+
+export type PostTransactionFetchAiData = {
+    body?: TransactionFetchAiRequest;
+    path?: never;
+    query?: never;
+    url: '/api/transaction/ai';
+};
+
+export type PostTransactionFetchAiResponses = {
+    /**
+     * Returns the transaction
+     */
+    200: {
+        success: boolean;
+        data: Transaction;
+    };
+};
+
+export type PostTransactionFetchAiResponse = PostTransactionFetchAiResponses[keyof PostTransactionFetchAiResponses];
 
 export type ClientOptions = {
     baseURL: 'http://localhost:8787' | (string & {});

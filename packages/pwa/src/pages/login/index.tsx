@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Page from '@/components/page'
 import { Link, useNavigate } from 'react-router-dom'
 import { authClient } from '@/lib'
 
@@ -35,38 +36,13 @@ const LoginPage: React.FC = () => {
         },
       }
     )
-
-    // 模拟登录API调用
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      // 这里添加实际的登录逻辑
-      console.log('登录成功', { email, password })
-    } catch (err) {
-      setError('登录失败，请检查您的邮箱和密码')
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <Page title="登录账户">
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <div className="p-6 sm:p-8">
-            <div className="flex items-center justify-between mb-6">
-              <span />
-              {/* <Link
-                to="/"
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              >
-                <i className="ri-arrow-left-line text-lg" />
-                <span className="ml-1 text-sm font-medium">返回</span>
-              </Link> */}
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                登录账户
-              </h2>
-            </div>
-
             {error && (
               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md flex items-start">
                 <i className="ri-circle-line text-red-500 dark:text-red-400 mr-2 mt-0.5 flex-shrink-0 text-lg" />
@@ -196,6 +172,7 @@ const LoginPage: React.FC = () => {
               </div>
             </div>
           </div>
+
           <div className="bg-gray-50 dark:bg-gray-700/50 px-6 py-5 border-t border-gray-200 dark:border-gray-700">
             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
               还没有账户?{' '}
@@ -209,7 +186,7 @@ const LoginPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   )
 }
 

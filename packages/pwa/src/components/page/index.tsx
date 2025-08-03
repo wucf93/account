@@ -42,12 +42,12 @@ export default function Page(props: PageProps) {
         </div>
       )}
 
-      <div className="overflow-y-auto overflow-x-hidden p-4 pt-2">
+      <div className="overflow-y-auto overflow-x-hidden p-4 pt-0">
         {props.children}
       </div>
 
       {props.footer && (
-        <div className="h-20 fixed bottom-0 left-0 right-0 global-bg-color border-t border-gray-700">
+        <div className="h-20 fixed bottom-0 left-0 right-0 global-bg-color border-t border-gray-200 dark:border-gray-700">
           {props.footer}
         </div>
       )}

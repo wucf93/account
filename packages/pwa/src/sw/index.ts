@@ -64,7 +64,7 @@ self.addEventListener('fetch', (event) => {
         await cache.put('shared-image', new Response(image))
 
         // 重定向到应用页面
-        return Response.redirect('/home?share=success', 303)
+        return Response.redirect('/ocr?share=success', 303)
       })()
     )
   }

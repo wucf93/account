@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 import { dayjs } from '@/lib'
 import { useNavigate } from 'react-router-dom'
-import type { TransactionCreateInput } from '@/apis'
+import type { Transaction } from '@/apis'
 
 interface TransactionViewProps {
   className?: string
   style?: React.CSSProperties
-  transaction: TransactionCreateInput
+  transaction: Transaction
 }
 
 export default function TransactionView({
@@ -31,56 +31,39 @@ export default function TransactionView({
       </div>
 
       <div className="flex flex-col md:flex-row gap-6 mb-5">
-        {/* 左侧信息 */}
-        <div className="w-full md:w-1/2 space-y-4">
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-100 dark:bg-blue-900/20 dark:border-blue-800">
-            <div className="flex items-center justify-between">
-              <div className="text-gray-500 dark:text-gray-400 mb-1">金额</div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {transaction.amount || 0}
-              </div>
-            </div>
+        <div className="p-4 bg-blue-50 rounded-lg border border-blue-100 dark:bg-blue-900/20 dark:border-blue-800 grid grid-cols-[1fr_3fr] gap-4">
+          <div className="text-gray-500 dark:text-gray-400 mb-1">金额</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white justify-self-end">
+            {transaction.amount || 0}
+          </div>
 
-            <div className="flex items-center justify-between mt-4">
-              <div className="text-gray-500 dark:text-gray-400 mb-1">
-                交易类型
-              </div>
-              <div
-                className={`font-medium px-2 py-0.5 rounded-full text-xs ${(transaction.transactionType || '') === 'expenditure' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100' : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'}`}
-              >
-                {(transaction.transactionType || '') === 'expenditure'
-                  ? '支出'
-                  : '收入'}
-              </div>
+          <div className="text-gray-500 dark:text-gray-400 mb-1">交易类型</div>
+          <div className="justify-self-end">
+            <div
+              className={`font-medium px-2 py-0.5 rounded-full text-xs ${(transaction.transactionType || '') === 'expenditure' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100' : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'}`}
+            >
+              {(transaction.transactionType || '') === 'expenditure'
+                ? '支出'
+                : '收入'}
             </div>
+          </div>
 
-            <div className="flex items-center justify-between mt-4">
-              <div className="text-gray-500 dark:text-gray-400 mb-1">
-                交易日期
-              </div>
-              <div className="font-medium text-gray-800 dark:text-gray-200">
-                {dayjs(transaction.transactionDate).format('YYYY-MM-DD')}
-              </div>
-            </div>
+          <div className="text-gray-500 dark:text-gray-400 mb-1">交易日期</div>
+          <div className="font-medium text-gray-800 dark:text-gray-200 justify-self-end">
+            {dayjs(transaction.transactionDate).format('YYYY-MM-DD')}
+          </div>
 
-            <div className="flex items-center justify-between mt-4">
-              <div className="text-gray-500 dark:text-gray-400 mb-1">
-                分类ID
-              </div>
-              <div className="font-medium text-gray-800 dark:text-gray-200">
-                {transaction.categoryId}
-              </div>
-            </div>
+          <div className="text-gray-500 dark:text-gray-400 mb-1">分类ID</div>
+          <div className="font-medium text-gray-800 dark:text-gray-200 justify-self-end">
+            {transaction.category?.name}
+          </div>
 
-            <div className="flex items-center justify-between mt-4">
-              <div className="text-gray-500 dark:text-gray-400 mb-1">描述</div>
-              <div
-                className="text-sm text-gray-800 dark:text-gray-200 truncate max-w-full"
-                title={transaction.description || ''}
-              >
-                {transaction.description || '无描述'}
-              </div>
-            </div>
+          <div className="text-gray-500 dark:text-gray-400 mb-1">描述</div>
+          <div
+            className="font-medium text-gray-800 dark:text-gray-200 truncate max-w-full justify-self-end"
+            title={transaction.description || ''}
+          >
+            {transaction.description || '无描述'}
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import Page from '@/components/page'
 import {
   postTransactionFetchAi,
   postTransactionCreate,
-  TransactionCreateInput,
+  Transaction,
 } from '@/apis'
 import { getShareImage } from './utils'
 import Button from '@/components/button'
@@ -17,13 +17,7 @@ export default function OCRPage() {
   const [image, setImage] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [ocrProgress, setOcrProgress] = useState<number>(0)
-  const [transaction, setTransaction] = useState<TransactionCreateInput>({
-    transactionDate: '2025-08-03T00:00:00.000Z',
-    amount: '98.99',
-    transactionType: 'expenditure',
-    categoryId: 103,
-    description: '2025-08-03 09:39:54 财付通支付 98.99元',
-  })
+  const [transaction, setTransaction] = useState<Transaction>()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
 
@@ -65,7 +59,7 @@ export default function OCRPage() {
         if (newProgress >= 100) return 100
         return newProgress
       })
-    }, 400)
+    }, 500)
 
     try {
       const text = await recognizeText(image)
@@ -90,30 +84,27 @@ export default function OCRPage() {
     setTransaction(undefined)
   }
 
-  const handleSave = useCallback(
-    () => async () => {
-      if (!transaction) return
-      try {
-        await postTransactionCreate({
-          body: {
-            amount: transaction.amount,
-            transactionType: transaction.transactionType,
-            transactionDate: dayjs
-              .tz(transaction.transactionDate, 'utc')
-              .format('YYYY-MM-DD'),
-            description: transaction.description,
-            categoryId: transaction.categoryId,
-          },
-        })
-        alert('保存成功')
-        navigate('/', { replace: true })
-      } catch (error) {
-        console.error('保存失败:', error)
-        alert('保存失败，请重试')
-      }
-    },
-    [transaction]
-  )
+  const handleSave = useCallback(async () => {
+    if (!transaction) return
+    try {
+      await postTransactionCreate({
+        body: {
+          amount: transaction.amount,
+          transactionType: transaction.transactionType,
+          transactionDate: dayjs
+            .tz(transaction.transactionDate, 'utc')
+            .format('YYYY-MM-DD'),
+          description: transaction.description,
+          categoryId: transaction.categoryId,
+        },
+      })
+      alert('保存成功')
+      navigate('/', { replace: true })
+    } catch (error) {
+      console.error('保存失败:', error)
+      alert('保存失败，请重试')
+    }
+  }, [transaction])
 
   return (
     <Page
@@ -186,13 +177,15 @@ export default function OCRPage() {
           {loading && (
             <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-10">
               <div className="w-full max-w-md px-4">
-                <div className="relative h-3 bg-black/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
+                <div className="relative h-3 bg-black/30 dark:bg-gray-700/50 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-indigo-500 to-blue-400 transition-all duration-300"
-                    style={{ width: `${ocrProgress}%` }}
+                    style={{
+                      width: `${ocrProgress === 100 ? 99 : ocrProgress}%`,
+                    }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-white drop-shadow-sm">
-                    {ocrProgress}%
+                    {ocrProgress === 100 ? 99 : ocrProgress}%
                   </div>
                 </div>
               </div>

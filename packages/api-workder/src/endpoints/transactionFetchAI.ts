@@ -63,8 +63,7 @@ export class TransactionFetchAI extends OpenAPIRoute {
           .transform((val) => new Date(val).toISOString()),
         amount: z
           .string()
-          .describe("交易金额,必须为正数数字,如果是支出则取绝对值")
-          .transform((val) => parseFloat(val)),
+          .describe("交易金额,必须为正数数字,如果是支出则取绝对值"),
         transactionType: z
           .enum(["income", "expenditure"])
           .describe("交易类型，收入(income)或支出(expenditure)"),

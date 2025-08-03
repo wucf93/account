@@ -7,6 +7,6 @@
     {
       "binding": "ACCOUNT_SERVICE",
       "service": "account",
-    },
-  ],
+    }
+  ]
 }

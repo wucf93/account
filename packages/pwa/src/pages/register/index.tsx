@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { authClient } from '@/lib'
+import Page from '@/components/page'
 import { Link, useNavigate } from 'react-router-dom'
 
 const RegisterPage: React.FC = () => {
@@ -78,23 +79,10 @@ const RegisterPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <Page title="创建账户" showBack>
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <div className="p-6 sm:p-8">
-            <div className="flex items-center justify-between mb-6">
-              <Link
-                to="/"
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              >
-                <i className="ri-arrow-left-line text-lg" />
-                <span className="ml-1 text-sm font-medium">返回</span>
-              </Link>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                创建账户
-              </h2>
-            </div>
-
             {error && (
               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md flex items-center">
                 <i className="ri-alert-line text-red-500 dark:text-red-400 mr-2 flex-shrink-0 text-lg" />
@@ -301,7 +289,7 @@ const RegisterPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   )
 }
 

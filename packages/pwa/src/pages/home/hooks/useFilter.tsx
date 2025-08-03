@@ -8,10 +8,6 @@ export const useFilter = (dateValue: dayjs.Dayjs) => {
   const [dateVisible, setDateVisible] = useState(false)
   // 月第一天
   const transactionDate = useMemo(() => {
-    console.log(dateValue.toISOString())
-    console.log(dateValue.clone().tz('utc').toISOString())
-    console.log(dateValue.clone().tz('utc').startOf('month').toISOString())
-
     return dateValue.clone().tz('utc').startOf('month').valueOf()
   }, [dateValue])
 

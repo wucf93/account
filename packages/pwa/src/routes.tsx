@@ -4,14 +4,13 @@ import App from './App.tsx'
 
 // 登录&注册
 const LoginPage = lazy(() => import('./pages/login'))
-const RegisterPage = lazy(() => import('./pages/register/index.tsx'))
+const RegisterPage = lazy(() => import('./pages/register'))
 // 首页
 const HomePage = lazy(() => import('./pages/home'))
 // 新增/编辑明细
 const TransactionPage = lazy(() => import('./pages/transaction'))
-
-// 智能记账
-// const AiPage = lazy(() => import('./pages/ai'))
+// 图片识别
+const OCRPage = lazy(() => import('./pages/ocr'))
 
 export const routeConfig = [
   {
@@ -39,6 +38,10 @@ export const routeConfig = [
       {
         path: 'transaction',
         element: <TransactionPage />,
+      },
+      {
+        path: 'ocr',
+        element: <OCRPage />,
       },
       // {
       //   path: 'ai',

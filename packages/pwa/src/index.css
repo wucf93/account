@@ -3,7 +3,8 @@
 
 @theme {
   --font-roboto: 'Roboto', sans-serif;
-  --global-bg-color: var(--color-white);
+  /* --global-bg-color: var(--color-white); */
+  --global-bg-color: var(--color-gray-50);
   --global-font-clor: #121217;
 }
 

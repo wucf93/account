@@ -36,17 +36,6 @@ const LoginPage: React.FC = () => {
         },
       }
     )
-
-    // 模拟登录API调用
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      // 这里添加实际的登录逻辑
-      console.log('登录成功', { email, password })
-    } catch (err) {
-      setError('登录失败，请检查您的邮箱和密码')
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   return (

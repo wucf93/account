@@ -89,7 +89,7 @@ export default function OCRPage() {
     try {
       await postTransactionCreate({
         body: {
-          amount: transaction.amount,
+          amount: String(transaction.amount),
           transactionType: transaction.transactionType,
           transactionDate: dayjs
             .tz(transaction.transactionDate, 'utc')

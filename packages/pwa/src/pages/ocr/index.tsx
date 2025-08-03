@@ -1,16 +1,31 @@
-import { useState, useRef, useEffect } from 'react'
-import useOCR from '../../hooks/useOCR'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import useOCR from '@/hooks/useOCR'
 import Page from '@/components/page'
-import classnames from 'classnames'
+import {
+  postTransactionFetchAi,
+  postTransactionCreate,
+  TransactionCreateInput,
+} from '@/apis'
 import { getShareImage } from './utils'
+import Button from '@/components/button'
+import dayjs from 'dayjs'
+import TransactionView from './components/transaction-view'
+import { useNavigate } from 'react-router-dom'
 
 export default function OCRPage() {
   const { recognizeText } = useOCR()
   const [image, setImage] = useState<string | null>(null)
-  const [result, setResult] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
   const [ocrProgress, setOcrProgress] = useState<number>(0)
+  const [transaction, setTransaction] = useState<TransactionCreateInput>({
+    transactionDate: '2025-08-03T00:00:00.000Z',
+    amount: '98.99',
+    transactionType: 'expenditure',
+    categoryId: 103,
+    description: '2025-08-03 09:39:54 财付通支付 98.99元',
+  })
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     getShareImage().then((blob) => {
@@ -28,7 +43,7 @@ export default function OCRPage() {
     const reader = new FileReader()
     reader.onload = (event) => {
       setImage(event.target?.result as string)
-      setResult('') // 重置结果
+      setTransaction(undefined) // 重置结果
     }
     reader.readAsDataURL(file)
   }
@@ -39,43 +54,66 @@ export default function OCRPage() {
   }
 
   // 处理OCR识别
-  const handleOCR = async () => {
+  const handleOCR = useCallback(async () => {
     if (!image) return
+    // 模拟进度更新
+    setLoading(true)
+    setOcrProgress(0)
+    const interval = setInterval(() => {
+      setOcrProgress((prev) => {
+        const newProgress = prev + 5
+        if (newProgress >= 100) return 100
+        return newProgress
+      })
+    }, 400)
 
     try {
-      setLoading(true)
-      setOcrProgress(0)
-
-      // 模拟进度更新
-      const interval = setInterval(() => {
-        setOcrProgress((prev) => {
-          const newProgress = prev + 5
-          if (newProgress >= 100) {
-            clearInterval(interval)
-            return 100
-          }
-          return newProgress
-        })
-      }, 200)
-
       const text = await recognizeText(image)
-      setResult(text)
-      clearInterval(interval)
+      const json = await (
+        await postTransactionFetchAi({ body: { message: text } })
+      ).data?.data
+      setTransaction(json)
       setOcrProgress(100)
     } catch (error) {
       console.error('OCR识别失败:', error)
       alert('识别失败，请重试')
     } finally {
+      clearInterval(interval)
       setLoading(false)
     }
-  }
+  }, [image])
 
   // 清除图片和结果
   const clearImage = () => {
     fileInputRef.current?.value && (fileInputRef.current.value = '')
     setImage(null)
-    setResult('')
+    setTransaction(undefined)
   }
+
+  const handleSave = useCallback(
+    () => async () => {
+      if (!transaction) return
+      try {
+        await postTransactionCreate({
+          body: {
+            amount: transaction.amount,
+            transactionType: transaction.transactionType,
+            transactionDate: dayjs
+              .tz(transaction.transactionDate, 'utc')
+              .format('YYYY-MM-DD'),
+            description: transaction.description,
+            categoryId: transaction.categoryId,
+          },
+        })
+        alert('保存成功')
+        navigate('/', { replace: true })
+      } catch (error) {
+        console.error('保存失败:', error)
+        alert('保存失败，请重试')
+      }
+    },
+    [transaction]
+  )
 
   return (
     <Page
@@ -83,28 +121,24 @@ export default function OCRPage() {
       title="图片文字识别"
       footer={
         <div className="p-4 h-full w-full">
-          <button
-            type="button"
-            onClick={handleOCR}
-            disabled={!image || loading}
-            className={classnames(
-              'w-full py-3 rounded-lg font-medium transition-all duration-300 text-white',
-              !image || loading
-                ? 'bg-indigo-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-            )}
-          >
-            {loading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <i className="ri-loader-2-line animate-spin" />
-                <span>识别中...</span>
-              </div>
-            ) : result ? (
-              '重新识别'
-            ) : (
-              '开始识别'
-            )}
-          </button>
+          {transaction ? (
+            <Button
+              loading={loading}
+              loadingText="保存中..."
+              onClick={handleSave}
+            >
+              保存账单
+            </Button>
+          ) : (
+            <Button
+              disabled={!image}
+              onClick={handleOCR}
+              loading={loading}
+              loadingText="识别中..."
+            >
+              开始识别
+            </Button>
+          )}
         </div>
       }
     >
@@ -120,7 +154,7 @@ export default function OCRPage() {
               />
               <button
                 onClick={clearImage}
-                className="absolute top-0 right-4 w-6 h-6 text-2xl text-gray-400 bg-white/80 dark:bg-gray-800/80 rounded-full p-1 hover:text-red-500 transition-colors"
+                className="absolute top-0.5 right-1.5 text-2xl text-gray-400"
               >
                 <i className="ri-close-line" />
               </button>
@@ -168,16 +202,7 @@ export default function OCRPage() {
       </div>
 
       {/* 识别结果区域 */}
-      {result && (
-        <div className="rounded-xl bg-white shadow-lg dark:bg-gray-900 p-5 mt-5">
-          <div className="text-sm text-gray-500 mb-3 dark:text-gray-400">
-            识别结果
-          </div>
-          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg min-h-[100px] whitespace-pre-wrap">
-            {result || '暂无结果'}
-          </div>
-        </div>
-      )}
+      {transaction && <TransactionView transaction={transaction} />}
     </Page>
   )
 }

@@ -7,6 +7,7 @@ import { TransactionDelete } from "./endpoints/transactionDelete";
 import { TransactionList } from "./endpoints/transactionList";
 import { TransactionFetch } from "./endpoints/transactionFetch";
 import { TransactionUpdate } from "./endpoints/transactionUpdate";
+import { TransactionFetchAI } from "./endpoints/transactionFetchAI";
 
 // Start a Hono app
 const app = new Hono<{
@@ -51,7 +52,8 @@ openapi
   .delete("/api/transaction/:transactionId", TransactionDelete)
   .get("/api/transaction", TransactionList)
   .get("/api/transaction/:transactionId", TransactionFetch)
-  .put("/api/transaction/:transactionId", TransactionUpdate);
+  .put("/api/transaction/:transactionId", TransactionUpdate)
+  .post("/api/transaction/ai", TransactionFetchAI);
 
 // Export the Hono app
 export default app;

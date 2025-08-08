@@ -36,7 +36,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
       {!list.length && (
         <div
           className={
-            'flex flex-col items-center justify-center py-12 rounded-2xl bg-gray-50 dark:bg-gray-800/50 mt-4'
+            'flex flex-col items-center justify-center py-12 rounded-lg global-bg-soft-color mt-4'
           }
         >
           <div className="w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mb-4">
@@ -61,15 +61,13 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
         .sort((a, b) => Number(b) - Number(a))
         .map((item) => {
           const day = dayjs(Number(item))
-          const isTodayOrYesterday =
-            day.isSame(dayjs(), 'day') ||
-            day.isSame(dayjs().subtract(1, 'day'), 'day')
 
           return (
-            <div key={item} className="mt-6 overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700">
-              <div
-                className={`px-6 py-3 text-lg font-bold ${isTodayOrYesterday ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20' : 'text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900/30'}`}
-              >
+            <div
+              key={item}
+              className="mt-4 px-4 py-2 overflow-hidden rounded-lg global-bg-soft-color"
+            >
+              <div className={'text-lg font-bold pt-1 mb-1'}>
                 {day.isSame(dayjs(), 'day')
                   ? '今天'
                   : day.isSame(dayjs().subtract(1, 'day'), 'day')
@@ -77,41 +75,41 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                     : day.format('MM-DD')}
               </div>
 
-              <div className="divide-y divide-gray-100 dark:divide-gray-700">
+              <div className="divide-y divide-gray-600 dark:divide-gray-600">
                 {groupMap[item].map((item2) => (
-                  <button
+                  <div
                     key={item2.id}
                     onClick={() => navigate(`/transaction/detail/${item2.id}`)}
-                    className="w-full flex items-center py-3 px-6 gap-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-all duration-200"
+                    className="w-full flex items-center py-3 gap-3"
                   >
-                  <div
-                    className={`flex-none w-12 h-12 rounded-lg flex items-center justify-center ${item2.transactionType === 'income' ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'}`}
-                  >
-                    <i
-                      className={`${item2?.category?.icon} text-xl ${item2.transactionType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}
-                    />
-                  </div>
-
-                  <div className="flex-auto overflow-hidden">
-                    <div className="font-medium text-gray-800 dark:text-white text-left">
-                      {item2?.category?.name}
-                    </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 text-left">
-                      {item2.description || item2?.category?.name}
-                    </div>
-                  </div>
-
-                  <div className="flex-none text-right">
-                    <span
-                      className={`mr-0.5 ${item2.transactionType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}
+                    <div
+                      className={`flex-none w-10 h-10 rounded-md flex items-center justify-center ${item2.transactionType === 'income' ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'}`}
                     >
-                      {item2.transactionType === 'income' ? '+' : '-'}
-                    </span>
-                    <span className="font-medium text-gray-800 dark:text-white">
-                      {formatNumber(Number(item2.amount))}
-                    </span>
+                      <i
+                        className={`${item2?.category?.icon} text-xl ${item2.transactionType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}
+                      />
+                    </div>
+
+                    <div className="flex-auto overflow-hidden">
+                      <div className="font-medium truncate">
+                        {item2?.category?.name}
+                      </div>
+                      <div className="text-sm mt-1 text-gray-500 dark:text-gray-400 truncate">
+                        {item2.description || item2?.category?.name}
+                      </div>
+                    </div>
+
+                    <div className="flex-none text-right">
+                      <span
+                        className={`mr-0.5 ${item2.transactionType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}
+                      >
+                        {item2.transactionType === 'income' ? '+' : '-'}
+                      </span>
+                      <span className="font-medium text-gray-800 dark:text-white">
+                        {formatNumber(Number(item2.amount))}
+                      </span>
+                    </div>
                   </div>
-                </button>
                 ))}
               </div>
             </div>

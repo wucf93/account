@@ -5,13 +5,15 @@
   --font-roboto: 'Roboto', sans-serif;
   /* --global-bg-color: var(--color-white); */
   --global-bg-color: var(--color-gray-50);
+  --global-bg-soft-color: var(--color-gray-100);
   --global-font-clor: #121217;
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    --global-bg-color: var(--color-gray-800);
-    --global-font-clor: var(--color-white);
+    --global-bg-color: #1a1a1a;
+    --global-bg-soft-color: #242424;
+    --global-font-clor: rgba(255, 255, 255, 0.87);
   }
 }
 
@@ -24,6 +26,10 @@ body {
 
 .global-bg-color {
   background-color: var(--global-bg-color);
+}
+
+.global-bg-soft-color {
+  background-color: var(--global-bg-soft-color);
 }
 
 /* 边框流光效果 */

@@ -134,7 +134,7 @@ export default function OCRPage() {
       }
     >
       {/* 图片预览区域 */}
-      <div className="rounded-xl bg-white shadow-lg dark:bg-gray-900 p-5">
+      <div className="rounded-lg global-bg-soft-color p-4">
         <div className="relative w-full h-52 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-3 text-center">
           {image ? (
             <div className="h-full flex flex-col">

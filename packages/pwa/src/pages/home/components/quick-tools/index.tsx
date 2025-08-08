@@ -20,9 +20,8 @@ export default function QuickTools(props: QuickToolsProps) {
           key={item.name}
           onClick={() => navigate(item.path)}
           className={classnames(
-            'flex flex-col items-center justify-center py-3 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-200',
-            'hover:-translate-y-0.5',
-            'border border-gray-100 dark:border-gray-700'
+            'flex flex-col items-center justify-center py-3 rounded-lg global-bg-soft-color shadow-md',
+            'hover:-translate-y-0.5'
           )}
         >
           <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center mb-2">

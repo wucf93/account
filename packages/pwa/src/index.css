@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --font-roboto: 'Roboto', sans-serif;
-  /* --global-bg-color: var(--color-white); */
   --global-bg-color: var(--color-gray-50);
   --global-bg-soft-color: var(--color-gray-100);
   --global-font-clor: #121217;
@@ -11,15 +8,18 @@
 
 @media (prefers-color-scheme: dark) {
   body {
-    --global-bg-color: #1a1a1a;
-    --global-bg-soft-color: #242424;
-    --global-font-clor: rgba(255, 255, 255, 0.87);
+    --global-bg-color: var(--color-zinc-950);
+    --global-bg-soft-color: var(--color-zinc-900);
+    --global-font-clor: var(--color-white);
   }
 }
 
+html,
 body {
-  font-family: var(--font-roboto);
-  font-family: 'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none; /* 禁用弹性滚动和滚动链 */
+  text-rendering: optimizeLegibility; /* 优化字体渲染 */
   color: var(--global-font-clor);
   background-color: var(--global-bg-color);
 }

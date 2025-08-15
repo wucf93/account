@@ -37,20 +37,17 @@ export default function DataAnalysis(props: DataAnalysisProps) {
       style={props.style}
     >
       <div className="grid grid-cols-2">
-        <div className="p-5 flex flex-col items-center justify-center">
-          <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            收入
-          </div>
-          <div className="mt-2 text-xl font-bold text-green-500">
-            ¥ {formatNumber(totalIncome)}
+        <div className="p-5 flex flex-col">
+          <div className="text-zinc-500 text-left">收入</div>
+          <div className="mt-1 text-xl font-bold text-lime-400 font-mono text-left">
+            {formatNumber(totalIncome)}
           </div>
         </div>
-        <div className="p-5 flex flex-col items-center justify-center">
-          <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            支出
-          </div>
-          <div className="mt-2 text-xl font-bold text-red-500">
-            ¥ {formatNumber(totalExpenditure)}
+
+        <div className="p-5 flex flex-col">
+          <div className="text-zinc-500 text-left">支出</div>
+          <div className="mt-1 text-xl font-bold text-red-400 font-mono text-left">
+            {formatNumber(totalExpenditure)}
           </div>
         </div>
       </div>

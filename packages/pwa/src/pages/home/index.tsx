@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Page from '@/components/page'
 import { useFilter } from './hooks'
 import DataAnalysis from './components/data-analysis'
-import QuickTools from './components/quick-tools'
+// import QuickTools from './components/quick-tools'
 import TransactionRecord from './components/transaction-record'
 import MonthPicker from '@/components/month-picker'
 import { dayjs } from '@/lib'
@@ -34,7 +34,7 @@ export default function HomePage() {
       <DataAnalysis totalList={list} />
 
       {/* 快捷工具 */}
-      <QuickTools />
+      {/* <QuickTools /> */}
 
       <TransactionRecord list={filterList} />
     </Page>

@@ -20,7 +20,6 @@ export default function Page(props: PageProps) {
       className={classnames(
         'relative',
         {
-          'pt-16': props.title,
           'pb-20': props.footer,
         },
         props.className
@@ -28,8 +27,8 @@ export default function Page(props: PageProps) {
       style={props.style}
     >
       {props.title && (
-        <div className="px-4 h-16 flex items-center justify-between fixed top-0 left-0 right-0 global-bg-color">
-          <div className="flex items-center gap-3 text-xl font-bold">
+        <div className="px-4 h-14 flex items-center justify-between global-bg-color sticky top-0 z-10 border-b border-zinc-950/10 dark:border-white/10">
+          <div className="flex items-center gap-3 text-lg font-bold">
             {props.showBack && (
               <i className="ri-arrow-left-line" onClick={() => navigate(-1)} />
             )}
@@ -42,12 +41,12 @@ export default function Page(props: PageProps) {
         </div>
       )}
 
-      <div className="overflow-y-auto overflow-x-hidden p-4 pt-0">
+      <div className="overflow-y-auto overflow-x-hidden p-4">
         {props.children}
       </div>
 
       {props.footer && (
-        <div className="h-20 fixed bottom-0 left-0 right-0 global-bg-color border-t border-gray-200 dark:border-gray-700">
+        <div className="h-20 fixed bottom-0 left-0 right-0 global-bg-color border-t border-zinc-950/10 dark:border-white/10">
           {props.footer}
         </div>
       )}

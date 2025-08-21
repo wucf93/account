@@ -9,9 +9,12 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@ai-sdk/google": "^2.0.7",
+    "@openrouter/ai-sdk-provider": "^1.1.2",
     "@prisma/adapter-d1": "^6.12.0",
     "@prisma/client": "6.10.1",
-    "ai": "^4.0.0",
+    "ai": "^5.0.20",
+    "ai-gateway-provider": "^0.0.11",
     "better-auth": "^1.2.12",
     "chanfana": "^2.6.3",
     "dayjs": "^1.11.13",

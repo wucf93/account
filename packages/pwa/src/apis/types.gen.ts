@@ -38,11 +38,29 @@ export type TransactionUpdateInput = {
     categoryId: number;
 };
 
+export type TransactionAi = {
+    transactionType: 'income' | 'expenditure';
+    id: number;
+    amount: string;
+    transactionDate: string | null;
+    description: string | null;
+    payee: string | null;
+    createUserId: string;
+    createdAt: string | null;
+    updatedAt: string | null;
+    categoryId: number;
+    /**
+     * 置信度，0-1之间的数字，置信度越高，识别结果越准确
+     */
+    confidence: number;
+    category: Category;
+};
+
 export type TransactionFetchAiRequest = {
     /**
-     * LLM message
+     * 图片地址
      */
-    message: string;
+    image: string;
 };
 
 export type GetCategoryListData = {
@@ -188,7 +206,7 @@ export type PostTransactionFetchAiResponses = {
      */
     200: {
         success: boolean;
-        data: Transaction;
+        data: TransactionAi;
     };
 };
 

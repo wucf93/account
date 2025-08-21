@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { getPrismaClient } from "@/lib/prisma";
 import { CategorySchema, TransactionSchema } from "@/generated/zod";
-import { getWorkersAIModel } from "@/lib/llm";
+import { getOpenrouterModel } from "@/lib/llm";
 import { generateObject } from "ai";
 import { dayjs } from "@/lib/day";
 import { type AppContext } from "../types";
@@ -16,7 +16,7 @@ export class TransactionFetchAI extends OpenAPIRoute {
         content: {
           "application/json": {
             schema: z
-              .object({ message: Str({ description: "LLM message" }) })
+              .object({ image: Str({ description: "图片地址" }) })
               .openapi("TransactionFetchAIRequest"),
           },
         },
@@ -30,8 +30,13 @@ export class TransactionFetchAI extends OpenAPIRoute {
             schema: z.object({
               success: Bool(),
               data: TransactionSchema.extend({
+                confidence: z
+                  .number()
+                  .describe(
+                    "置信度，0-1之间的数字，置信度越高，识别结果越准确"
+                  ),
                 category: CategorySchema.openapi("Category"),
-              }).openapi("Transaction"),
+              }).openapi("TransactionAI"),
             }),
           },
         },
@@ -41,25 +46,24 @@ export class TransactionFetchAI extends OpenAPIRoute {
 
   async handle({ env }: AppContext) {
     const data = await this.getValidatedData<typeof this.schema>();
-    const { message } = data.body;
+    const { image } = data.body;
     const prisma = getPrismaClient(env);
 
     // 获取分类数据
     const categories = await prisma.category.findMany();
 
     // 定义账单信息的schema
-    const { object } = await generateObject({
-      model: getWorkersAIModel(env),
-      prompt:
-        `根据以下用户输入识别账单信息："${message}"` +
-        `\n请提取交易日期、金额、交易类型(收入/支出)、类别ID和描述。`,
+    const res = await generateObject({
+      model: getOpenrouterModel(env)("qwen/qwen2.5-vl-72b-instruct:free"),
       schema: z.object({
         transactionDate: z
           .string()
           .describe(
-            `交易日期，格式YYYY-MM-DD，默认为今天: ${dayjs.tz(dayjs(), "Asia/Shanghai").format("YYYY-MM-DD")}`
+            `交易日期，格式YYYY-MM-DD HH:mm:ss，默认为今天: ${dayjs.tz(dayjs(), "Asia/Shanghai").format("YYYY-MM-DD HH:mm:ss")}`
           )
-          .default(dayjs.tz(dayjs(), "Asia/Shanghai").format("YYYY-MM-DD"))
+          .default(
+            dayjs.tz(dayjs(), "Asia/Shanghai").format("YYYY-MM-DD HH:mm:ss")
+          )
           .transform((val) => new Date(val).toISOString()),
         amount: z
           .string()
@@ -76,14 +80,27 @@ export class TransactionFetchAI extends OpenAPIRoute {
           .string()
           .describe("交易描述，简短描述，比如：购买商品")
           .optional(),
+        confidence: z
+          .number()
+          .describe("置信度，0-1之间的数字，置信度越高，识别结果越准确"),
       }),
+      messages: [
+        {
+          role: "system",
+          content: "你是一个账单识别助手",
+        },
+        {
+          role: "user",
+          content: [{ type: "image", image: image }],
+        },
+      ],
     });
 
     return {
       success: true,
       data: {
-        ...object,
-        category: categories.find((cat) => cat.id === object.categoryId),
+        ...res.object,
+        category: categories.find((cat) => cat.id === res.object.categoryId),
       },
     };
   }

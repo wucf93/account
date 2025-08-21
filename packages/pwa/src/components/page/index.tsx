@@ -46,7 +46,7 @@ export default function Page(props: PageProps) {
       </div>
 
       {props.footer && (
-        <div className="h-20 fixed bottom-0 left-0 right-0 global-bg-color border-t global-border-color">
+        <div className="h-20 fixed bottom-0 left-0 right-0 global-bg-color border-t border-zinc-950/10 dark:border-white/10">
           {props.footer}
         </div>
       )}

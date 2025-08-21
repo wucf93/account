@@ -16,6 +16,7 @@
 
 html,
 body {
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none; /* 禁用弹性滚动和滚动链 */

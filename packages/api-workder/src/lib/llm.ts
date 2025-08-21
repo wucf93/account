@@ -1,14 +1,18 @@
 import { createWorkersAI } from "workers-ai-provider";
-
-// export function getHunyuanModel(env: Env) {
-//   console.log(env);
-//   return createOpenAI({
-//     apiKey: env["HUNYUAN_LITE_APP_KEY"], // 混元 APIKey
-//     baseURL: env["HUNYUAN_LITE_BASE_URL"], // 混元 endpoint
-//   }).chat("hunyuan-lite");
-// }
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 export function getWorkersAIModel(env: Env) {
   const workersai = createWorkersAI({ binding: env.AI });
   return workersai("@cf/deepseek-ai/deepseek-r1-distill-qwen-32b");
+}
+
+export function getOpenrouterModel(env: Env) {
+  console.log("env", env.OPENROUTER_API_KEY);
+  console.log("env",env);
+  return createOpenRouter({
+    apiKey: env.OPENROUTER_API_KEY,
+    baseURL:
+      "https://gateway.ai.cloudflare.com/v1/66d2df097127a28d1ac76d899b502ebe/account-gateway/openrouter",
+  });
 }

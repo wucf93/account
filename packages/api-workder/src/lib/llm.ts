@@ -8,8 +8,6 @@ export function getWorkersAIModel(env: Env) {
 }
 
 export function getOpenrouterModel(env: Env) {
-  console.log("env", env.OPENROUTER_API_KEY);
-  console.log("env",env);
   return createOpenRouter({
     apiKey: env.OPENROUTER_API_KEY,
     baseURL:

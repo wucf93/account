@@ -22,7 +22,13 @@ export default function OCRPage() {
   useEffect(() => {
     getShareImage().then((blob) => {
       if (blob) {
-        setImage(URL.createObjectURL(blob))
+        const reader = new FileReader()
+        reader.onload = (event) => {
+          // event.target.result 就是 base64 格式的图片数据
+          setImage(event.target?.result as string)
+        }
+        // 读取 blob 并转换为 base64
+        reader.readAsDataURL(blob)
       }
     })
   }, [])

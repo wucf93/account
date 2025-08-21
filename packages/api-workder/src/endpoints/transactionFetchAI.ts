@@ -52,6 +52,8 @@ export class TransactionFetchAI extends OpenAPIRoute {
     // 获取分类数据
     const categories = await prisma.category.findMany();
 
+    console.log("image", image);
+
     // 定义账单信息的schema
     const res = await generateObject({
       model: getOpenrouterModel(env)("qwen/qwen2.5-vl-72b-instruct:free"),

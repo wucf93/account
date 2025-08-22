@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 
 type ImageUploaderProps = {
   image: string | null
@@ -24,9 +25,13 @@ export default function ImageUploader({
   }
 
   return (
-    <div className="rounded-lg global-bg-soft-color p-4">
+    <div
+      className={classnames('rounded-lg global-bg-soft-color', {
+        'p-4': !image,
+      })}
+    >
       <div
-        className={`relative w-full border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-3 text-center transition-all duration-500 ${!transaction ? (!image ? 'h-52' : 'h-72') : 'h-36'}`}
+        className={`relative p-3 w-full overflow-hidden rounded-lg text-center transition-all duration-500 ${!image ? 'border-2 border-dashed border-gray-300 dark:border-gray-600' : 'border-0'} ${!transaction ? (!image ? 'h-52' : 'h-72') : 'h-36'}`}
       >
         {image ? (
           <div className="h-full flex flex-col">
@@ -37,7 +42,7 @@ export default function ImageUploader({
             />
             <button
               onClick={onClearImage}
-              className="absolute top-0.5 right-1.5 text-2xl text-gray-400 hover:text-red-500 transition-colors"
+              className="absolute top-1 right-2 text-2xl text-gray-400 hover:text-red-500 transition-colors"
               aria-label="移除图片"
             >
               <i className="ri-close-line" />
@@ -63,7 +68,7 @@ export default function ImageUploader({
                 }
               `}</style>
                 </div>
-                <div className="absolute inset-0 pointer-events-none opacity-30">
+                <div className="absolute inset-0 pointer-events-none opacity-50">
                   <div
                     className="w-full h-full"
                     style={{

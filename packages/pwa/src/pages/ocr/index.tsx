@@ -44,6 +44,8 @@ export default function OCRPage() {
       setTransaction(undefined) // 重置结果
     }
     reader.readAsDataURL(file)
+
+    fileInputRef.current?.value && (fileInputRef.current.value = '')
   }
 
   const handleOCR = useCallback(async () => {

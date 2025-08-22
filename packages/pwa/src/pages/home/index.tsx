@@ -7,10 +7,11 @@ import QuickTools from './components/quick-tools'
 import TransactionRecord from './components/transaction-record'
 import MonthPicker from '@/components/month-picker'
 import { dayjs } from '@/lib'
+import Button from '@/components/button'
 
 export default function HomePage() {
   const [dateValue, setDateValue] = useState(dayjs.tz(dayjs(), 'utc'))
-  const { filterList, list } = useFilter(dateValue)
+  const { filterList, list, isLoading } = useFilter(dateValue)
   const navigate = useNavigate()
 
   return (
@@ -29,15 +30,16 @@ export default function HomePage() {
       <QuickTools />
 
       {/* 交易记录 */}
-      <TransactionRecord list={filterList} />
-      
+      <TransactionRecord list={filterList} isLoading={isLoading} />
+
       {/* 固定在右下角的添加按钮 */}
-      <button
-        className="fixed right-6 bottom-10 w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-lg transition-all duration-300 z-50"
+      <Button
+        className="fixed right-6 bottom-10"
+        rounded
         onClick={() => navigate('/transaction')}
       >
         <i className="ri-add-line text-xl" />
-      </button>
+      </Button>
     </Page>
   )
 }

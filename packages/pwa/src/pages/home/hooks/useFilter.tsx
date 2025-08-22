@@ -11,14 +11,16 @@ export const useFilter = (dateValue: dayjs.Dayjs) => {
     return dateValue.clone().tz('utc').startOf('month').valueOf()
   }, [dateValue])
 
-  const { data: list = [], mutate } = useSWR(
-    ['/api/transaction/list', transactionDate],
-    () =>
-      getTransactionList({
-        query: { transactionDate: transactionDate.toString() },
-      })
-        .then((res) => res.data?.data || [])
-        .catch(() => [])
+  const {
+    data: list = [],
+    mutate,
+    isLoading,
+  } = useSWR(['/api/transaction/list', transactionDate], () =>
+    getTransactionList({
+      query: { transactionDate: transactionDate.toString() },
+    })
+      .then((res) => res.data?.data || [])
+      .catch(() => [])
   )
 
   const filterList = useMemo(
@@ -44,5 +46,5 @@ export const useFilter = (dateValue: dayjs.Dayjs) => {
     [keyword, dateValue, dateVisible]
   )
 
-  return { filterRender, list, filterList, reflush: mutate }
+  return { filterRender, list, isLoading, filterList, reflush: mutate }
 }

@@ -11,10 +11,12 @@ export interface TransactionRecordProps {
   className?: string
   style?: React.CSSProperties
   onReflush?: () => void
+  isLoading?: boolean
 }
 
 const TransactionRecord: FC<TransactionRecordProps> = ({
   list = [],
+  isLoading,
   ...props
 }) => {
   const navigate = useNavigate()
@@ -31,7 +33,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
     <div className={classnames(props.className)} style={props.style}>
       <div className="mt-0 mb-4 text-xl font-bold">交易记录</div>
 
-      {!list.length && (
+      {!list.length && !isLoading && (
         <div
           className={
             'flex flex-col items-center justify-center py-12 rounded-lg global-bg-soft-color mt-4'
@@ -50,6 +52,13 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
           >
             新增交易
           </button>
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="flex items-center justify-center mt-20">
+          <i className="ri-loader-4-line animate-spin text-xl" />
+          <div className="ml-2 text-sm">加载中...</div>
         </div>
       )}
 

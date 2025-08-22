@@ -1,6 +1,4 @@
 import React from 'react'
-// 修复CSS导入路径
-import './scan-animation.css'
 
 type ImageUploaderProps = {
   image: string | null
@@ -44,6 +42,41 @@ export default function ImageUploader({
             >
               <i className="ri-close-line" />
             </button>
+
+            {/* 扫描动画 - 重构版本 */}
+            {loading && (
+              <>
+                <div className="absolute inset-0 pointer-events-none">
+                  {/* 扫描动画使用 CSS 动画实现 */}
+                  <div
+                    className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-lg shadow-cyan-400/50 animate-scan-line"
+                    style={{ animation: 'scanMove 2s linear infinite' }}
+                  />
+                  <div
+                    className="absolute left-0 right-0 h-8 bg-gradient-to-b from-cyan-400/20 to-transparent animate-scan-gradient"
+                    style={{ animation: 'scanMove 2s linear infinite' }}
+                  />
+                  <style>{`
+                @keyframes scanMove {
+                  0% { top: 0%; }
+                  100% { top: 100%; }
+                }
+              `}</style>
+                </div>
+                <div className="absolute inset-0 pointer-events-none opacity-30">
+                  <div
+                    className="w-full h-full"
+                    style={{
+                      backgroundImage: `
+                        linear-gradient(0deg, transparent 24%, rgba(34, 211, 238, 0.1) 25%, rgba(34, 211, 238, 0.1) 26%, transparent 27%, transparent 74%, rgba(34, 211, 238, 0.1) 75%, rgba(34, 211, 238, 0.1) 76%, transparent 77%, transparent),
+                        linear-gradient(90deg, transparent 24%, rgba(34, 211, 238, 0.1) 25%, rgba(34, 211, 238, 0.1) 26%, transparent 27%, transparent 74%, rgba(34, 211, 238, 0.1) 75%, rgba(34, 211, 238, 0.1) 76%, transparent 77%, transparent)
+                      `,
+                      backgroundSize: '20px 20px',
+                    }}
+                  />
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <button
@@ -69,44 +102,6 @@ export default function ImageUploader({
           onChange={onImageUpload}
           className="hidden"
         />
-        {/* 扫描动画 - 重构版本 */}
-        {loading && (
-          <div className="absolute inset-0 bg-white/5 dark:bg-black/5 backdrop-blur-sm rounded-lg z-10 overflow-hidden">
-            {/* 多层扫描效果 */}
-            <div className="scan-container absolute inset-0">
-              {/* 主扫描光束 */}
-              <div className="scan-beam absolute w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent animate-scan-beam"></div>
-              {/* 上层光晕 */}
-              <div className="scan-glow-upper absolute w-full h-16 bg-gradient-to-b from-blue-500/30 via-blue-400/20 to-transparent blur-xl animate-scan-glow-upper"></div>
-              {/* 下层光晕 */}
-              <div className="scan-glow-lower absolute w-full h-16 bg-gradient-to-t from-blue-500/30 via-blue-400/20 to-transparent blur-xl animate-scan-glow-lower"></div>
-              {/* 粒子效果 */}
-              <div className="scan-particles absolute inset-0">
-                {[...Array(12)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1 h-1 bg-blue-300 rounded-full animate-scan-particle"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      animationDelay: `${Math.random() * 3}s`,
-                      animationDuration: `${2 + Math.random() * 2}s`,
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-            {/* 识别提示 */}
-            <div className="absolute inset-0 flex items-center justify-center z-20">
-              <div className="bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white px-5 py-3 rounded-full backdrop-blur-md flex items-center space-x-3 shadow-lg">
-                <div className="relative">
-                  <i className="ri-scan-line text-lg animate-pulse" />
-                  <div className="absolute -inset-1 bg-blue-400/30 rounded-full animate-ping" />
-                </div>
-                <span className="font-medium">智能识别中...</span>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )

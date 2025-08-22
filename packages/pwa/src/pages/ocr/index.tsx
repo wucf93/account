@@ -44,6 +44,8 @@ export default function OCRPage() {
       setTransaction(undefined) // 重置结果
     }
     reader.readAsDataURL(file)
+
+    fileInputRef.current?.value && (fileInputRef.current.value = '')
   }
 
   const handleOCR = useCallback(async () => {
@@ -124,7 +126,7 @@ export default function OCRPage() {
     >
       {/* 模块标题和说明 - 扫描成功后隐藏 */}
       {!transaction && (
-        <div className="mb-4 text-center">
+        <div className="mb-8 mt-10 text-center">
           <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
             账单识别
           </h2>

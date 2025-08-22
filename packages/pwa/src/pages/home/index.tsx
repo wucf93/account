@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import Page from '@/components/page'
 import { useFilter } from './hooks'
 import DataAnalysis from './components/data-analysis'
-// import QuickTools from './components/quick-tools'
+import QuickTools from './components/quick-tools'
 import TransactionRecord from './components/transaction-record'
 import MonthPicker from '@/components/month-picker'
 import { dayjs } from '@/lib'
+import Button from '@/components/button'
 
 export default function HomePage() {
   const [dateValue, setDateValue] = useState(dayjs.tz(dayjs(), 'utc'))
-  const { filterList, list } = useFilter(dateValue)
+  const { filterList, list, isLoading } = useFilter(dateValue)
   const navigate = useNavigate()
 
   return (
@@ -21,22 +22,24 @@ export default function HomePage() {
           <i className="ri-arrow-down-s-fill ml-0.5 text-gray-500 dark:text-gray-400" />
         </MonthPicker>
       }
-      titleExtra={
-        <button
-          className="w-8 h-8 rounded-sm bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-md transition-all duration-200"
-          onClick={() => navigate('/transaction')}
-        >
-          <i className="ri-add-line" />
-        </button>
-      }
     >
       {/* 数据统计 */}
       <DataAnalysis totalList={list} />
 
       {/* 快捷工具 */}
-      {/* <QuickTools /> */}
+      <QuickTools />
 
-      <TransactionRecord list={filterList} />
+      {/* 交易记录 */}
+      <TransactionRecord list={filterList} isLoading={isLoading} />
+
+      {/* 固定在右下角的添加按钮 */}
+      <Button
+        className="fixed right-6 bottom-10"
+        rounded
+        onClick={() => navigate('/transaction')}
+      >
+        <i className="ri-add-line text-xl" />
+      </Button>
     </Page>
   )
 }

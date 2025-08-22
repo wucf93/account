@@ -24,9 +24,9 @@ export default function Button({
       {...props}
     >
       {loading ? (
-        <div className="flex items-center justify-center space-x-2">
-          <i className="ri-loader-2-line animate-spin" />
-          <span>识别中...</span>
+        <div className="flex items-center justify-center space-x-1">
+          <i className="ri-loader-4-line animate-spin text-lg" />
+          <span>{loadingText}</span>
         </div>
       ) : (
         children

@@ -29,7 +29,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
 
   return (
     <div className={classnames(props.className)} style={props.style}>
-      <div className="mt-5 mb-4 text-xl font-bold">交易记录</div>
+      <div className="mt-0 mb-4 text-xl font-bold">交易记录</div>
 
       {!list.length && (
         <div

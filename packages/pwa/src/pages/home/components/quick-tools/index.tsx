@@ -20,8 +20,7 @@ export default function QuickTools(props: QuickToolsProps) {
           key={item.name}
           onClick={() => navigate(item.path)}
           className={classnames(
-            'flex flex-col items-center justify-center py-3 rounded-lg global-bg-soft-color shadow-md',
-            'hover:-translate-y-0.5'
+            'flex flex-col items-center justify-center py-3 rounded-lg global-bg-soft-color'
           )}
         >
           <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center mb-2">
@@ -32,9 +31,7 @@ export default function QuickTools(props: QuickToolsProps) {
               )}
             />
           </div>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            {item.name}
-          </span>
+          <span className="text-sm">{item.name}</span>
         </button>
       ))}
     </div>

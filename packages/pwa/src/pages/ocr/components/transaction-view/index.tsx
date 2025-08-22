@@ -44,7 +44,7 @@ export default function TransactionView({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center">
           <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
-            <i className="ri-check-double-line text-green-600 dark:text-green-400 text-sm" />
+            <i className="ri-check-line text-green-600 dark:text-green-400 text-sm" />
           </div>
           <span>识别结果</span>
           <div

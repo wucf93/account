@@ -39,7 +39,7 @@ export default function Page(props: PageProps) {
         </div>
       )}
 
-      <div className="overflow-y-auto overflow-x-hidden p-4">
+      <div className="overflow-y-auto overflow-x-hidden p-4 pt-0">
         {props.children}
       </div>
 

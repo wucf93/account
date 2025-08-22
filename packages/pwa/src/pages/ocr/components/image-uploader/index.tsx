@@ -26,12 +26,14 @@ export default function ImageUploader({
 
   return (
     <div
-      className={classnames('rounded-lg global-bg-soft-color', {
-        'p-4': !image,
-      })}
+      className={classnames(
+        'rounded-lg global-bg-soft-color transition-all duration-500 ease-in-out',
+        { 'p-4': !image },
+        !transaction ? (!image ? 'h-52' : 'h-82') : 'h-36'
+      )}
     >
       <div
-        className={`relative p-3 w-full overflow-hidden rounded-lg text-center transition-all duration-500 ${!image ? 'border-2 border-dashed border-gray-300 dark:border-gray-600' : 'border-0'} ${!transaction ? (!image ? 'h-52' : 'h-72') : 'h-36'}`}
+        className={`relative p-3 h-full w-full overflow-hidden rounded-lg text-center ${!image ? 'border-2 border-dashed border-gray-300 dark:border-gray-600' : 'border-0'} `}
       >
         {image ? (
           <div className="h-full flex flex-col">
@@ -51,24 +53,7 @@ export default function ImageUploader({
             {/* 扫描动画 - 重构版本 */}
             {loading && (
               <>
-                <div className="absolute inset-0 pointer-events-none">
-                  {/* 扫描动画使用 CSS 动画实现 */}
-                  <div
-                    className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-lg shadow-cyan-400/50 animate-scan-line"
-                    style={{ animation: 'scanMove 2s linear infinite' }}
-                  />
-                  <div
-                    className="absolute left-0 right-0 h-8 bg-gradient-to-b from-cyan-400/20 to-transparent animate-scan-gradient"
-                    style={{ animation: 'scanMove 2s linear infinite' }}
-                  />
-                  <style>{`
-                @keyframes scanMove {
-                  0% { top: 0%; }
-                  100% { top: 100%; }
-                }
-              `}</style>
-                </div>
-                <div className="absolute inset-0 pointer-events-none opacity-50">
+                <div className="absolute inset-0 pointer-events-none backdrop-blur-xs">
                   <div
                     className="w-full h-full"
                     style={{
@@ -79,6 +64,23 @@ export default function ImageUploader({
                       backgroundSize: '20px 20px',
                     }}
                   />
+                </div>
+                <div className="absolute inset-0 pointer-events-none">
+                  {/* 扫描动画使用 CSS 动画实现 */}
+                  <div
+                    className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent shadow-lg shadow-cyan-400/50 animate-scan-line"
+                    style={{ animation: 'scanMove 1.5s linear infinite' }}
+                  />
+                  <div
+                    className="absolute left-0 right-0 h-10 bg-gradient-to-b from-indigo-500/30 to-transparent animate-scan-gradient"
+                    style={{ animation: 'scanMove 1.5s linear infinite' }}
+                  />
+                  <style>{`
+                @keyframes scanMove {
+                  0% { top: 0%; }
+                  100% { top: 100%; }
+                }
+              `}</style>
                 </div>
               </>
             )}

@@ -19,16 +19,14 @@ export default function Page(props: PageProps) {
     <div
       className={classnames(
         'relative',
-        {
-          'pb-20': props.footer,
-        },
+        { 'pb-20': props.footer },
         props.className
       )}
       style={props.style}
     >
       {props.title && (
-        <div className="px-4 h-16 flex items-center justify-between global-bg-color sticky top-0 z-10 border-b border-zinc-950/10 dark:border-white/10">
-          <div className="flex items-center gap-3 text-lg font-bold">
+        <div className="px-4 h-16 flex items-center justify-between global-bg-color sticky top-0 z-10">
+          <div className="flex items-center gap-3 text-xl font-bold">
             {props.showBack && (
               <i className="ri-arrow-left-line" onClick={() => navigate(-1)} />
             )}

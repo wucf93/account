@@ -31,7 +31,7 @@ export default function DataAnalysis(props: DataAnalysisProps) {
   return (
     <div
       className={clss(
-        'rounded-lg global-bg-soft-color shadow-lg overflow-hidden',
+        'rounded-lg global-bg-soft-color overflow-hidden',
         props.className
       )}
       style={props.style}

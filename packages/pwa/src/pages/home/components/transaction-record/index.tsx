@@ -63,7 +63,11 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
               key={item}
               className="mt-4 px-4 py-2 overflow-hidden rounded-lg global-bg-soft-color"
             >
-              <div className={'flex justify-between items-center pt-1 mb-1 font-mono'}>
+              <div
+                className={
+                  'flex justify-between items-center pt-1 mb-1 font-mono'
+                }
+              >
                 <div className={'text-lg font-bold'}>
                   {day.isSame(dayjs(), 'day')
                     ? '今天'
@@ -73,12 +77,12 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                 </div>
                 <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
                   <span>
-                    支出：
+                    收入：
                     {formatNumber(
                       groupMap[item].reduce(
                         (pre, cur) =>
                           pre +
-                          (cur.transactionType === 'expenditure'
+                          (cur.transactionType === 'income'
                             ? Number(cur.amount)
                             : 0),
                         0
@@ -86,12 +90,12 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                     )}
                   </span>
                   <span>
-                    收入：
+                    支出：
                     {formatNumber(
                       groupMap[item].reduce(
                         (pre, cur) =>
                           pre +
-                          (cur.transactionType === 'income'
+                          (cur.transactionType === 'expenditure'
                             ? Number(cur.amount)
                             : 0),
                         0
@@ -125,7 +129,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                       </div>
                     </div>
 
-                    <div className="flex-none text-right font-mono text-sm">
+                    <div className="flex-none text-right font-mono text-sm font-semibold">
                       <span
                         className={`mr-0.5 ${item2.transactionType === 'income' ? 'text-green-500 dark:text-lime-400' : 'text-red-500 dark:text-red-400'}`}
                       >

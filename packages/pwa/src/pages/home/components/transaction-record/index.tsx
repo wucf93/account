@@ -115,15 +115,15 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                   <div
                     key={item2.id}
                     onClick={() => navigate(`/transaction/detail/${item2.id}`)}
-                    className="w-full flex items-center py-3 gap-3"
+                    className="w-full flex items-center py-3 space-x-3"
                   >
                     <div
                       className={classnames(
-                        'flex-none w-10 h-10 rounded-md flex items-center justify-center',
+                        'flex-none w-10 h-10 rounded-full flex items-center justify-center',
                         {
-                          'bg-lime-400/10 dark:bg-lime-400/10':
+                          'bg-green-500 dark:bg-green-400':
                             item2.transactionType === 'income',
-                          'bg-red-400/10 dark:bg-red-400/10':
+                          'bg-red-500 dark:bg-red-400':
                             item2.transactionType === 'expenditure',
                         }
                       )}
@@ -131,33 +131,28 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                       <i
                         className={classnames(
                           item2?.category?.icon,
-                          'text-xl',
-                          {
-                            'text-lime-700 dark:text-lime-400':
-                              item2.transactionType === 'income',
-                            'text-red-700 dark:text-red-400':
-                              item2.transactionType === 'expenditure',
-                          }
+                          'text-xl text-white'
                         )}
                       />
                     </div>
 
                     <div className="flex-auto overflow-hidden">
-                      <div className="font-medium truncate">
-                        {item2?.category?.name}
-                      </div>
-                      <div className="text-sm mt-1 text-zinc-500 truncate">
+                      <div className="truncate">{item2?.category?.name}</div>
+                      <div className="text-xs text-zinc-500 truncate">
                         {item2.description || item2?.category?.name}
                       </div>
                     </div>
 
                     <div
-                      className={classnames('flex-none text-right text-sm', {
-                        'text-lime-500 dark:text-lime-400':
-                          item2.transactionType === 'income',
-                        'text-red-500 dark:text-red-400':
-                          item2.transactionType === 'expenditure',
-                      })}
+                      className={classnames(
+                        'flex-none text-right text-sm font-semibold',
+                        {
+                          'text-green-600 dark:text-green-400':
+                            item2.transactionType === 'income',
+                          'text-red-600 dark:text-red-400':
+                            item2.transactionType === 'expenditure',
+                        }
+                      )}
                     >
                       <span>
                         {item2.transactionType === 'income' ? '+' : '-'}

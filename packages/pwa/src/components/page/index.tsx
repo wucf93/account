@@ -33,7 +33,7 @@ export default function Page(props: PageProps) {
             <div>{props.title}</div>
           </div>
 
-          <div className="w-12 overflow-hidden flex justify-end">
+          <div className="overflow-hidden flex justify-end">
             {props.titleExtra}
           </div>
         </div>

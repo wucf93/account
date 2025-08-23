@@ -39,21 +39,13 @@ export default function DataAnalysis(props: DataAnalysisProps) {
       )}
       style={props.style}
     >
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center">
-          <i className="ri-wallet-3-fill text-red-400 mr-2"></i>
-          <span className="text-zinc-500 text-sm">总支出</span>
-          {/* <i className="ri-refresh-cw-line text-zinc-500 ml-2 text-xs cursor-pointer" /> */}
-        </div>
-        {/* <div className="flex space-x-1">
-          <div className="w-2 h-2 rounded-full bg-amber-400"></div>
-          <div className="w-2 h-2 rounded-full bg-gray-600"></div>
-          <div className="w-2 h-2 rounded-full bg-gray-600"></div>
-        </div> */}
+      <div className="flex items-center mb-2">
+        <i className="ri-wallet-3-fill text-red-400 mr-1.5" />
+        <span>总支出</span>
       </div>
 
       <div className="flex items-baseline justify-between mb-3">
-        <div className="text-3xl font-bold font-mono">
+        <div className="text-3xl font-bold">
           {formatNumber(totalExpenditure)}
         </div>
       </div>
@@ -62,14 +54,14 @@ export default function DataAnalysis(props: DataAnalysisProps) {
         <div className="flex items-center">
           <i className="ri-arrow-down-right-line text-gray-400 mr-1"></i>
           <span className="text-zinc-500">总收入</span>
-          <span className="text-lime-600 font-mono ml-1 font-semibold">
+          <span className="text-lime-600 ml-1 font-semibold">
             {formatNumber(totalIncome)}
           </span>
         </div>
         <div className="flex items-center">
           <i className="ri-arrow-down-up-line text-gray-400 mr-1"></i>
           <span className="text-zinc-500">月结余</span>
-          <span className={clss('font-mono ml-1 text-red-500 font-semibold')}>
+          <span className={clss('ml-1 text-red-500 font-semibold')}>
             {formatNumber(balance)}
           </span>
         </div>

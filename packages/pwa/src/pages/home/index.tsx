@@ -17,10 +17,26 @@ export default function HomePage() {
   return (
     <Page
       title={
-        <MonthPicker value={dateValue} onChange={setDateValue}>
-          <span>{dateValue.get('month') + 1}月账单</span>
-          <i className="ri-arrow-down-s-fill ml-0.5 text-gray-500 dark:text-gray-400" />
-        </MonthPicker>
+        <div className="flex items-center justify-between">
+          <MonthPicker value={dateValue} onChange={setDateValue}>
+            {dateValue.format('YY年MM月')}
+          </MonthPicker>
+          <div className="flex space-x-0.5 ml-1.5 font-normal">
+            <button
+              onClick={() => setDateValue(dateValue.subtract(1, 'month'))}
+            >
+              <i className="ri-arrow-left-s-line" />
+            </button>
+            <button onClick={() => setDateValue(dateValue.add(1, 'month'))}>
+              <i className="ri-arrow-right-s-line" />
+            </button>
+          </div>
+        </div>
+      }
+      titleExtra={
+        <button className="global-bg-soft-color px-1.5 py-1 rounded-md text-xs">
+          收支日历
+        </button>
       }
     >
       {/* 数据统计 */}
@@ -34,8 +50,8 @@ export default function HomePage() {
 
       {/* 固定在右下角的添加按钮 */}
       <Button
-        className="fixed right-6 bottom-10"
         rounded
+        className="fixed right-6 bottom-10"
         onClick={() => navigate('/transaction')}
       >
         <i className="ri-add-line text-xl" />

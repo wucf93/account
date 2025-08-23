@@ -3,6 +3,7 @@
   "private": true,
   "description": "一款基于 PWA 技术的记账软件",
   "scripts": {
+    "dev": "npm run api:dev & npm run pwa:dev",
     "pwa:dev": "pnpm --filter pwa run dev",
     "pwa:build": "pnpm --filter pwa run build",
     "api:dev": "pnpm --filter api run dev"

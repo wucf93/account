@@ -1,3 +1,4 @@
+@import url('https://fonts.font.im/css?family=Roboto');
 @import 'tailwindcss';
 
 @theme {
@@ -16,6 +17,7 @@
 
 html,
 body {
+  font-family: 'Roboto', 'PingFang SC', sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -84,9 +84,9 @@ const RegisterPage: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <div className="p-6 sm:p-8">
             {error && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md flex items-center">
-                <i className="ri-alert-line text-red-500 dark:text-red-400 mr-2 flex-shrink-0 text-lg" />
-                <p className="text-red-700 dark:text-red-300 text-sm">
+              <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 rounded-md flex items-center">
+                <i className="ri-alert-line text-rose-500 dark:text-rose-400 mr-2 flex-shrink-0 text-lg" />
+                <p className="text-rose-700 dark:text-rose-300 text-sm">
                   {error}
                 </p>
               </div>
@@ -190,13 +190,13 @@ const RegisterPage: React.FC = () => {
                       {passwordMatch ? (
                         <i className="ri-check-line text-lg h-5 w-5 text-green-500" />
                       ) : (
-                        <i className="ri-alert-line text-lg h-5 w-5 text-red-500" />
+                        <i className="ri-alert-line text-lg h-5 w-5 text-rose-500" />
                       )}
                     </div>
                   )}
                 </div>
                 {passwordMatch === false && (
-                  <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  <p className="mt-1 text-sm text-rose-500 dark:text-rose-400">
                     两次输入的密码不一致
                   </p>
                 )}

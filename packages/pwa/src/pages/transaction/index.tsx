@@ -152,14 +152,14 @@ export default function TransactionPage() {
             className={classnames(
               'flex-1 text-3xl font-bold bg-transparent focus:outline-none ml-1',
               'dark:text-white placeholder-gray-400 dark:placeholder-gray-500',
-              errors.amount ? 'text-red-500' : 'text-gray-900'
+              errors.amount ? 'text-rose-500' : 'text-gray-900'
             )}
             step="0.01"
             min="0"
           />
         </div>
         {errors.amount && (
-          <p className="mt-1 text-sm text-red-500">{errors.amount}</p>
+          <p className="mt-1 text-sm text-rose-500">{errors.amount}</p>
         )}
       </div>
 
@@ -208,11 +208,11 @@ export default function TransactionPage() {
           className={classnames(
             'w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-200',
             'dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
-            errors.transactionDate ? 'border-red-500' : 'border-gray-300'
+            errors.transactionDate ? 'border-rose-500' : 'border-gray-300'
           )}
         />
         {errors.transactionDate && (
-          <p className="mt-1 text-sm text-red-500">{errors.transactionDate}</p>
+          <p className="mt-1 text-sm text-rose-500">{errors.transactionDate}</p>
         )}
       </div>
 
@@ -228,7 +228,7 @@ export default function TransactionPage() {
           className={classnames(
             'w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none transition-all duration-200 appearance-none bg-white dark:bg-gray-700',
             'dark:border-gray-600 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500',
-            errors.categoryId ? 'border-red-500' : 'border-gray-300'
+            errors.categoryId ? 'border-rose-500' : 'border-gray-300'
           )}
         >
           {filteredCategories.map((category) => (
@@ -238,7 +238,7 @@ export default function TransactionPage() {
           ))}
         </select>
         {errors.categoryId && (
-          <p className="mt-1 text-sm text-red-500">{errors.categoryId}</p>
+          <p className="mt-1 text-sm text-rose-500">{errors.categoryId}</p>
         )}
       </div>
 

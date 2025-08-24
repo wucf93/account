@@ -1,27 +1,26 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Page from '@/components/page'
 import { useFilter } from './hooks'
 import DataAnalysis from './components/data-analysis'
-import QuickTools from './components/quick-tools'
 import TransactionRecord from './components/transaction-record'
-import MonthPicker from '@/components/month-picker'
+import DatePicker from '@/components/date-picker'
 import { dayjs } from '@/lib'
 import Button from '@/components/button'
+import { useGlobalStore } from '@/store'
 
 export default function HomePage() {
   const [dateValue, setDateValue] = useState(dayjs.tz(dayjs(), 'utc'))
   const { filterList, list, isLoading } = useFilter(dateValue)
-  const navigate = useNavigate()
+  const { openTransactionDialog } = useGlobalStore()
 
   return (
     <Page
       title={
         <div className="flex items-center justify-between">
-          <MonthPicker value={dateValue} onChange={setDateValue}>
+          <DatePicker type="month" value={dateValue} onChange={setDateValue}>
             {dateValue.format('YY年MM月')}
-          </MonthPicker>
-          <div className="flex space-x-0.5 ml-1.5 font-normal">
+          </DatePicker>
+          <div className="flex space-x-0.5 ml-1.5 font-normal text-zinc-500">
             <button
               onClick={() => setDateValue(dateValue.subtract(1, 'month'))}
             >
@@ -43,19 +42,21 @@ export default function HomePage() {
       <DataAnalysis totalList={list} />
 
       {/* 快捷工具 */}
-      <QuickTools />
+      {/* <QuickTools /> */}
 
       {/* 交易记录 */}
-      <TransactionRecord list={filterList} isLoading={isLoading} />
+      <TransactionRecord
+        list={filterList}
+        isLoading={isLoading}
+        className="mt-6"
+      />
 
-      {/* 固定在右下角的添加按钮 */}
-      <Button
-        rounded
-        className="fixed right-6 bottom-10"
-        onClick={() => navigate('/transaction')}
-      >
-        <i className="ri-add-line text-xl" />
-      </Button>
+      {/* 使用useTransactionDialog的添加按钮 */}
+      <div className="fixed right-6 bottom-10">
+        <Button onClick={openTransactionDialog} rounded>
+          <i className="ri-add-line text-2xl" />
+        </Button>
+      </div>
     </Page>
   )
 }

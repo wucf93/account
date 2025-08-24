@@ -44,7 +44,7 @@ export default function ImageUploader({
             />
             <button
               onClick={onClearImage}
-              className="absolute top-1 right-2 text-2xl text-gray-400 hover:text-red-500 transition-colors"
+              className="absolute top-1 right-2 text-2xl text-gray-400 hover:text-rose-500 transition-colors"
               aria-label="移除图片"
             >
               <i className="ri-close-line" />

@@ -44,9 +44,9 @@ const LoginPage: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <div className="p-6 sm:p-8">
             {error && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md flex items-start">
-                <i className="ri-circle-line text-red-500 dark:text-red-400 mr-2 mt-0.5 flex-shrink-0 text-lg" />
-                <p className="text-red-700 dark:text-red-300 text-sm">
+              <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 rounded-md flex items-start">
+                <i className="ri-circle-line text-rose-500 dark:text-rose-400 mr-2 mt-0.5 flex-shrink-0 text-lg" />
+                <p className="text-rose-700 dark:text-rose-300 text-sm">
                   {error}
                 </p>
               </div>

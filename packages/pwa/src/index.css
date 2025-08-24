@@ -1,10 +1,11 @@
-@import url('https://fonts.font.im/css?family=Roboto');
+@import url('https://fonts.font.im/css?family=Roboto?family=Roboto&display=swap');
 @import 'tailwindcss';
 
 @theme {
   --global-bg-color: var(--color-gray-100);
   --global-bg-soft-color: var(--color-white);
   --global-font-color: #121217;
+  --font-roboto: 'Roboto', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

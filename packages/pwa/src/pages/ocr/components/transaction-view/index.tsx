@@ -24,12 +24,12 @@ export default function TransactionView({
       return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100'
     if (confidence >= 50)
       return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100'
-    return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'
+    return 'bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-100'
   }
 
   const getTransactionTypeClass = () => {
     return (transaction.transactionType || '') === 'expenditure'
-      ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'
+      ? 'bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-100'
       : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
   }
 
@@ -98,7 +98,9 @@ export default function TransactionView({
             交易日期
           </div>
           <div className="text-sm font-medium text-gray-800 dark:text-gray-200 text-right">
-            {dayjs(transaction.transactionDate).format('YYYY-MM-DD')}
+            {dayjs(transaction.transactionDate)
+              .local()
+              .format('YYYY-MM-DD HH:mm:ss')}
           </div>
         </div>
 

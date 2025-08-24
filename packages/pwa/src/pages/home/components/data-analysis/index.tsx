@@ -40,7 +40,7 @@ export default function DataAnalysis(props: DataAnalysisProps) {
       style={props.style}
     >
       <div className="flex items-center mb-2">
-        <i className="ri-wallet-3-fill text-red-400 mr-1.5" />
+        <i className="ri-wallet-3-fill text-rose-500 mr-1.5" />
         <span>总支出</span>
       </div>
 
@@ -61,7 +61,7 @@ export default function DataAnalysis(props: DataAnalysisProps) {
         <div className="flex items-center">
           <i className="ri-arrow-down-up-line text-gray-400 mr-1"></i>
           <span className="text-zinc-500">月结余</span>
-          <span className={clss('ml-1 text-red-600 font-semibold')}>
+          <span className={clss('ml-1 text-rose-600 font-semibold')}>
             {formatNumber(balance)}
           </span>
         </div>

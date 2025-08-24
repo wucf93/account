@@ -121,9 +121,8 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                       className={classnames(
                         'flex-none w-10 h-10 rounded-full flex items-center justify-center',
                         {
-                          'bg-green-500 dark:bg-green-400':
-                            item2.transactionType === 'income',
-                          'bg-red-500 dark:bg-red-400':
+                          'bg-green-500': item2.transactionType === 'income',
+                          'bg-rose-500':
                             item2.transactionType === 'expenditure',
                         }
                       )}
@@ -147,9 +146,8 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
                       className={classnames(
                         'flex-none text-right text-sm font-semibold',
                         {
-                          'text-green-600 dark:text-green-400':
-                            item2.transactionType === 'income',
-                          'text-red-600 dark:text-red-400':
+                          'text-green-600': item2.transactionType === 'income',
+                          'text-rose-600':
                             item2.transactionType === 'expenditure',
                         }
                       )}

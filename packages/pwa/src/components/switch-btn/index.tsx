@@ -12,17 +12,16 @@ export default function Switch<T>({
   options,
 }: SwitchProps<T>) {
   return (
-    <div className="bg-gray-100 p-1 rounded-full flex w-48 mx-auto">
+    <div className="global-bg-soft-color p-0.5 rounded-lg flex w-38 mx-auto">
       {options?.map((item) => (
         <button
           key={item.value as string}
           className={cls(
             'flex-1',
-            'py-1.5',
-            'px-3',
-            'rounded-full',
+            'py-1',
+            'rounded-md',
             'text-sm',
-            value === item.value ? ['bg-white', 'shadow-sm'] : ['text-gray-500']
+            value === item.value ? ['global-bg-color'] : ['text-zinc-400']
           )}
           onClick={() => onChange?.(item.value)}
         >

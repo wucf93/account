@@ -49,6 +49,7 @@ export default function HomePage() {
         list={filterList}
         isLoading={isLoading}
         className="mt-6"
+        onCreated={() => setTransactionDialogOpen(true)}
       />
 
       {/* 使用useTransactionDialog的添加按钮 */}

@@ -38,11 +38,11 @@ export default function CategorySelect(props: CategorySelectProps) {
         >
           <div
             className={classnames(
-              'w-10 h-10 rounded-full flex items-center justify-center text-lg ',
+              'w-10 h-10 rounded-full flex items-center justify-center text-lg',
               props.value === category.id
                 ? props.transactionType === 'expenditure'
-                  ? 'bg-rose-500'
-                  : 'bg-green-500'
+                  ? 'bg-rose-500 text-white'
+                  : 'bg-green-500 text-white'
                 : 'global-bg-soft-color'
             )}
           >

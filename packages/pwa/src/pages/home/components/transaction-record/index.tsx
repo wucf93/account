@@ -12,6 +12,7 @@ export interface TransactionRecordProps {
   style?: React.CSSProperties
   onReflush?: () => void
   isLoading?: boolean
+  onCreated?: () => void
 }
 
 const TransactionRecord: FC<TransactionRecordProps> = ({
@@ -48,7 +49,7 @@ const TransactionRecord: FC<TransactionRecordProps> = ({
           </div>
           <button
             className="mt-6 px-5 py-2.5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-md transition-all duration-200"
-            onClick={() => navigate('/transaction')}
+            onClick={props.onCreated}
           >
             新增交易
           </button>

@@ -7,8 +7,6 @@ const LoginPage = lazy(() => import('./pages/login'))
 const RegisterPage = lazy(() => import('./pages/register'))
 // 首页
 const HomePage = lazy(() => import('./pages/home'))
-// 新增/编辑明细
-const TransactionPage = lazy(() => import('./pages/transaction'))
 // 图片识别
 const OCRPage = lazy(() => import('./pages/ocr'))
 
@@ -34,10 +32,6 @@ export const routeConfig = [
       {
         path: 'home',
         element: <HomePage />,
-      },
-      {
-        path: 'transaction',
-        element: <TransactionPage />,
       },
       {
         path: 'ocr',

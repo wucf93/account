@@ -1,13 +1,16 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useGlobalStore } from '@/store'
 import { Dialog, DialogPanel, DialogTitle, Input } from '@headlessui/react'
 import { dayjs } from '@/lib'
 import classnames from 'classnames'
-import { postTransactionCreate } from '@/apis/sdk.gen'
-import type { TransactionCreateInput } from '@/apis/types.gen'
 import Switch from '../switch-btn'
 import DatePicker from '../date-picker'
 import { Dayjs } from 'dayjs'
+import KeyPress from './components/keypress'
+import { postTransactionCreate } from '@/apis/sdk.gen'
+import type { TransactionCreateInput } from '@/apis/types.gen'
+import CategorySelect from './components/category-select'
 
 interface TransactionDialogProps {
   open: boolean
@@ -26,6 +29,7 @@ const TRANSACTION_TYPES = [
 
 export default function TransactionDialog(props: TransactionDialogProps) {
   const { categoryConfigs } = useGlobalStore()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState<FormDataProps>({
     amount: '',
     transactionType: 'expenditure',
@@ -33,15 +37,7 @@ export default function TransactionDialog(props: TransactionDialogProps) {
     description: '',
     categoryId: categoryConfigs.expenditure[0]?.id || 0,
   })
-
-  // 根据交易类型筛选分类
-  const filteredCategories = useMemo(
-    () =>
-      formData.transactionType === 'expenditure'
-        ? categoryConfigs.expenditure
-        : categoryConfigs.income,
-    [categoryConfigs, formData.transactionType]
-  )
+  const navigate = useNavigate()
 
   // 处理交易类型变更
   const handleTransactionTypeChange = (type: 'income' | 'expenditure') => {
@@ -55,38 +51,26 @@ export default function TransactionDialog(props: TransactionDialogProps) {
     }))
   }
 
-  // 键盘组件的点击处理
-  const handleKeyPress = (key: string) => {
-    if (key === 'del') {
-      setFormData((prev) => ({
-        ...prev,
-        amount: prev.amount.slice(0, -1),
-      }))
+  const handleSubmit = async () => {
+    if (!formData.amount || formData.amount === '0') {
       return
     }
 
-    if (key === '.') {
-      // 确保只有一个小数点
-      if (!formData.amount.includes('.')) {
-        setFormData((prev) => ({
-          ...prev,
-          amount: prev.amount ? prev.amount + '.' : '0.',
-        }))
-      }
-      return
-    }
-
-    if (key >= '0' && key <= '9') {
-      // 检查是否已经有小数点，并且小数点后已有两位数字
-      const decimalIndex = formData.amount.indexOf('.')
-      if (decimalIndex !== -1 && formData.amount.length - decimalIndex > 2) {
-        // 已经有两位小数，不添加新数字
-        return
-      }
-      setFormData((prev) => ({
-        ...prev,
-        amount: prev.amount === '0' ? key : prev.amount + key,
-      }))
+    try {
+      setLoading(true)
+      await postTransactionCreate({
+        body: {
+          ...formData,
+          transactionDate: dayjs
+            .tz(formData.transactionDate, 'utc')
+            .toISOString(),
+        },
+      })
+      setLoading(false)
+      props.onClose(true)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
     }
   }
 
@@ -112,37 +96,26 @@ export default function TransactionDialog(props: TransactionDialogProps) {
                 value={formData.transactionType}
                 onChange={handleTransactionTypeChange}
               />
-              <div className="w-12" />
+              <div
+                className="w-12 text-indigo-500 text-right"
+                onClick={() => navigate('/ocr')}
+              >
+                <i className="ri-image-ai-line"></i>
+              </div>
             </DialogTitle>
 
-            <div className="mt-4 grid grid-cols-5 gap-y-4 max-h-[30vh] overscroll-y-auto overflow-x-hidden px-4">
-              {filteredCategories.map((category) => (
-                <div
-                  key={category.id}
-                  className="flex flex-col items-center"
-                  onClick={() =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      categoryId: category.id,
-                    }))
-                  }
-                >
-                  <div
-                    className={classnames(
-                      'w-10 h-10 rounded-full flex items-center justify-center text-lg ',
-                      formData.categoryId === category.id
-                        ? formData.transactionType === 'expenditure'
-                          ? 'bg-rose-500'
-                          : 'bg-green-500'
-                        : 'global-bg-soft-color'
-                    )}
-                  >
-                    <i className={category.icon} />
-                  </div>
-                  <span className="mt-2 text-xs">{category.name}</span>
-                </div>
-              ))}
-            </div>
+            {/* 分类选择 */}
+            <CategorySelect
+              value={formData.categoryId}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  categoryId: value,
+                }))
+              }
+              transactionType={formData.transactionType}
+              className="mt-4"
+            />
 
             <div className="p-4">
               <div className="rounded-lg global-bg-soft-color px-3 divide-y divide-zinc-950/10 dark:divide-white/10">
@@ -193,41 +166,16 @@ export default function TransactionDialog(props: TransactionDialogProps) {
               </div>
 
               {/* 数字键盘 - 模仿图片中的键盘设计 */}
-              <div className="grid grid-cols-4 gap-2 mt-2">
-                {[
-                  '1',
-                  '2',
-                  '3',
-                  '+',
-                  '4',
-                  '5',
-                  '6',
-                  '-',
-                  '7',
-                  '8',
-                  '9',
-                  '×',
-                  '0',
-                  '.',
-                ].map((key) => (
-                  <button
-                    key={key}
-                    onClick={() => handleKeyPress(key)}
-                    className="w-full h-10 rounded-lg global-bg-soft-color flex items-center justify-center text-xl font-semibold"
-                  >
-                    {key}
-                  </button>
-                ))}
-                <button
-                  onClick={() => handleKeyPress('del')}
-                  className="w-full h-10 rounded-lg global-bg-soft-color flex items-center justify-center text-lg font-semibold"
-                >
-                  <i className="ri-delete-back-2-line" />
-                </button>
-                <button className="w-full h-10 rounded-lg global-bg-soft-color flex items-center justify-center text-sm font-semibold">
-                  完成
-                </button>
-              </div>
+              <KeyPress
+                value={formData.amount || ''}
+                transactionType={formData.transactionType}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, amount: value }))
+                }
+                onDone={handleSubmit}
+                loading={loading}
+                className="mt-2"
+              />
             </div>
           </DialogPanel>
         </div>

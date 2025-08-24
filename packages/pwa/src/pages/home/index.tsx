@@ -6,12 +6,12 @@ import TransactionRecord from './components/transaction-record'
 import DatePicker from '@/components/date-picker'
 import { dayjs } from '@/lib'
 import Button from '@/components/button'
-import { useGlobalStore } from '@/store'
+import TransactionDialog from '@/components/transaction-dialog'
 
 export default function HomePage() {
+  const [transactionDialogOpen, setTransactionDialogOpen] = useState(false)
   const [dateValue, setDateValue] = useState(dayjs.tz(dayjs(), 'utc'))
-  const { filterList, list, isLoading } = useFilter(dateValue)
-  const { openTransactionDialog } = useGlobalStore()
+  const { filterList, list, isLoading, reflush } = useFilter(dateValue)
 
   return (
     <Page
@@ -53,10 +53,19 @@ export default function HomePage() {
 
       {/* 使用useTransactionDialog的添加按钮 */}
       <div className="fixed right-6 bottom-10">
-        <Button onClick={openTransactionDialog} rounded>
+        <Button rounded onClick={() => setTransactionDialogOpen(true)}>
           <i className="ri-add-line text-2xl" />
         </Button>
       </div>
+
+      {/* 交易弹窗 */}
+      <TransactionDialog
+        open={transactionDialogOpen}
+        onClose={(status) => {
+          setTransactionDialogOpen(false)
+          status && reflush()
+        }}
+      />
     </Page>
   )
 }
